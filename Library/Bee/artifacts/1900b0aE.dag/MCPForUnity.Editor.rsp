@@ -1,0 +1,719 @@
+-target:library
+-out:"Library/Bee/artifacts/1900b0aE.dag/MCPForUnity.Editor.dll"
+-refout:"Library/Bee/artifacts/1900b0aE.dag/MCPForUnity.Editor.ref.dll"
+-define:UNITY_6000_2_14
+-define:UNITY_6000_2
+-define:UNITY_6000
+-define:UNITY_5_3_OR_NEWER
+-define:UNITY_5_4_OR_NEWER
+-define:UNITY_5_5_OR_NEWER
+-define:UNITY_5_6_OR_NEWER
+-define:UNITY_2017_1_OR_NEWER
+-define:UNITY_2017_2_OR_NEWER
+-define:UNITY_2017_3_OR_NEWER
+-define:UNITY_2017_4_OR_NEWER
+-define:UNITY_2018_1_OR_NEWER
+-define:UNITY_2018_2_OR_NEWER
+-define:UNITY_2018_3_OR_NEWER
+-define:UNITY_2018_4_OR_NEWER
+-define:UNITY_2019_1_OR_NEWER
+-define:UNITY_2019_2_OR_NEWER
+-define:UNITY_2019_3_OR_NEWER
+-define:UNITY_2019_4_OR_NEWER
+-define:UNITY_2020_1_OR_NEWER
+-define:UNITY_2020_2_OR_NEWER
+-define:UNITY_2020_3_OR_NEWER
+-define:UNITY_2021_1_OR_NEWER
+-define:UNITY_2021_2_OR_NEWER
+-define:UNITY_2021_3_OR_NEWER
+-define:UNITY_2022_1_OR_NEWER
+-define:UNITY_2022_2_OR_NEWER
+-define:UNITY_2022_3_OR_NEWER
+-define:UNITY_2023_1_OR_NEWER
+-define:UNITY_2023_2_OR_NEWER
+-define:UNITY_2023_3_OR_NEWER
+-define:UNITY_6000_0_OR_NEWER
+-define:UNITY_6000_1_OR_NEWER
+-define:UNITY_6000_2_OR_NEWER
+-define:PLATFORM_ARCH_64
+-define:UNITY_64
+-define:UNITY_INCLUDE_TESTS
+-define:ENABLE_AR
+-define:ENABLE_AUDIO
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_EVENT_QUEUE
+-define:ENABLE_MICROPHONE
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_TEXTURE_STREAMING
+-define:ENABLE_VIRTUALTEXTURING
+-define:ENABLE_LZMA
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_VR
+-define:ENABLE_WEBCAM
+-define:ENABLE_UNITYWEBREQUEST
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_SERVICES_USE_WEBREQUEST
+-define:ENABLE_UNITY_CONSENT
+-define:ENABLE_UNITY_CLOUD_IDENTIFIERS
+-define:ENABLE_CLOUD_SERVICES_CRASH_REPORTING
+-define:ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING
+-define:ENABLE_CLOUD_SERVICES_PURCHASING
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_EDITOR_GAME_SERVICES
+-define:ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_HUB_LICENSE
+-define:ENABLE_WEBSOCKET_CLIENT
+-define:ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API
+-define:ENABLE_DIRECTOR_AUDIO
+-define:ENABLE_DIRECTOR_TEXTURE
+-define:ENABLE_MANAGED_JOBS
+-define:ENABLE_MANAGED_TRANSFORM_JOBS
+-define:ENABLE_MANAGED_ANIMATION_JOBS
+-define:ENABLE_MANAGED_AUDIO_JOBS
+-define:ENABLE_MANAGED_UNITYTLS
+-define:INCLUDE_DYNAMIC_GI
+-define:ENABLE_SCRIPTING_GC_WBARRIERS
+-define:PLATFORM_SUPPORTS_MONO
+-define:RENDER_SOFTWARE_CURSOR
+-define:ENABLE_MARSHALLING_TESTS
+-define:ENABLE_VIDEO
+-define:ENABLE_NAVIGATION_OFFMESHLINK_TO_NAVMESHLINK
+-define:ENABLE_ACCELERATOR_CLIENT_DEBUGGING
+-define:TEXTCORE_1_0_OR_NEWER
+-define:EDITOR_ONLY_NAVMESH_BUILDER_DEPRECATED
+-define:PLATFORM_STANDALONE_WIN
+-define:PLATFORM_STANDALONE
+-define:UNITY_STANDALONE_WIN
+-define:UNITY_STANDALONE
+-define:ENABLE_RUNTIME_GI
+-define:ENABLE_MOVIES
+-define:ENABLE_NETWORK
+-define:ENABLE_NVIDIA
+-define:ENABLE_AMD
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_CLOUD_SERVICES_ENGINE_DIAGNOSTICS
+-define:ENABLE_OUT_OF_PROCESS_CRASH_HANDLER
+-define:ENABLE_CLUSTER_SYNC
+-define:ENABLE_CLUSTERINPUT
+-define:PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP
+-define:GFXDEVICE_WAITFOREVENT_MESSAGEPUMP
+-define:PLATFORM_USES_EXPLICIT_MEMORY_MANAGER_INITIALIZER
+-define:PLATFORM_SUPPORTS_WAIT_FOR_PRESENTATION
+-define:PLATFORM_SUPPORTS_SPLIT_GRAPHICS_JOBS
+-define:ENABLE_MONO
+-define:NET_4_6
+-define:NET_UNITY_4_8
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_WIN
+-define:ENABLE_UNITY_COLLECTIONS_CHECKS
+-define:ENABLE_BURST_AOT
+-define:UNITY_TEAM_LICENSE
+-define:ENABLE_CUSTOM_RENDER_TEXTURE
+-define:ENABLE_DIRECTOR
+-define:ENABLE_LOCALIZATION
+-define:ENABLE_SPRITES
+-define:ENABLE_TERRAIN
+-define:ENABLE_TILEMAP
+-define:ENABLE_TIMELINE
+-define:ENABLE_INPUT_SYSTEM
+-define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
+-define:TEXTCORE_TEXT_ENGINE_1_5_OR_NEWER
+-define:CSHARP_7_OR_LATER
+-define:CSHARP_7_3_OR_NEWER
+-define:UNITY_EDITOR_ONLY_COMPILATION
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEditor.Graphs.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.AccessibilityModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.AdaptivePerformanceModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.BuildProfileModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.ClothModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreBusinessMetricsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.DeviceSimulatorModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.DiagnosticsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.EditorToolbarModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.EmbreeModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.GIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.GraphicsStateCollectionSerializerModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.GraphViewModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.GridAndSnapModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.GridModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.InAppPurchasingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.LevelPlayModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.MultiplayerModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.Physics2DModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.PhysicsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.PresetsUIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.PropertiesModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.QuickSearchModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SafeModeModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SceneTemplateModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SceneViewModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.ShaderFoundryModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SketchUpModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SpriteMaskModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SpriteShapeModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.SubstanceModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.TerrainModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.TextCoreFontEngineModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.TextCoreTextEngineModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.TextRenderingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.TilemapModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.TreeModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.UIAutomationModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.UIBuilderModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.UIElementsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.UIElementsSamplesModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.UmbraModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.VFXModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.VideoModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEditor.XRModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AMDModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AndroidJNIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ContentLoadModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.DSPGraphModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.GIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.GraphicsStateCollectionSerializerModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.HierarchyCoreModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.HotReloadModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.IdentifiersModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.InputForUIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.InputLegacyModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.InsightsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.LocalizationModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.MarshallingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.MultiplayerModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.NVIDIAModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.PropertiesModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.ShaderVariantAnalyticsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.StreamingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.SubstanceModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.SubsystemsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TextCoreFontEngineModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TextCoreTextEngineModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.TLSModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UmbraModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsCommonModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConsentModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityCurlModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityTestProtocolModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.VFXModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.VirtualTexturingModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/AndroidPlayer/Unity.Android.Gradle.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/AndroidPlayer/Unity.Android.Types.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.Apple.Extensions.Common.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/Microsoft.Win32.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/netstandard.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.AppContext.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Buffers.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.Concurrent.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.NonGeneric.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.Specialized.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.Annotations.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.EventBasedAsync.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.TypeConverter.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Console.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Data.Common.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Contracts.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Debug.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.FileVersionInfo.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Process.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.StackTrace.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.TextWriterTraceListener.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Tools.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.TraceSource.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Drawing.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Dynamic.Runtime.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Globalization.Calendars.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Globalization.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Globalization.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.Compression.ZipFile.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.DriveInfo.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.Watcher.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.IsolatedStorage.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.MemoryMappedFiles.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.Pipes.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.UnmanagedMemoryStream.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.Expressions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.Parallel.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.Queryable.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Memory.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Http.Rtc.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.NameResolution.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.NetworkInformation.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Ping.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Requests.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Security.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Sockets.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.WebHeaderCollection.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.WebSockets.Client.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.WebSockets.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ObjectModel.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.DispatchProxy.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Emit.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Emit.ILGeneration.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Emit.Lightweight.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Resources.Reader.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Resources.ResourceManager.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Resources.Writer.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.CompilerServices.VisualC.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Handles.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.RuntimeInformation.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Numerics.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Formatters.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Json.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Xml.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Claims.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Algorithms.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Csp.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Encoding.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.X509Certificates.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Principal.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.SecureString.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Duplex.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Http.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.NetTcp.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Primitives.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Security.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Text.Encoding.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Text.Encoding.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Text.RegularExpressions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Overlapped.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Tasks.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Tasks.Extensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Tasks.Parallel.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Thread.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.ThreadPool.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Timer.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ValueTuple.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.ReaderWriter.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XDocument.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XmlDocument.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XmlSerializer.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XPath.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XPath.XDocument.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Microsoft.CSharp.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/mscorlib.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Core.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Data.DataSetExtensions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Data.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Drawing.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.IO.Compression.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.IO.Compression.FileSystem.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Net.Http.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Numerics.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Numerics.Vectors.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Runtime.Serialization.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Transactions.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.Linq.dll"
+-r:"Library/PackageCache/com.unity.ext.nunit@031a54704bff/net40/unity-custom/nunit.framework.dll"
+-r:"Library/PackageCache/com.unity.nuget.newtonsoft-json@74deb55db2a0/Runtime/Newtonsoft.Json.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/MCPForUnity.Runtime.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.TestRunner.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.TestRunner.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
+-analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
+-analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
+-analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/AssemblyInfo.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/AntigravityConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/AntigravityIdeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/CherryStudioConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/ClaudeCodeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/ClaudeDesktopConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/ClineConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/CodeBuddyCliConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/CodexConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/CopilotCliConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/CursorConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/GeminiCliConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/KiloCodeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/KimiCodeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/KiroConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/OpenClawConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/OpenCodeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/QwenCodeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/RiderConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/TraeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/VSCodeConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/VSCodeInsidersConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/Configurators/WindsurfConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/IMcpClientConfigurator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/McpClientConfiguratorBase.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Clients/McpClientRegistry.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Constants/AuthConstants.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Constants/EditorPrefKeys.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Constants/HealthStatus.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Constants/ProductInfo.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/DependencyManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/Models/DependencyCheckResult.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/Models/DependencyStatus.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/PlatformDetectors/IPlatformDetector.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/PlatformDetectors/LinuxPlatformDetector.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/PlatformDetectors/MacOSPlatformDetector.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/PlatformDetectors/PlatformDetectorBase.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/PlatformDetectors/WindowsPlatformDetector.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Dependencies/UvInstaller.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/External/Tommy.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/AssetGenPaths.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/AssetGenPrefs.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/AssetPathUtility.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/BlenderDetection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/CodexConfigHelper.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ComponentOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ConfigJsonBuilder.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/EditorWindowScreenshotUtility.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ExecPath.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/GameObjectLookup.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/GameObjectSerializer.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/HttpEndpointUtility.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/MaterialOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/McpConfigurationHelper.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/McpJobStateStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/McpLog.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/McpLogRecord.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ObjectResolver.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/Pagination.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ParamCoercion.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/PortManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/PrefabUtilityHelper.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ProjectIdentityUtility.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/PropertyConversion.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/RendererHelpers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/RenderPipelineUtility.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/Response.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ScreenshotPreferences.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/StringCaseUtility.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/TelemetryHelper.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/TextureOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/ToolParams.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/UnityJsonSerializer.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/UnityTypeResolver.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Helpers/VectorParsing.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/McpCiBoot.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/MenuItems/MCPForUnityMenu.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Migrations/LegacyServerSrcMigration.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Migrations/StdIoVersionMigration.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Models/Command.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Models/McpClient.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Models/McpConfig.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Models/MCPConfigServer.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Models/MCPConfigServers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Models/McpStatus.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Editor/ActiveTool.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Editor/EditorState.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Editor/GetPrefabStage.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Editor/Selection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Editor/ToolStates.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Editor/Windows.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/McpForUnityResourceAttribute.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/MenuItems/GetMenuItems.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Project/Layers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Project/ProjectInfo.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Project/Tags.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Scene/CamerasResource.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Scene/GameObjectResource.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Scene/RendererFeaturesResource.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Scene/RenderingStatsResource.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Scene/VolumesResource.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Resources/Tests/GetTests.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/EncryptedFileKeyStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/EnvKeyOverride.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/ISecureKeyStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/LinuxSecretToolKeyStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/MacKeychainKeyStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/SecretRedactor.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/SecureKeyStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/SecureKeyStoreConstants.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Security/SecureKeyStore/WindowsCredentialKeyStore.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/AssetGenJobManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/AssetGenModelCatalog.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Http/FakeHttpTransport.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Http/HttpRequestSpec.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Http/HttpResult.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Http/IHttpTransport.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Http/UnityWebRequestTransport.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Import/AudioImportPipeline.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Import/ImageImportPipeline.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Import/ModelImportPipeline.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Import/SafeZipExtractor.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/AssetGenProviders.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/FalAdapter.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/FalAudioAdapter.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/IProviderAdapters.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/LocalImage.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/MeshyAdapter.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/OpenRouterAdapter.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/ProviderHttp.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/ProviderModels.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/SketchfabAdapter.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/AssetGen/Providers/TripoAdapter.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/BridgeControlService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/ClientConfigurationService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/EditorConfigurationCache.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/EditorPrefsWindowService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/EditorStateCache.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/HttpAutoStartHandler.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/HttpBridgeReloadHandler.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IBridgeControlService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IClientConfigurationService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IPackageDeploymentService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IPackageUpdateService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IPathResolverService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IPlatformService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IResourceDiscoveryService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IServerManagementService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/ITestRunnerService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/IToolDiscoveryService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/McpEditorShutdownCleanup.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/MCPServiceLocator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/PackageDeploymentService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/PackageJobManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/PackageUpdateService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/PathResolverService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/PlatformService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/ResourceDiscoveryService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/IPidFileManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/IProcessDetector.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/IProcessTerminator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/IServerCommandBuilder.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/ITerminalLauncher.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/PidFileManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/ProcessDetector.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/ProcessTerminator.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/ServerCommandBuilder.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Server/TerminalLauncher.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/ServerManagementService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/StartupConfigRewrite.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/StdioBridgeReloadHandler.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/TestJobManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/TestRunnerNoThrottle.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/TestRunnerService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/TestRunStatus.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/ToolDiscoveryService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/IMcpTransportClient.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/TransportCommandDispatcher.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/TransportManager.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/Transports/StdioBridgeHost.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/Transports/StdioTransportClient.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/Transports/WebSocketTransportClient.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Services/Transport/TransportState.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Setup/McpForUnitySkillInstaller.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Setup/RoslynInstaller.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Setup/SetupWindowService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Setup/SkillSyncService.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/AnimatorControl.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/AnimatorRead.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/ClipCreate.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/ClipPresets.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/ControllerBlendTrees.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/ControllerCreate.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/ControllerLayers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Animation/ManageAnimation.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/AssetGen/AssetGenToolHelpers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/AssetGen/GenerateAudio.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/AssetGen/GenerateImage.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/AssetGen/GenerateModel.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/AssetGen/ImportModel.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/AssetGen/ImportModelFile.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/BatchExecute.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Build/BuildJob.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Build/BuildRunner.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Build/BuildSettingsHelper.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Build/BuildTargetMapping.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Cameras/CameraConfigure.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Cameras/CameraControl.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Cameras/CameraCreate.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Cameras/CameraHelpers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Cameras/ManageCamera.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/CommandRegistry.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ExecuteCode.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ExecuteMenuItem.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/FindGameObjects.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/ComponentResolver.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectComponentHelpers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectCreate.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectDelete.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectDuplicate.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectHandlers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectLookAt.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectModify.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/GameObjectMoveRelative.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/ManageGameObject.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GameObjects/ManageGameObjectCommon.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/GetTestJob.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/GraphicsHelpers.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/LightBakingOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/ManageGraphics.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/RendererFeatureOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/RenderingStatsOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/RenderPipelineOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/SkyboxOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Graphics/VolumeOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/JsonUtil.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageAsset.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageBuild.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageComponents.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageEditor.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageMaterial.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManagePackages.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageScene.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageScript.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageScriptableObject.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageShader.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageTexture.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ManageUI.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/McpForUnityToolAttribute.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/CollisionMatrixOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/JointOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/ManagePhysics.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsForceOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsMaterialOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsQueryOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsRigidbodyOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsSettingsOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsSimulationOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Physics/PhysicsValidationOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Prefabs/ManagePrefabs.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ProBuilder/ManageProBuilder.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ProBuilder/ProBuilderMeshUtils.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ProBuilder/ProBuilderSmoothing.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/ManageProfiler.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/Operations/CounterOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/Operations/FrameDebuggerOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/Operations/FrameTimingOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/Operations/MemorySnapshotOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/Operations/ObjectMemoryOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Profiler/Operations/SessionOps.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/ReadConsole.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/RefreshUnity.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/RunTests.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/UnityReflect.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/LineCreate.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/LineRead.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/LineWrite.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/ManageVFX.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/ManageVfxCommon.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/ParticleCommon.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/ParticleControl.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/ParticleRead.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/ParticleWrite.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/TrailControl.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/TrailRead.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/TrailWrite.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/VfxGraphAssets.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/VfxGraphCommon.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/VfxGraphControl.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/VfxGraphRead.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Tools/Vfx/VfxGraphWrite.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/Advanced/McpAdvancedSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/AssetGen/McpAssetGenSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/Branding/OceanMark.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/ClientConfig/McpClientConfigSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/Connection/McpConnectionSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/Resources/McpResourcesSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/Tools/McpToolsSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/Components/Validation/McpValidationSection.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/EditorPrefs/EditorPrefsWindow.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/MCPForUnityEditorWindow.cs"
+"Library/PackageCache/com.coplaydev.unity-mcp@045e809812a8/Editor/Windows/MCPSetupWindow.cs"
+-langversion:9.0
+/deterministic
+/optimize+
+/debug:portable
+/nologo
+/RuntimeMetadataVersion:v4.0.30319
+/nowarn:0169
+/nowarn:0649
+/nowarn:0282
+/nowarn:1701
+/nowarn:1702
+/utf8output
+/preferreduilang:en-US
+-warn:0
+/additionalfile:"Library/Bee/artifacts/1900b0aE.dag/MCPForUnity.Editor.UnityAdditionalFile.txt"

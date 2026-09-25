@@ -1,0 +1,278 @@
+using System;
+using UnityEditor;
+using UnityEngine;
+
+namespace FrameDate.EditorTools
+{
+    /// <summary>
+    /// Вьюпорт приёма. Рисует акторов на заданном кадре.
+    ///
+    /// Сознательно не создаёт объектов сцены: картинка — чистая функция от данных приёма
+    /// и номера кадра. Поэтому вьюпорт не может испачкать открытую сцену, оставить мусор
+    /// или записать что-либо в ассеты.
+    /// </summary>
+    public sealed class FrameDatePreview : IDisposable
+    {
+        private PreviewRenderUtility _utility;
+        // Капсула собирается из цилиндра и двух сфер, чтобы картинка совпадала с расчётом контакта.
+        // Встроенные меши здесь радиуса 1 и полувысоты 1 (проверено по вершинам), масштаб считается от этого.
+        private Mesh _cylinderMesh;
+        private Mesh _sphereMesh;
+        private readonly System.Collections.Generic.List<Material> _hitMaterials = new System.Collections.Generic.List<Material>();
+        private int _hitMaterialsUsed;
+        private Material _attackerMaterial;
+        private Material _targetMaterial;
+
+        private static readonly Color NeutralColor = new Color(0.72f, 0.72f, 0.74f);
+        private static readonly Color BackgroundColor = new Color(0.16f, 0.17f, 0.19f);
+
+        private void EnsureInitialised()
+        {
+            if (_utility != null) return;
+
+            _utility = new PreviewRenderUtility();
+
+            var camera = _utility.camera;
+            camera.orthographic = true;
+            camera.orthographicSize = 1.9f;
+            camera.nearClipPlane = 0.1f;
+            camera.farClipPlane = 40f;
+            camera.transform.position = new Vector3(0f, 0.1f, -10f);
+            camera.transform.rotation = Quaternion.identity;
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = BackgroundColor;
+
+            _utility.ambientColor = new Color(0.32f, 0.32f, 0.35f);
+            _utility.lights[0].intensity = 1.1f;
+            _utility.lights[0].transform.rotation = Quaternion.Euler(35f, 35f, 0f);
+            _utility.lights[1].intensity = 0.45f;
+            _utility.lights[1].transform.rotation = Quaternion.Euler(-20f, -60f, 0f);
+
+            _cylinderMesh = Resources.GetBuiltinResource<Mesh>("Cylinder.fbx");
+            _sphereMesh = Resources.GetBuiltinResource<Mesh>("Sphere.fbx");
+
+            var shader = Shader.Find("Standard");
+            _attackerMaterial = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
+            _targetMaterial = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
+        }
+
+        /// <summary>
+        /// Цвет актора на кадре: цвет первой активной дорожки этого актора,
+        /// либо нейтральный, если активных нет. Порядок дорожек задаёт приоритет.
+        /// </summary>
+/// <summary>
+        /// Цвет тела на кадре: цвет первой активной дорожки состояния этого актора,
+        /// либо нейтральный. Attack и Movement цвет тела не задают: атаку показывает hitbox,
+        /// движение видно по положению. Порядок дорожек задаёт приоритет.
+        /// </summary>
+        private static Color ResolveColor(FrameDateMove move, Actor actor, int frame)
+        {
+            for (int i = 0; i < move.tracks.Count; i++)
+            {
+                var track = move.tracks[i];
+                if (track.actor != actor) continue;
+                if (track.role == TrackRole.Attack || track.role == TrackRole.Movement) continue;
+                if (track.IsActiveAt(frame)) return track.color;
+            }
+            return NeutralColor;
+        }
+
+public void Draw(Rect rect, FrameDateMove move, int frame)
+        {
+            // Сравнение "<" не ловит NaN: любое сравнение с NaN даёт false, поэтому
+            // нечисловой размер до первой раскладки IMGUIContainer проходил охрану
+            // и ронял BeginPreview на RenderTexture.Create. Проверяем от положительного.
+            if (!(rect.width >= 4f) || !(rect.height >= 4f)) return;
+
+            if (move == null)
+            {
+                EditorGUI.DrawRect(rect, BackgroundColor);
+                var hint = new GUIStyle(EditorStyles.centeredGreyMiniLabel) { wordWrap = true };
+                GUI.Label(rect, "Приём не выбран", hint);
+                return;
+            }
+
+            EnsureInitialised();
+
+            var sim = FrameDateSimulation.Run(move);
+            var attacker = sim.CenterAt(move, Actor.Attacker, frame);
+
+            _attackerMaterial.color = ResolveColor(move, Actor.Attacker, frame);
+            _targetMaterial.color = ResolveColor(move, Actor.Target, frame);
+            _hitMaterialsUsed = 0;
+
+            _utility.BeginPreview(rect, GUIStyle.none);
+
+            DrawCapsule(sim.HurtboxAt(move, Actor.Attacker, frame), 0f, _attackerMaterial);
+            DrawCapsule(sim.HurtboxAt(move, Actor.Target, frame), 0f, _targetMaterial);
+
+            // Hitbox каждой дорожки Attack виден всегда и стоит перед телами.
+            // Активный — цветом дорожки, на кадре контакта белый. Вне интервала — приглушённый,
+            // в форме ближайшего следующего интервала, а после последнего — последнего.
+            // Приглушённый hitbox в расчёте контакта не участвует. Пушбоксы не рисуются.
+            for (int t = 0; t < move.tracks.Count; t++)
+            {
+                var track = move.tracks[t];
+                if (track.role != TrackRole.Attack || track.actor != Actor.Attacker) continue;
+
+                bool active;
+                int s = PickShownSpan(track, frame, out active);
+                if (s < 0) continue;
+
+                Color color;
+                if (active)
+                {
+                    int c = sim.FindContact(t, s);
+                    color = c >= 0 && sim.contacts[c].frame == frame ? Color.white : track.color;
+                }
+                else
+                {
+                    color = Color.Lerp(track.color, BackgroundColor, 0.62f);
+                }
+
+                DrawCapsule(FrameDateSimulation.Hitbox(track.spans[s], attacker), -0.6f, NextHitMaterial(color));
+            }
+
+            _utility.camera.Render();
+            var texture = _utility.EndPreview();
+            GUI.DrawTexture(rect, texture, ScaleMode.StretchToFill, false);
+
+            DrawOverlay(rect, move, frame, sim);
+        }
+
+        /// <summary>
+        /// Какой интервал дорожки Attack показать на кадре: активный; иначе ближайший следующий;
+        /// иначе последний прошедший. −1 — у дорожки нет интервалов.
+        /// </summary>
+        private static int PickShownSpan(FrameTrack track, int frame, out bool active)
+        {
+            active = false;
+            int next = -1;
+            int previous = -1;
+            for (int s = 0; s < track.spans.Count; s++)
+            {
+                var span = track.spans[s];
+                if (span.Contains(frame))
+                {
+                    active = true;
+                    return s;
+                }
+                if (span.startFrame > frame && (next < 0 || span.startFrame < track.spans[next].startFrame)) next = s;
+                if (span.endFrame <= frame && (previous < 0 || span.endFrame > track.spans[previous].endFrame)) previous = s;
+            }
+            return next >= 0 ? next : previous;
+        }
+
+private void DrawCapsule(Capsule2D capsule, float z, Material material)
+        {
+            var a = new Vector3(capsule.a.x, capsule.a.y, z);
+            var b = new Vector3(capsule.b.x, capsule.b.y, z);
+            var ballScale = Vector3.one * capsule.radius;
+
+            _utility.DrawMesh(_sphereMesh, Matrix4x4.TRS(a, Quaternion.identity, ballScale), material, 0);
+            _utility.DrawMesh(_sphereMesh, Matrix4x4.TRS(b, Quaternion.identity, ballScale), material, 0);
+
+            var axis = b - a;
+            float length = axis.magnitude;
+            if (length < 1e-4f) return;
+
+            var rotation = Quaternion.FromToRotation(Vector3.up, axis / length);
+            var scale = new Vector3(capsule.radius, length * 0.5f, capsule.radius);
+            _utility.DrawMesh(_cylinderMesh, Matrix4x4.TRS((a + b) * 0.5f, rotation, scale), material, 0);
+        }
+
+        /// <summary>
+        /// Материал из пула на каждый hitbox кадра: DrawMesh только ставит вызов в очередь,
+        /// а рендер идёт позже, поэтому один общий материал с разными цветами не годится.
+        /// </summary>
+        private Material NextHitMaterial(Color color)
+        {
+            if (_hitMaterialsUsed == _hitMaterials.Count)
+                _hitMaterials.Add(new Material(Shader.Find("Standard")) { hideFlags = HideFlags.HideAndDontSave });
+            var material = _hitMaterials[_hitMaterialsUsed++];
+            material.color = color;
+            return material;
+        }
+
+        /// <summary>Подписи поверх картинки: кто где и какой кадр показан.</summary>
+/// <summary>Подписи поверх картинки: кадр, позиции, зазор тел и контакт.</summary>
+        private static void DrawOverlay(Rect rect, FrameDateMove move, int frame, FrameDateSimulation sim)
+        {
+            var label = new GUIStyle(EditorStyles.miniLabel)
+            {
+                normal = { textColor = new Color(0.85f, 0.85f, 0.88f) }
+            };
+
+            GUI.Label(new Rect(rect.x + 6f, rect.yMax - 18f, 120f, 16f), "Атакующий", label);
+
+            var right = new GUIStyle(label) { alignment = TextAnchor.MiddleRight };
+            GUI.Label(new Rect(rect.xMax - 126f, rect.yMax - 18f, 120f, 16f), "Цель", right);
+
+            var frameStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                normal = { textColor = new Color(0.92f, 0.92f, 0.95f) }
+            };
+            GUI.Label(
+                new Rect(rect.x + 6f, rect.y + 4f, 260f, 18f),
+                $"кадр {frame}   {move.FrameToSeconds(frame):0.###} с   {move.frameRate} FPS",
+                frameStyle);
+
+            if (sim.frameCount == 0) return;
+            int f = Mathf.Clamp(frame, 0, sim.frameCount - 1);
+
+            float xa = sim.attackerX[f];
+            float xt = sim.targetX[f];
+            float gap = (xt - sim.HurtboxAt(move, Actor.Target, f).radius) - (xa + sim.HurtboxAt(move, Actor.Attacker, f).radius);
+            string info = $"А x {xa:0.00}   Ц x {xt:0.00}   зазор тел {gap:0.00}";
+            if (sim.pushboxBlocked[f]) info += "   · пушбоксы упёрлись";
+            GUI.Label(new Rect(rect.x + 6f, rect.y + 22f, rect.width - 12f, 16f), info, label);
+
+            string contactLine = null;
+            for (int i = 0; i < sim.contacts.Count; i++)
+            {
+                var c = sim.contacts[i];
+                if (c.frame != f) continue;
+                var track = move.tracks[c.trackIndex];
+                var span = track.spans[c.spanIndex];
+                contactLine = $"КОНТАКТ · «{track.name}» [{span.startFrame},{span.endFrame}) · " +
+                              $"отталкивание {c.pushDistance:0.00} за {c.pushEndFrame - c.frame} кадр.";
+                break;
+            }
+
+            if (contactLine != null)
+            {
+                var hit = new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = new Color(1f, 0.85f, 0.35f) } };
+                GUI.Label(new Rect(rect.x + 6f, rect.y + 38f, rect.width - 12f, 18f), contactLine, hit);
+            }
+            else if (sim.contacts.Count > 0)
+            {
+                var frames = new System.Text.StringBuilder();
+                for (int i = 0; i < sim.contacts.Count; i++)
+                    frames.Append(i == 0 ? "" : ", ").Append(sim.contacts[i].frame);
+                GUI.Label(new Rect(rect.x + 6f, rect.y + 38f, rect.width - 12f, 16f), "контакты на кадрах: " + frames, label);
+            }
+            else
+            {
+                GUI.Label(new Rect(rect.x + 6f, rect.y + 38f, rect.width - 12f, 16f), "контактов нет", label);
+            }
+        }
+
+public void Dispose()
+        {
+            if (_utility != null)
+            {
+                _utility.Cleanup();
+                _utility = null;
+            }
+
+            if (_attackerMaterial != null) UnityEngine.Object.DestroyImmediate(_attackerMaterial);
+            if (_targetMaterial != null) UnityEngine.Object.DestroyImmediate(_targetMaterial);
+            _attackerMaterial = null;
+            _targetMaterial = null;
+
+            foreach (var material in _hitMaterials)
+                if (material != null) UnityEngine.Object.DestroyImmediate(material);
+            _hitMaterials.Clear();
+        }
+    }
+}
