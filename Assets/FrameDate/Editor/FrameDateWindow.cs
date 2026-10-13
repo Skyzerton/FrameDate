@@ -37,6 +37,8 @@ namespace FrameDate.EditorTools
         private IntegerField _spanStartField;
         private IntegerField _spanEndField;
         private Label _contactReadout;
+        private ObjectField _moveField;
+        private const string ShowSkeletonPref = "FrameDate.ShowSkeleton";
 private Label _frameReadout;
 
         [MenuItem("Tools/FrameDate")]
@@ -49,7 +51,7 @@ private Label _frameReadout;
 
         private void OnEnable()
         {
-            _preview = new FrameDatePreview();
+            _preview = new FrameDatePreview { ShowSkeleton = EditorPrefs.GetBool(ShowSkeletonPref, true) };
             EditorApplication.update += OnEditorUpdate;
             Undo.undoRedoPerformed += OnUndoRedo;
             _lastTime = EditorApplication.timeSinceStartup;
@@ -146,11 +148,16 @@ private Label _frameReadout;
                 value = _move
             };
             moveField.style.width = 320f;
+            _moveField = moveField;
             moveField.RegisterValueChangedCallback(evt => BindMove(evt.newValue as FrameDateMove));
             bar.Add(moveField);
 
             var create = new ToolbarButton(CreateMoveInteractive) { text = "Создать приём..." };
             bar.Add(create);
+
+            var import = new ToolbarButton(ImportPackageInteractive) { text = "Импорт из игры..." };
+            import.tooltip = "Пакет *.fdmove.json из экспортёра игры (SFA → FrameDate → Экспорт приёма в FrameDate).";
+            bar.Add(import);
 
             bar.Add(new ToolbarSpacer { style = { flexGrow = 1f } });
 
@@ -252,6 +259,8 @@ private void RebuildInspector()
                 RefreshAll();
             });
             _inspector.Add(duration);
+
+            if (_move.pose != null) AddSourceSection(_move.pose);
 
             _inspector.Add(Header("Метрики игры"));
             var metricsField = new ObjectField("Конфиг") { objectType = typeof(FrameDateMetrics), allowSceneObjects = false, value = _move.metrics };
@@ -542,6 +551,66 @@ private void RebuildInspector()
             var contact = sim.contacts[index];
             _contactReadout.text = $"Контакт на кадре {contact.frame}. " +
                                    $"Отталкивание цели [{contact.frame}, {contact.pushEndFrame}).";
+        }
+
+        /// <summary>Сведения о приёме, импортированном из игры, и показ скелета.</summary>
+        private void AddSourceSection(FrameDatePose pose)
+        {
+            _inspector.Add(Header("Источник: игра"));
+            var lines = new List<string> { $"{pose.frameCount} кадров @ {pose.frameRate} FPS · {pose.boneCount} костей" };
+            if (pose.segments != null && pose.segments.Count > 0)
+            {
+                for (int i = 0; i < pose.segments.Count; i++)
+                {
+                    var s = pose.segments[i];
+                    lines.Add($"Удар {i + 1}: {s.animation} — кадры [{s.seriesStart},{s.seriesStart + s.length})");
+                }
+            }
+            else
+            {
+                lines.Add($"{pose.sourceAnimation} · {pose.sourceAnimationFile}");
+            }
+            lines.AddRange(pose.sourceParts);
+            lines.Add($"Экспорт {pose.exportedAt}");
+            _inspector.Add(Hint(string.Join("\n", lines)));
+            var skeleton = new Toggle("Скелет") { value = _preview != null && _preview.ShowSkeleton };
+            skeleton.tooltip = "Скелет из анимации игры поверх капсул. Только показ: в расчёт не входит.";
+            skeleton.RegisterValueChangedCallback(evt =>
+            {
+                EditorPrefs.SetBool(ShowSkeletonPref, evt.newValue);
+                if (_preview != null) _preview.ShowSkeleton = evt.newValue;
+                _viewport?.MarkDirtyRepaint();
+            });
+            _inspector.Add(skeleton);
+        }
+
+        /// <summary>Открыть окно с приёмом — после импорта и из других инструментов.</summary>
+        public static void ShowMove(FrameDateMove move)
+        {
+            Open();
+            var window = GetWindow<FrameDateWindow>();
+            window._moveField?.SetValueWithoutNotify(move);
+            window.BindMove(move);
+        }
+
+        private void ImportPackageInteractive()
+        {
+            string folder = Path.GetFullPath(FrameDateMoveImporter.ImportedFolder);
+            string path = EditorUtility.OpenFilePanel("Пакет приёма из игры", Directory.Exists(folder) ? folder : Application.dataPath, "json");
+            if (string.IsNullOrEmpty(path)) return;
+            try
+            {
+                var result = FrameDateMoveImporter.Import(path);
+                ShowMove(result.move);
+                string report = string.Join("\n", result.notes);
+                Debug.Log($"FrameDate: импортирован «{result.move.moveName}»\n{report}");
+                EditorUtility.DisplayDialog("Импорт приёма", $"«{result.move.moveName}» импортирован.\n\n{report}", "OK");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                EditorUtility.DisplayDialog("Импорт приёма", "Не удалось импортировать: " + e.Message, "OK");
+            }
         }
 
         private static Label Header(string text)

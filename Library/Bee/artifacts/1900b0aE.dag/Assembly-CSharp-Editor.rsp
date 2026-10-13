@@ -437,6 +437,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Assets/FrameDate/Editor/FrameDateMoveImporter.cs"
 "Assets/FrameDate/Editor/FrameDatePreview.cs"
 "Assets/FrameDate/Editor/FrameDateTimelineView.cs"
 "Assets/FrameDate/Editor/FrameDateWindow.cs"

@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\FrameDate\Editor\FrameDateWindow.cs" />
+    <Compile Include="Assets\FrameDate\Editor\FrameDateMoveImporter.cs" />
     <Compile Include="Assets\FrameDate\Editor\FrameDatePreview.cs" />
     <Compile Include="Assets\FrameDate\Editor\FrameDateTimelineView.cs" />
   </ItemGroup>

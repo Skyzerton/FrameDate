@@ -156,6 +156,44 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
         }
 
         private const float CameraHeight = 0.1f;
+
+        /// <summary>Показывать импортированный скелет поверх капсул.</summary>
+        public bool ShowSkeleton = true;
+
+        private static readonly Color SkeletonColor = new Color(1f, 1f, 1f, 0.85f);
+
+        /// <summary>
+        /// Скелет атакующего линиями. Кости ставятся относительно motion-кости на тот же кадр и привязываются
+        /// к рассчитанному X атакующего (с продвижением и расталкиванием), ступни — к низу капсулы тела.
+        /// Персонаж в игре смотрит в −X, у нас атакующий смотрит в +X: отсюда forwardSign.
+        /// </summary>
+        private static void DrawSkeleton(FrameDateMove move, FrameDateSimulation sim, int f,
+            System.Func<float, float> sx, System.Func<float, float> sy)
+        {
+            var pose = move.pose;
+            int pf = Mathf.Clamp(f, 0, pose.frameCount - 1);
+            var motion = pose.Position(pf, pose.motionBone);
+            float groundY = move.attackerPosition.y - move.attackerBody.height * 0.5f;
+            float baseX = sim.attackerX[f];
+
+            var points = new Vector3[pose.boneCount];
+            for (int i = 0; i < pose.boneCount; i++)
+            {
+                var p = pose.Position(pf, i);
+                points[i] = new Vector3(sx(baseX + pose.forwardSign * (p.x - motion.x)), sy(groundY + p.y), 0f);
+            }
+
+            var old = Handles.color;
+            Handles.color = SkeletonColor;
+            for (int i = 0; i < pose.boneCount; i++)
+            {
+                int parent = pose.boneParents[i];
+                // Якорь и armature стоят в начале координат анимации, а не на теле: их связи не рисуем.
+                if (parent <= 1) continue;
+                Handles.DrawAAPolyLine(2.5f, points[parent], points[i]);
+            }
+            Handles.color = old;
+        }
         private static readonly Color WallColor = new Color(0.07f, 0.07f, 0.08f, 0.82f);
         private static readonly Color WallEdgeColor = new Color(0.62f, 0.64f, 0.70f, 0.9f);
         private static readonly Color CameraBorderColor = new Color(1f, 0.62f, 0.25f, 0.95f);
@@ -186,6 +224,10 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
                         GUI.Label(new Rect(px + 2f, groundY + 2f, 60f, 14f), x.ToString("0"), TickStyle);
                 }
             }
+
+            // Скелет из игры — поверх капсул, под стенами.
+            if (ShowSkeleton && move.pose != null && move.pose.IsValid && Event.current.type == EventType.Repaint)
+                DrawSkeleton(move, sim, f, sx, sy);
 
             // Стены: всё, что за ними, затемнено.
             float leftWall = sx(metrics.leftWallX);

@@ -421,6 +421,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.2.14f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
 "Assets/FrameDate/Runtime/FrameDateMetrics.cs"
 "Assets/FrameDate/Runtime/FrameDateMove.cs"
+"Assets/FrameDate/Runtime/FrameDatePose.cs"
 "Assets/FrameDate/Runtime/FrameDateSimulation.cs"
 -langversion:9.0
 /deterministic

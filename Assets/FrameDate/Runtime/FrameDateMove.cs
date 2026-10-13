@@ -184,6 +184,9 @@ namespace FrameDate
         [Tooltip("Метрики игры: единицы, арена, ширина Idle, камерные границы. Пусто — встроенные значения.")]
         public FrameDateMetrics metrics;
 
+        [Tooltip("Поза скелета атакующего, импортированная из игры. Только для показа: в расчёт не входит.")]
+        public FrameDatePose pose;
+
         public ActorBody attackerBody = new ActorBody();
         public ActorBody targetBody = new ActorBody();
 
