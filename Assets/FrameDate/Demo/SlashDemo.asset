@@ -15,16 +15,21 @@ MonoBehaviour:
   moveName: SlashDemo
   frameRate: 30
   durationFrames: 40
-  attackerPosition: {x: -1.1, y: 0}
-  targetPosition: {x: 1.1, y: 0}
+  attackerPosition: {x: -225, y: 0}
+  targetPosition: {x: 225, y: 0}
+  metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
   attackerBody:
-    radius: 0.3
-    height: 1.8
-    pushHalfWidth: 0.25
+    radius: 30.000002
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
   targetBody:
-    radius: 0.3
-    height: 1.8
-    pushHalfWidth: 0.25
+    radius: 30.000002
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
   tracks:
   - name: Attack
     color: {r: 1, g: 0.35, b: 0.3, a: 1}
@@ -33,23 +38,23 @@ MonoBehaviour:
     spans:
     - startFrame: 12
       endFrame: 16
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
-    - startFrame: 22
-      endFrame: 26
-      distance: 0.5
+    - startFrame: 23
+      endFrame: 27
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -58,25 +63,25 @@ MonoBehaviour:
     actor: 0
     role: 8
     spans:
-    - startFrame: 6
+    - startFrame: 2
       endFrame: 13
-      distance: 1.1
+      distance: 200
       profile: 2
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 18
-      endFrame: 24
-      distance: 0.45
+      endFrame: 27
+      distance: 150
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -87,12 +92,12 @@ MonoBehaviour:
     spans:
     - startFrame: 0
       endFrame: 30
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -103,12 +108,12 @@ MonoBehaviour:
     spans:
     - startFrame: 30
       endFrame: 37
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -119,23 +124,12 @@ MonoBehaviour:
     spans:
     - startFrame: 30
       endFrame: 36
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
-      pushFrames: 6
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 18
-      endFrame: 19
-      distance: 0.5
-      profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -146,12 +140,12 @@ MonoBehaviour:
     spans:
     - startFrame: 0
       endFrame: 40
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -162,12 +156,12 @@ MonoBehaviour:
     spans:
     - startFrame: 0
       endFrame: 40
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -178,12 +172,12 @@ MonoBehaviour:
     spans:
     - startFrame: 22
       endFrame: 23
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
@@ -194,12 +188,12 @@ MonoBehaviour:
     spans:
     - startFrame: 14
       endFrame: 23
-      distance: 0.5
+      distance: 50
       profile: 0
-      hitOffset: {x: 0.2, y: 0.25}
-      hitLength: 0.55
-      hitRadius: 0.12
-      pushDistance: 0.3
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
       pushFrames: 6
       hurtHeightScale: 0.6
       hurtRadiusScale: 1

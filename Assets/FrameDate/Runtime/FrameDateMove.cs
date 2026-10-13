@@ -64,14 +64,20 @@ namespace FrameDate
     [Serializable]
     public class ActorBody
     {
-        [Tooltip("Радиус капсулы тела (hurtbox).")]
-        public float radius = 0.3f;
+        [Tooltip("Радиус капсулы тела (hurtbox), Units.")]
+        public float radius = 30f;
 
-        [Tooltip("Полная высота капсулы тела (hurtbox). Не меньше двух радиусов.")]
-        public float height = 1.8f;
+        [Tooltip("Полная высота капсулы тела (hurtbox), Units. Не меньше двух радиусов.")]
+        public float height = 180f;
 
-        [Tooltip("Полуширина пушбокса по X. Во вьюпорте не рисуется.")]
-        public float pushHalfWidth = 0.25f;
+        [Tooltip("Своя ширина пушбокса вместо ширины Idle из конфига метрик.")]
+        public bool overridePushWidth;
+
+        [Tooltip("Полная ширина пушбокса по X, Units. Действует, только если включена своя ширина. Во вьюпорте не рисуется.")]
+        public float pushWidth = 60f;
+
+        [Tooltip("Масса при взаимном расталкивании: перекрытие пушбоксов делится обратно пропорционально массам. В игре стоя 1, лёжа 5.")]
+        public float mass = 1f;
     }
 
     /// <summary>Интервал кадров [startFrame, endFrame): начало включено, конец исключён.</summary>
@@ -83,23 +89,23 @@ namespace FrameDate
 
         // --- Movement ---
         [Tooltip("Расстояние за интервал. Плюс — вперёд, к противнику; минус — назад.")]
-        public float distance = 0.5f;
+        public float distance = 50f;
 
         [Tooltip("Как расстояние распределяется внутри интервала.")]
         public MoveProfile profile = MoveProfile.Linear;
 
         // --- Attack ---
         [Tooltip("Начало оси hitbox относительно центра тела атакующего. X — вперёд.")]
-        public Vector2 hitOffset = new Vector2(0.2f, 0.25f);
+        public Vector2 hitOffset = new Vector2(20f, 25f);
 
         [Tooltip("Длина оси hitbox вперёд. 0 — шар.")]
-        public float hitLength = 0.55f;
+        public float hitLength = 55f;
 
         [Tooltip("Радиус капсулы hitbox.")]
-        public float hitRadius = 0.12f;
+        public float hitRadius = 12f;
 
         [Tooltip("На сколько отталкивается цель при контакте.")]
-        public float pushDistance = 0.3f;
+        public float pushDistance = 30f;
 
         [Tooltip("За сколько кадров проходит отталкивание, начиная с кадра контакта.")]
         public int pushFrames = 6;
@@ -170,10 +176,13 @@ namespace FrameDate
         public int durationFrames = 40;
 
         [Tooltip("Позиция атакующего в рабочей плоскости X/Y.")]
-        public Vector2 attackerPosition = new Vector2(-1.1f, 0f);
+        public Vector2 attackerPosition = new Vector2(-139.5f, 0f);
 
         [Tooltip("Позиция цели в рабочей плоскости X/Y.")]
-        public Vector2 targetPosition = new Vector2(1.1f, 0f);
+        public Vector2 targetPosition = new Vector2(139.5f, 0f);
+
+        [Tooltip("Метрики игры: единицы, арена, ширина Idle, камерные границы. Пусто — встроенные значения.")]
+        public FrameDateMetrics metrics;
 
         public ActorBody attackerBody = new ActorBody();
         public ActorBody targetBody = new ActorBody();
@@ -186,7 +195,23 @@ namespace FrameDate
 
         public ActorBody Body(Actor actor) => actor == Actor.Attacker ? attackerBody : targetBody;
 
+        /// <summary>
+        /// «Техническая» дорожка описывает геометрию — движение и форму тела, а не интервалы состояний приёма.
+        /// На таймлайне такие дорожки живут в отдельной группе «Техника».
+        /// </summary>
+        public static bool IsTechnicalRole(TrackRole role) => role == TrackRole.Movement || role == TrackRole.Hurtbox;
+
         public Vector2 StartPosition(Actor actor) => actor == Actor.Attacker ? attackerPosition : targetPosition;
+
+        /// <summary>Назначенный конфиг метрик либо встроенные значения.</summary>
+        public FrameDateMetrics Metrics => metrics != null ? metrics : FrameDateMetrics.Fallback;
+
+        /// <summary>Полуширина пушбокса актора: своя, если включена, иначе ширина Idle из метрик.</summary>
+        public float PushHalfWidth(Actor actor)
+        {
+            var body = Body(actor);
+            return 0.5f * (body.overridePushWidth ? body.pushWidth : Metrics.idleBodyWidth);
+        }
 
         /// <summary>
         /// Список проблем конфигурации. Пустой список означает, что всё корректно.
@@ -207,6 +232,13 @@ namespace FrameDate
 
             ValidateBody(problems, "Атакующий", attackerBody);
             ValidateBody(problems, "Цель", targetBody);
+
+            var m = Metrics;
+            problems.AddRange(m.Validate());
+            if (attackerPosition.x < m.leftWallX || attackerPosition.x > m.rightWallX)
+                problems.Add($"Атакующий стартует за стеной: X {attackerPosition.x} вне арены [{m.leftWallX}, {m.rightWallX}].");
+            if (targetPosition.x < m.leftWallX || targetPosition.x > m.rightWallX)
+                problems.Add($"Цель стартует за стеной: X {targetPosition.x} вне арены [{m.leftWallX}, {m.rightWallX}].");
 
             for (int t = 0; t < tracks.Count; t++)
             {
@@ -281,8 +313,10 @@ namespace FrameDate
                 problems.Add($"{who}: радиус тела {body.radius} должен быть больше нуля.");
             if (!(body.height >= 2f * body.radius))
                 problems.Add($"{who}: высота тела {body.height} меньше двух радиусов ({2f * body.radius}).");
-            if (!(body.pushHalfWidth > 0f))
-                problems.Add($"{who}: полуширина пушбокса {body.pushHalfWidth} должна быть больше нуля.");
+            if (body.overridePushWidth && !(body.pushWidth > 0f))
+                problems.Add($"{who}: своя ширина пушбокса {body.pushWidth} должна быть больше нуля.");
+            if (!(body.mass > 0f))
+                problems.Add($"{who}: масса {body.mass} должна быть больше нуля.");
         }
 
         /// <summary>

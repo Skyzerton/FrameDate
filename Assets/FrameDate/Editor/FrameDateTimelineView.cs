@@ -21,11 +21,32 @@ namespace FrameDate.EditorTools
         private const float RightPad = 14f;
         private const float EdgeGrab = 6f;
 
-        private enum DragMode { None, Scrub, MoveSpan, ResizeStart, ResizeEnd, CreateSpan }
+        private enum DragMode { None, Scrub, MoveSpan, ResizeStart, ResizeEnd, CreateSpan, AddTrack, SelectTrack, DeleteTrack }
+
+        // Раскладка: разделы по акторам, в каждом группы «Интервалы» и «Техника».
+        private enum RowKind { Section, Group, Track, Derived }
+
+        private struct LayoutRow
+        {
+            public RowKind kind;
+            public float y;
+            public float height;
+            public Actor actor;
+            public bool technical;
+            public int trackIndex;
+        }
+
+        public const float SectionHeight = 22f;
+        public const float GroupHeight = 18f;
+        private const float PlusWidth = 22f;
+
+        private static readonly Color AttackerAccent = new Color(1.00f, 0.50f, 0.40f);
+        private static readonly Color TargetAccent = new Color(0.40f, 0.85f, 0.75f);
 
         private const string StyleSheetPath = "Assets/FrameDate/Editor/FrameDateTimeline.uss";
         public const string CursorResizeClass = "fd-cursor-resize";
         public const string CursorMoveClass = "fd-cursor-move";
+        public const string CursorLinkClass = "fd-cursor-link";
 
         private FrameDateMove _move;
         private int _currentFrame;
@@ -43,6 +64,10 @@ namespace FrameDate.EditorTools
         public event Action<int> FrameScrubbed;
         public event Action DataChanged;
         public event Action SelectionChanged;
+        /// <summary>Нажат «+» в заголовке группы: актор и техническая ли группа.</summary>
+        public event Action<Actor, bool> AddTrackRequested;
+        /// <summary>Нажат «×» у дорожки: индекс дорожки в данных.</summary>
+        public event Action<int> DeleteTrackRequested;
 
         public FrameDateTimelineView()
         {
@@ -125,27 +150,84 @@ namespace FrameDate.EditorTools
         private int XToFrame(float x) =>
             Mathf.Clamp(Mathf.RoundToInt((x - GutterWidth) / PxPerFrame), 0, (int)Duration);
 
+/// <summary>
+        /// Раскладка строк сверху вниз: Атакующий → Интервалы, Техника; Цель → Интервалы, Техника
+        /// и под ней вычисленное отталкивание. Внутри группы — порядок дорожек в данных.
+        /// Группа дорожки определяется её актором и ролью, поэтому смена роли или актора
+        /// сама переносит дорожку. Возвращает новый список: безопасно вызывать внутри обхода.
+        /// </summary>
+        private List<LayoutRow> Layout()
+        {
+            var rows = new List<LayoutRow>();
+            if (_move == null) return rows;
+
+            float y = RulerHeight;
+            for (int a = 0; a < 2; a++)
+            {
+                var actor = a == 0 ? Actor.Attacker : Actor.Target;
+                y = AddRow(rows, RowKind.Section, y, SectionHeight, actor, false, -1);
+
+                for (int g = 0; g < 2; g++)
+                {
+                    bool technical = g == 1;
+                    y = AddRow(rows, RowKind.Group, y, GroupHeight, actor, technical, -1);
+
+                    for (int t = 0; t < _move.tracks.Count; t++)
+                    {
+                        var track = _move.tracks[t];
+                        if (track.actor != actor || FrameDateMove.IsTechnicalRole(track.role) != technical) continue;
+                        y = AddRow(rows, RowKind.Track, y, RowHeight, actor, technical, t);
+                    }
+
+                    if (actor == Actor.Target && technical)
+                        y = AddRow(rows, RowKind.Derived, y, RowHeight, actor, true, -1);
+                }
+            }
+            return rows;
+        }
+
+        private static float AddRow(List<LayoutRow> rows, RowKind kind, float y, float height, Actor actor, bool technical, int trackIndex)
+        {
+            rows.Add(new LayoutRow { kind = kind, y = y, height = height, actor = actor, technical = technical, trackIndex = trackIndex });
+            return y + height + RowGap;
+        }
+
+        private float TimelineWidth => Mathf.Max(0f, contentRect.width - GutterWidth - RightPad);
+
+        private static Rect TimelineRect(LayoutRow row, float width) => new Rect(GutterWidth, row.y, width, row.height);
+
         private Rect RowRect(int trackIndex)
         {
-            float y = RulerHeight + trackIndex * (RowHeight + RowGap);
-            return new Rect(GutterWidth, y, Mathf.Max(0f, contentRect.width - GutterWidth - RightPad), RowHeight);
+            foreach (var row in Layout())
+                if (row.kind == RowKind.Track && row.trackIndex == trackIndex)
+                    return TimelineRect(row, TimelineWidth);
+            return new Rect(GutterWidth, -1000f, TimelineWidth, RowHeight);
         }
 
-        private int RowAt(float y)
+        private bool RowInfoAt(float y, out LayoutRow found)
         {
-            if (_move == null || y < RulerHeight) return -1;
-            int index = Mathf.FloorToInt((y - RulerHeight) / (RowHeight + RowGap));
-            return index >= 0 && index < _move.tracks.Count ? index : -1;
+            foreach (var row in Layout())
+            {
+                if (y >= row.y && y < row.y + row.height)
+                {
+                    found = row;
+                    return true;
+                }
+            }
+            found = default(LayoutRow);
+            return false;
         }
 
-        /// <summary>
-        /// Строк на таймлайне: дорожки плюс одна вычисленная строка «Отталкивание» под ними.
-        /// Вычисленная строка не попадает в RowAt, поэтому hit-test её не видит и мышью она не правится.
-        /// </summary>
-        private int RowCount => _move == null ? 0 : _move.tracks.Count + 1;
+private int RowAt(float y)
+        {
+            LayoutRow row;
+            return RowInfoAt(y, out row) && row.kind == RowKind.Track ? row.trackIndex : -1;
+        }
 
-        public float PreferredHeight =>
-            RulerHeight + RowCount * (RowHeight + RowGap) + 10f;
+        private static float BottomOf(List<LayoutRow> rows) =>
+            rows.Count == 0 ? RulerHeight : rows[rows.Count - 1].y + rows[rows.Count - 1].height;
+
+        public float PreferredHeight => BottomOf(Layout()) + 12f;
 
         // ------------------------------------------------------------------
         // Подписи
@@ -160,41 +242,68 @@ private void RebuildLabels()
 
             if (_move == null || contentRect.width <= 0f) return;
 
-            for (int i = 0; i < _move.tracks.Count; i++)
+            var layout = Layout();
+            for (int i = 0; i < layout.Count; i++)
             {
-                var track = _move.tracks[i];
-                var row = RowRect(i);
-
-                var label = new Label($"{(track.actor == Actor.Attacker ? "А" : "Ц")}  {track.name}")
+                var row = layout[i];
+                switch (row.kind)
                 {
-                    tooltip = $"{(track.actor == Actor.Attacker ? "Атакующий" : "Цель")} · роль: {RoleLabel(track.role)}"
-                };
-                label.style.position = Position.Absolute;
-                label.style.left = 8f;
-                label.style.top = row.y + 3f;
-                label.style.width = GutterWidth - 16f;
-                label.style.fontSize = 11;
-                label.style.overflow = Overflow.Hidden;
-                label.style.color = track.color;
-                label.pickingMode = PickingMode.Ignore;
-                Add(label);
-                _trackLabels.Add(label);
-            }
+                    case RowKind.Section:
+                    {
+                        var label = GutterLabel(row.actor == Actor.Attacker ? "АТАКУЮЩИЙ" : "ЦЕЛЬ", row, 10f, 3f, 11);
+                        label.style.unityFontStyleAndWeight = FontStyle.Bold;
+                        label.style.color = row.actor == Actor.Attacker ? AttackerAccent : TargetAccent;
+                        break;
+                    }
 
-            {
-                var row = RowRect(_move.tracks.Count);
-                var label = new Label("Ц  Отталкивание · расчёт");
-                label.style.position = Position.Absolute;
-                label.style.left = 8f;
-                label.style.top = row.y + 3f;
-                label.style.width = GutterWidth - 16f;
-                label.style.fontSize = 11;
-                label.style.overflow = Overflow.Hidden;
-                label.style.unityFontStyleAndWeight = FontStyle.Italic;
-                label.style.color = DerivedColor;
-                label.pickingMode = PickingMode.Ignore;
-                Add(label);
-                _trackLabels.Add(label);
+                    case RowKind.Group:
+                    {
+                        var label = GutterLabel(row.technical ? "Техника" : "Интервалы", row, 16f, 1f, 10);
+                        label.style.color = new Color(0.70f, 0.70f, 0.74f);
+
+                        var plus = GutterLabel("+", row, GutterWidth - PlusWidth, 0f, 13);
+                        plus.style.width = PlusWidth;
+                        plus.style.unityTextAlign = TextAnchor.MiddleCenter;
+                        plus.style.color = new Color(0.85f, 0.85f, 0.88f);
+
+                        // Пустая группа подсказывает, как её наполнить.
+                        bool empty = i + 1 >= layout.Count ||
+                                     (layout[i + 1].kind != RowKind.Track && layout[i + 1].kind != RowKind.Derived);
+                        if (empty)
+                        {
+                            var hint = GutterLabel(row.technical
+                                    ? "нет дорожек · «+» добавит Movement; Hurtbox — сменой роли"
+                                    : "нет дорожек · «+» слева добавит",
+                                row, GutterWidth + 6f, 1f, 10);
+                            hint.style.width = Mathf.Max(0f, TimelineWidth - 12f);
+                            hint.style.color = new Color(0.50f, 0.50f, 0.54f);
+                        }
+                        break;
+                    }
+
+                    case RowKind.Track:
+                    {
+                        var track = _move.tracks[row.trackIndex];
+                        var label = GutterLabel(track.name, row, 24f, 3f, 11);
+                        label.style.width = GutterWidth - PlusWidth - 24f;
+                        label.style.color = track.color;
+                        label.tooltip = "Роль: " + RoleLabel(track.role);
+
+                        var cross = GutterLabel("×", row, GutterWidth - PlusWidth, 0f, 13);
+                        cross.style.width = PlusWidth;
+                        cross.style.unityTextAlign = TextAnchor.MiddleCenter;
+                        cross.style.color = new Color(0.62f, 0.62f, 0.66f);
+                        break;
+                    }
+
+                    case RowKind.Derived:
+                    {
+                        var label = GutterLabel("Отталкивание · расчёт", row, 24f, 3f, 11);
+                        label.style.unityFontStyleAndWeight = FontStyle.Italic;
+                        label.style.color = DerivedColor;
+                        break;
+                    }
+                }
             }
 
             int step = ChooseRulerStep();
@@ -210,6 +319,26 @@ private void RebuildLabels()
                 Add(label);
                 _rulerLabels.Add(label);
             }
+        }
+
+        /// <summary>Подпись строки раскладки. PickingMode.Ignore — курсоры и клики проходят к таймлайну.</summary>
+        private Label GutterLabel(string text, LayoutRow row, float left, float topPad, int fontSize)
+        {
+            var label = new Label(text);
+            label.style.position = Position.Absolute;
+            label.style.left = left;
+            label.style.top = row.y + topPad;
+            label.style.height = row.height - topPad;
+            label.style.width = GutterWidth - left - 4f;
+            label.style.fontSize = fontSize;
+            label.style.overflow = Overflow.Hidden;
+            label.style.unityTextAlign = TextAnchor.MiddleLeft;
+            label.style.paddingTop = 0f;
+            label.style.paddingBottom = 0f;
+            label.pickingMode = PickingMode.Ignore;
+            Add(label);
+            _trackLabels.Add(label);
+            return label;
         }
 
         private static readonly Color DerivedColor = new Color(0.95f, 0.62f, 0.40f);
@@ -233,7 +362,9 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
 
             var painter = context.painter2D;
             float width = contentRect.width;
-            float bottom = RulerHeight + RowCount * (RowHeight + RowGap);
+            float timelineWidth = TimelineWidth;
+            var layout = Layout();
+            float bottom = BottomOf(layout);
 
             FillRect(painter, new Rect(0f, 0f, width, RulerHeight), new Color(0.19f, 0.20f, 0.22f));
             FillRect(painter, new Rect(0f, RulerHeight, GutterWidth, bottom - RulerHeight), new Color(0.17f, 0.18f, 0.20f));
@@ -252,36 +383,72 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
                     FillRect(painter, new Rect(x, RulerHeight, 1f, bottom - RulerHeight), new Color(1f, 1f, 1f, 0.05f));
             }
 
-            for (int i = 0; i < _move.tracks.Count; i++)
+            var derivedRow = new Rect(GutterWidth, -1000f, timelineWidth, RowHeight);
+            int stripe = 0;
+
+            foreach (var row in layout)
             {
-                var track = _move.tracks[i];
-                var row = RowRect(i);
-
-                FillRect(painter, row, i % 2 == 0
-                    ? new Color(0.22f, 0.23f, 0.25f)
-                    : new Color(0.20f, 0.21f, 0.23f));
-
-                for (int s = 0; s < track.spans.Count; s++)
+                switch (row.kind)
                 {
-                    var span = track.spans[s];
-                    float x0 = FrameToX(span.startFrame);
-                    float x1 = FrameToX(span.endFrame);
-                    var rect = new Rect(x0, row.y + 2f, Mathf.Max(2f, x1 - x0), row.height - 4f);
+                    case RowKind.Section:
+                        FillRect(painter, new Rect(0f, row.y, width, row.height), new Color(0.12f, 0.13f, 0.15f));
+                        FillRect(painter, new Rect(0f, row.y, 4f, row.height),
+                            row.actor == Actor.Attacker ? AttackerAccent : TargetAccent);
+                        break;
 
-                    bool active = span.Contains(_currentFrame);
-                    var fill = track.color;
-                    fill.a = active ? 0.95f : 0.62f;
-                    FillRect(painter, rect, fill);
+                    case RowKind.Group:
+                        stripe = 0;
+                        FillRect(painter, new Rect(0f, row.y, width, row.height), new Color(0.155f, 0.16f, 0.18f));
+                        FillRect(painter, new Rect(0f, row.y, 4f, row.height),
+                            (row.actor == Actor.Attacker ? AttackerAccent : TargetAccent) * new Color(1f, 1f, 1f, 0.45f));
+                        FillRect(painter, new Rect(GutterWidth - PlusWidth + 3f, row.y + 2f, PlusWidth - 6f, row.height - 4f),
+                            new Color(0.27f, 0.28f, 0.31f));
+                        break;
 
-                    bool selected = i == SelectedTrack && s == SelectedSpan;
-                    if (selected) StrokeRect(painter, rect, Color.white, 2f);
+                    case RowKind.Derived:
+                        derivedRow = TimelineRect(row, timelineWidth);
+                        FillRect(painter, derivedRow, new Color(0.17f, 0.17f, 0.19f));
+                        break;
 
-                    // Захваты границ показываются только у выделенного интервала,
-                    // чтобы не зашумлять дорожку.
-                    if (selected)
+                    case RowKind.Track:
                     {
-                        FillRect(painter, new Rect(rect.x, rect.y, 2f, rect.height), Color.white);
-                        FillRect(painter, new Rect(rect.xMax - 2f, rect.y, 2f, rect.height), Color.white);
+                        int i = row.trackIndex;
+                        var track = _move.tracks[i];
+                        var rowRect = TimelineRect(row, timelineWidth);
+
+                        // Выделенная дорожка подсвечивается в левой колонке и тонкой рамкой по строке.
+                        if (i == SelectedTrack)
+                        {
+                            FillRect(painter, new Rect(4f, row.y, GutterWidth - 4f, row.height), new Color(0.30f, 0.33f, 0.40f));
+                            FillRect(painter, new Rect(4f, row.y, 3f, row.height), track.color);
+                        }
+
+                        FillRect(painter, rowRect, stripe++ % 2 == 0
+                            ? new Color(0.22f, 0.23f, 0.25f)
+                            : new Color(0.20f, 0.21f, 0.23f));
+
+                        for (int s = 0; s < track.spans.Count; s++)
+                        {
+                            var span = track.spans[s];
+                            float x0 = FrameToX(span.startFrame);
+                            float x1 = FrameToX(span.endFrame);
+                            var rect = new Rect(x0, rowRect.y + 2f, Mathf.Max(2f, x1 - x0), rowRect.height - 4f);
+
+                            bool active = span.Contains(_currentFrame);
+                            var fill = track.color;
+                            fill.a = active ? 0.95f : 0.62f;
+                            FillRect(painter, rect, fill);
+
+                            bool selected = i == SelectedTrack && s == SelectedSpan;
+                            if (selected)
+                            {
+                                StrokeRect(painter, rect, Color.white, 2f);
+                                // Захваты границ показываются только у выделенного интервала.
+                                FillRect(painter, new Rect(rect.x, rect.y, 2f, rect.height), Color.white);
+                                FillRect(painter, new Rect(rect.xMax - 2f, rect.y, 2f, rect.height), Color.white);
+                            }
+                        }
+                        break;
                     }
                 }
             }
@@ -289,20 +456,29 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
             // Вычисленное: контакты и отталкивание. Считается заново на каждую перерисовку,
             // поэтому при протяжке интервалов следует за данными без отдельной синхронизации.
             var sim = FrameDateSimulation.Run(_move);
-            var derivedRow = RowRect(_move.tracks.Count);
-            FillRect(painter, derivedRow, new Color(0.17f, 0.17f, 0.19f));
-
             for (int c = 0; c < sim.contacts.Count; c++)
             {
                 var contact = sim.contacts[c];
 
                 // Кадр контакта — ячейка [K, K+1) на интервале Attack, белая рамка и полоса снизу.
-                var attackRow = RowRect(contact.trackIndex);
-                float cx0 = FrameToX(contact.frame);
-                float cx1 = FrameToX(contact.frame + 1);
-                var cell = new Rect(cx0, attackRow.y + 2f, Mathf.Max(2f, cx1 - cx0), attackRow.height - 4f);
-                StrokeRect(painter, cell, Color.white, 2f);
-                FillRect(painter, new Rect(cell.x, cell.yMax - 4f, cell.width, 4f), Color.white);
+                Rect attackRow = derivedRow;
+                bool found = false;
+                foreach (var row in layout)
+                {
+                    if (row.kind != RowKind.Track || row.trackIndex != contact.trackIndex) continue;
+                    attackRow = TimelineRect(row, timelineWidth);
+                    found = true;
+                    break;
+                }
+
+                if (found)
+                {
+                    float cx0 = FrameToX(contact.frame);
+                    float cx1 = FrameToX(contact.frame + 1);
+                    var cell = new Rect(cx0, attackRow.y + 2f, Mathf.Max(2f, cx1 - cx0), attackRow.height - 4f);
+                    StrokeRect(painter, cell, Color.white, 2f);
+                    FillRect(painter, new Rect(cell.x, cell.yMax - 4f, cell.width, 4f), Color.white);
+                }
 
                 float px0 = FrameToX(contact.frame);
                 float px1 = FrameToX(Mathf.Min(contact.pushEndFrame, (int)Duration));
@@ -316,6 +492,15 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
             }
 
             float playheadX = FrameToX(_currentFrame);
+            if (SelectedTrack >= 0)
+            {
+                foreach (var row in layout)
+                {
+                    if (row.kind != RowKind.Track || row.trackIndex != SelectedTrack) continue;
+                    StrokeRect(painter, TimelineRect(row, timelineWidth), new Color(0.75f, 0.80f, 0.95f, 0.55f), 1f);
+                }
+            }
+
             FillRect(painter, new Rect(playheadX - 1f, 0f, 2f, bottom), new Color(1f, 0.92f, 0.3f, 0.95f));
             FillRect(painter, new Rect(playheadX - 5f, 0f, 10f, 5f), new Color(1f, 0.92f, 0.3f));
         }
@@ -354,16 +539,39 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
         /// поэтому курсор никогда не обещает не то, что сделает клик.
         /// None — мимо всех строк; Scrub — линейка; CreateSpan — пустое место дорожки.
         /// </summary>
+/// <summary>
+        /// Единственный hit-test таймлайна. Его используют и клик, и наведение,
+        /// поэтому курсор никогда не обещает не то, что сделает клик.
+        /// None — заголовок раздела, вычисленная строка или зазор; Scrub — линейка;
+        /// AddTrack — «+» в заголовке группы; CreateSpan — пустое место дорожки.
+        /// </summary>
         private DragMode HitTest(Vector2 local, out int row, out int span)
+        {
+            LayoutRow info;
+            return HitTest(local, out row, out span, out info);
+        }
+
+        private DragMode HitTest(Vector2 local, out int row, out int span, out LayoutRow info)
         {
             row = -1;
             span = -1;
+            info = default(LayoutRow);
             if (_move == null) return DragMode.None;
             if (local.y < RulerHeight) return DragMode.Scrub;
 
-            row = RowAt(local.y);
-            if (row < 0) return DragMode.None;
+            if (!RowInfoAt(local.y, out info)) return DragMode.None;
 
+            if (info.kind == RowKind.Group)
+                return local.x >= GutterWidth - PlusWidth && local.x < GutterWidth ? DragMode.AddTrack : DragMode.None;
+
+            if (info.kind != RowKind.Track) return DragMode.None;
+
+            row = info.trackIndex;
+
+            // Левая колонка дорожки — выбор дорожки, «×» справа в ней — удаление.
+            // Интервалы здесь не создаются: клик по имени раньше заводил интервал на кадре 0.
+            if (local.x < GutterWidth)
+                return local.x >= GutterWidth - PlusWidth ? DragMode.DeleteTrack : DragMode.SelectTrack;
             var track = _move.tracks[row];
             for (int s = 0; s < track.spans.Count; s++)
             {
@@ -381,7 +589,7 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
             return DragMode.CreateSpan;
         }
 
-        private static string CursorClassFor(DragMode mode)
+private static string CursorClassFor(DragMode mode)
         {
             switch (mode)
             {
@@ -390,15 +598,19 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
                     return CursorResizeClass;
                 case DragMode.MoveSpan:
                     return CursorMoveClass;
+                case DragMode.AddTrack:
+                case DragMode.DeleteTrack:
+                    return CursorLinkClass;
                 default:
                     return null;
             }
         }
 
-        private void SetCursorClass(string cursorClass)
+private void SetCursorClass(string cursorClass)
         {
             EnableInClassList(CursorResizeClass, cursorClass == CursorResizeClass);
             EnableInClassList(CursorMoveClass, cursorClass == CursorMoveClass);
+            EnableInClassList(CursorLinkClass, cursorClass == CursorLinkClass);
         }
 
         private void UpdateHoverCursor(Vector2 local)
@@ -414,11 +626,27 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
 
             var local = (Vector2)evt.localPosition;
             int row, s;
-            var hit = HitTest(local, out row, out s);
+            LayoutRow info;
+            var hit = HitTest(local, out row, out s, out info);
 
             switch (hit)
             {
                 case DragMode.None:
+                    return;
+
+                case DragMode.AddTrack:
+                    AddTrackRequested?.Invoke(info.actor, info.technical);
+                    evt.StopPropagation();
+                    return;
+
+                case DragMode.SelectTrack:
+                    Select(row, -1);
+                    evt.StopPropagation();
+                    return;
+
+                case DragMode.DeleteTrack:
+                    DeleteTrackRequested?.Invoke(row);
+                    evt.StopPropagation();
                     return;
 
                 case DragMode.Scrub:

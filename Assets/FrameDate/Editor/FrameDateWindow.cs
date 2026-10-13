@@ -93,7 +93,7 @@ private Label _frameReadout;
 
             _timelineScroll = new ScrollView(ScrollViewMode.Vertical);
             _timelineScroll.style.minHeight = 150f;
-            _timelineScroll.style.maxHeight = 320f;
+            _timelineScroll.style.maxHeight = 420f;
 
             _timeline = new FrameDateTimelineView();
             _timeline.FrameScrubbed += frame =>
@@ -104,6 +104,8 @@ private Label _frameReadout;
             };
             _timeline.DataChanged += () => { SyncSpanFields(); RefreshProblems(); _viewport.MarkDirtyRepaint(); };
             _timeline.SelectionChanged += RebuildInspector;
+            _timeline.AddTrackRequested += AddTrack;
+            _timeline.DeleteTrackRequested += DeleteTrack;
             _timelineScroll.Add(_timeline);
             left.Add(_timelineScroll);
 
@@ -251,6 +253,33 @@ private void RebuildInspector()
             });
             _inspector.Add(duration);
 
+            _inspector.Add(Header("Метрики игры"));
+            var metricsField = new ObjectField("Конфиг") { objectType = typeof(FrameDateMetrics), allowSceneObjects = false, value = _move.metrics };
+            metricsField.tooltip = "Единицы, арена, ширина Idle и камерные границы игры. Пусто — встроенные значения.";
+            metricsField.RegisterValueChangedCallback(evt =>
+            {
+                Edit("FrameDate: конфиг метрик", () => _move.metrics = evt.newValue as FrameDateMetrics);
+                _inspector.schedule.Execute(RebuildInspector);
+            });
+            _inspector.Add(metricsField);
+
+            var metrics = _move.Metrics;
+            _inspector.Add(Hint($"Все длины — в Units игры: 1 Unit = 1 см, {metrics.unitsPerMeter:0.#} Units = 1 м. " +
+                                $"Арена {metrics.leftWallX:0.#} … {metrics.rightWallX:0.#} ({metrics.ArenaWidth:0.#}), " +
+                                $"старт {metrics.startDistance:0.#}, ширина Idle {metrics.idleBodyWidth:0.#}, " +
+                                $"порог {metrics.maxDistanceThreshold:0.#} → предел {metrics.MaxCenterDistance:0.#}."));
+
+            var startButton = new Button(() => Edit("FrameDate: стартовая дистанция", () =>
+            {
+                float half = _move.Metrics.startDistance * 0.5f;
+                _move.attackerPosition = new Vector2(-half, _move.attackerPosition.y);
+                _move.targetPosition = new Vector2(half, _move.targetPosition.y);
+                _inspector.schedule.Execute(RebuildInspector);
+            }))
+            { text = $"Старт из метрик: ±{metrics.startDistance * 0.5f:0.#}" };
+            startButton.tooltip = "Ставит акторов на стартовую дистанцию раунда из конфига, симметрично относительно X = 0.";
+            _inspector.Add(startButton);
+
             _inspector.Add(Header("Акторы"));
             AddActorFields("Атакующий", Actor.Attacker);
             AddActorFields("Цель", Actor.Target);
@@ -301,7 +330,8 @@ private void RebuildInspector()
                 _inspector.Add(actorField);
 
                 var roleField = new EnumField("Роль", track.role);
-                roleField.tooltip = "Роль — единственное, что интерпретирует инструмент. None означает свободную пометку.";
+                roleField.tooltip = "Роль — единственное, что интерпретирует инструмент. None означает свободную пометку. " +
+                                    "Movement и Hurtbox — техника, остальные — интервалы приёма: смена роли переносит дорожку в свою группу.";
                 roleField.RegisterValueChangedCallback(evt =>
                 {
                     Undo.RecordObject(_move, "FrameDate: роль дорожки");
@@ -312,16 +342,8 @@ private void RebuildInspector()
                 });
                 _inspector.Add(roleField);
 
-                var removeTrack = new Button(() =>
-                {
-                    Undo.IncrementCurrentGroup();
-                    Undo.RecordObject(_move, "FrameDate: удалить дорожку");
-                    _move.tracks.RemoveAt(trackIndex);
-                    MarkMoveDirty();
-                    _timeline.Select(-1, -1);
-                    RefreshAll();
-                })
-                { text = "Удалить дорожку" };
+                var removeTrack = new Button(() => DeleteTrack(trackIndex)) { text = "Удалить дорожку" };
+                removeTrack.tooltip = "То же, что «×» у имени дорожки на таймлайне. Отменяется Undo.";
                 _inspector.Add(removeTrack);
             }
 
@@ -373,6 +395,7 @@ private void RebuildInspector()
         }
 
         /// <summary>Параметры тела актора: старт, hurtbox и невидимый пушбокс.</summary>
+/// <summary>Параметры тела актора: старт, hurtbox, невидимый пушбокс и масса. Длины в Units.</summary>
         private void AddActorFields(string who, Actor actor)
         {
             var body = _move.Body(actor);
@@ -383,7 +406,7 @@ private void RebuildInspector()
             _inspector.Add(title);
 
             var startField = new Vector2Field("Старт") { value = _move.StartPosition(actor) };
-            startField.tooltip = "Центр тела на кадре 0.";
+            startField.tooltip = "Центр тела на кадре 0, Units.";
             startField.RegisterValueChangedCallback(evt => Edit("FrameDate: старт актора", () =>
             {
                 if (actor == Actor.Attacker) _move.attackerPosition = evt.newValue;
@@ -392,11 +415,34 @@ private void RebuildInspector()
             _inspector.Add(startField);
 
             AddFloat("Радиус тела", body.radius, "FrameDate: тело", v => body.radius = v,
-                "Радиус капсулы hurtbox.");
+                "Радиус капсулы hurtbox, Units.");
             AddFloat("Высота тела", body.height, "FrameDate: тело", v => body.height = v,
-                "Полная высота капсулы hurtbox.");
-            AddFloat("Пушбокс, полуширина", body.pushHalfWidth, "FrameDate: пушбокс", v => body.pushHalfWidth = v,
-                "Не даёт телам зайти друг в друга. Во вьюпорте не рисуется.");
+                "Полная высота капсулы hurtbox, Units.");
+
+            float idle = _move.Metrics.idleBodyWidth;
+            var widthField = new FloatField("Ширина пушбокса") { value = body.overridePushWidth ? body.pushWidth : idle };
+            widthField.tooltip = "Полная ширина пушбокса по X, Units. Во вьюпорте не рисуется.";
+            widthField.SetEnabled(body.overridePushWidth);
+            widthField.RegisterValueChangedCallback(evt => Edit("FrameDate: ширина пушбокса", () => body.pushWidth = evt.newValue));
+
+            var overrideToggle = new Toggle("Своя ширина") { value = body.overridePushWidth };
+            overrideToggle.tooltip = $"Выключено — ширина Idle из конфига метрик ({idle:0.#} Units).";
+            overrideToggle.RegisterValueChangedCallback(evt =>
+            {
+                Edit("FrameDate: своя ширина пушбокса", () =>
+                {
+                    body.overridePushWidth = evt.newValue;
+                    // Включая свою ширину, начинаем с ширины Idle, а не с давно забытого значения.
+                    if (evt.newValue) body.pushWidth = idle;
+                });
+                widthField.SetValueWithoutNotify(evt.newValue ? body.pushWidth : idle);
+                widthField.SetEnabled(evt.newValue);
+            });
+            _inspector.Add(overrideToggle);
+            _inspector.Add(widthField);
+
+            AddFloat("Масса", body.mass, "FrameDate: масса", v => body.mass = v,
+                "Перекрытие пушбоксов делится обратно пропорционально массам. В игре стоя 1, лёжа 5.");
         }
 
         /// <summary>Поля интервала, которые имеют смысл только для роли его дорожки.</summary>
@@ -517,21 +563,40 @@ private void RebuildInspector()
             return label;
         }
 
-        private void AddTrack()
+private void AddTrack() => AddTrack(Actor.Attacker, false);
+
+        /// <summary>
+        /// Новая дорожка в заданную группу: в «Технику» — Movement, в «Интервалы» — свободная пометка.
+        /// Группа на таймлайне определяется актором и ролью, поэтому дорожка сразу окажется там, где нажали «+».
+        /// </summary>
+        private void AddTrack(Actor actor, bool technical)
         {
             if (_move == null) return;
             Undo.IncrementCurrentGroup();
             Undo.RecordObject(_move, "FrameDate: добавить дорожку");
             _move.tracks.Add(new FrameTrack
             {
-                name = "Новая дорожка",
+                name = technical ? "Движение" : "Новая дорожка",
                 color = Color.HSVToRGB(Random.value, 0.55f, 1f),
-                actor = Actor.Attacker,
-                role = TrackRole.None
+                actor = actor,
+                role = technical ? TrackRole.Movement : TrackRole.None
             });
             MarkMoveDirty();
             RefreshAll();
             _timeline.Select(_move.tracks.Count - 1, -1);
+        }
+
+        /// <summary>Удаление дорожки вместе с её интервалами. Один шаг Undo; выделение снимается.</summary>
+        private void DeleteTrack(int trackIndex)
+        {
+            if (_move == null || trackIndex < 0 || trackIndex >= _move.tracks.Count) return;
+            Undo.IncrementCurrentGroup();
+            Undo.RecordObject(_move, "FrameDate: удалить дорожку «" + _move.tracks[trackIndex].name + "»");
+            _move.tracks.RemoveAt(trackIndex);
+            MarkMoveDirty();
+            // Индексы дорожек после удалённой сдвинулись — старое выделение недействительно.
+            _timeline.Select(-1, -1);
+            RefreshAll();
         }
 
         // ------------------------------------------------------------------
@@ -620,9 +685,10 @@ private void RebuildInspector()
         // Данные
         // ------------------------------------------------------------------
 
-        private void BindMove(FrameDateMove move)
+private void BindMove(FrameDateMove move)
         {
             _move = move;
+            EnsureMetrics(move);
             if (_timeline != null)
             {
                 _timeline.Move = move;
@@ -630,6 +696,20 @@ private void RebuildInspector()
             }
             _frame = 0;
             RefreshAll();
+        }
+
+        /// <summary>
+        /// Приёму без конфига метрик назначается общий конфиг проекта: так все приёмы по умолчанию
+        /// стоят на одной арене и одних метриках игры. Без шага Undo — это настройка по умолчанию, а не правка.
+        /// </summary>
+        private static void EnsureMetrics(FrameDateMove move)
+        {
+            if (move == null || move.metrics != null) return;
+            var shared = AssetDatabase.LoadAssetAtPath<FrameDateMetrics>(FrameDateMetrics.DefaultAssetPath);
+            if (shared == null) return;
+            move.metrics = shared;
+            EditorUtility.SetDirty(move);
+            Debug.Log($"FrameDate: приёму «{move.name}» назначен конфиг метрик {FrameDateMetrics.DefaultAssetPath}");
         }
 
         private void RefreshAll()

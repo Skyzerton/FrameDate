@@ -95,7 +95,16 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
             EnsureInitialised();
 
             var sim = FrameDateSimulation.Run(move);
+            var metrics = move.Metrics;
+            // Данные — в Units игры, сцена — в метрах.
+            float scale = 1f / Mathf.Max(1e-4f, metrics.unitsPerMeter);
+            int f = sim.frameCount == 0 ? 0 : Mathf.Clamp(frame, 0, sim.frameCount - 1);
             var attacker = sim.CenterAt(move, Actor.Attacker, frame);
+
+            // Камера следит за серединой между бойцами, как в игре; масштаб постоянный.
+            float middleX = sim.frameCount == 0 ? 0f : (sim.attackerX[f] + sim.targetX[f]) * 0.5f;
+            var camera = _utility.camera;
+            camera.transform.position = new Vector3(middleX * scale, CameraHeight, -10f);
 
             _attackerMaterial.color = ResolveColor(move, Actor.Attacker, frame);
             _targetMaterial.color = ResolveColor(move, Actor.Target, frame);
@@ -103,8 +112,8 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
 
             _utility.BeginPreview(rect, GUIStyle.none);
 
-            DrawCapsule(sim.HurtboxAt(move, Actor.Attacker, frame), 0f, _attackerMaterial);
-            DrawCapsule(sim.HurtboxAt(move, Actor.Target, frame), 0f, _targetMaterial);
+            DrawCapsule(sim.HurtboxAt(move, Actor.Attacker, frame), 0f, _attackerMaterial, scale);
+            DrawCapsule(sim.HurtboxAt(move, Actor.Target, frame), 0f, _targetMaterial, scale);
 
             // Hitbox каждой дорожки Attack виден всегда и стоит перед телами.
             // Активный — цветом дорожки, на кадре контакта белый. Вне интервала — приглушённый,
@@ -130,15 +139,134 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
                     color = Color.Lerp(track.color, BackgroundColor, 0.62f);
                 }
 
-                DrawCapsule(FrameDateSimulation.Hitbox(track.spans[s], attacker), -0.6f, NextHitMaterial(color));
+                DrawCapsule(FrameDateSimulation.Hitbox(track.spans[s], attacker), -0.6f, NextHitMaterial(color), scale);
             }
 
             _utility.camera.Render();
             var texture = _utility.EndPreview();
             GUI.DrawTexture(rect, texture, ScaleMode.StretchToFill, false);
 
+            if (sim.frameCount > 0)
+            {
+                float pxPerUnit = rect.height / (2f * camera.orthographicSize) * scale;
+                DrawArena(rect, move, sim, f, middleX, pxPerUnit);
+            }
+
             DrawOverlay(rect, move, frame, sim);
         }
+
+        private const float CameraHeight = 0.1f;
+        private static readonly Color WallColor = new Color(0.07f, 0.07f, 0.08f, 0.82f);
+        private static readonly Color WallEdgeColor = new Color(0.62f, 0.64f, 0.70f, 0.9f);
+        private static readonly Color CameraBorderColor = new Color(1f, 0.62f, 0.25f, 0.95f);
+
+        /// <summary>
+        /// Арена поверх картинки: пол с метровыми делениями, стены, включившиеся камерные границы
+        /// и мини-карта всей арены. Мировой X в Units переводится в пиксели той же камерой, что рисует сцену.
+        /// </summary>
+        private void DrawArena(Rect rect, FrameDateMove move, FrameDateSimulation sim, int f, float middleX, float pxPerUnit)
+        {
+            var metrics = move.Metrics;
+            System.Func<float, float> sx = x => rect.center.x + (x - middleX) * pxPerUnit;
+            float cameraY = CameraHeight * metrics.unitsPerMeter;
+            System.Func<float, float> sy = y => rect.center.y - (y - cameraY) * pxPerUnit;
+
+            // Пол: низ тела атакующего на кадре 0, деления через 100 Units (1 м).
+            float groundY = Mathf.Round(sy(move.attackerPosition.y - move.attackerBody.height * 0.5f));
+            if (groundY > rect.y && groundY < rect.yMax)
+            {
+                EditorGUI.DrawRect(new Rect(rect.x, groundY, rect.width, 1f), new Color(1f, 1f, 1f, 0.18f));
+                float viewLeft = middleX - (rect.width * 0.5f) / pxPerUnit;
+                float viewRight = middleX + (rect.width * 0.5f) / pxPerUnit;
+                for (float x = Mathf.Ceil(viewLeft / 100f) * 100f; x <= viewRight; x += 100f)
+                {
+                    float px = Mathf.Round(sx(x));
+                    EditorGUI.DrawRect(new Rect(px, groundY, 1f, 5f), new Color(1f, 1f, 1f, 0.28f));
+                    if (Mathf.Abs(x % 200f) < 0.5f)
+                        GUI.Label(new Rect(px + 2f, groundY + 2f, 60f, 14f), x.ToString("0"), TickStyle);
+                }
+            }
+
+            // Стены: всё, что за ними, затемнено.
+            float leftWall = sx(metrics.leftWallX);
+            if (leftWall > rect.x)
+            {
+                float w = Mathf.Min(leftWall, rect.xMax) - rect.x;
+                EditorGUI.DrawRect(new Rect(rect.x, rect.y, w, rect.height), WallColor);
+                if (leftWall < rect.xMax)
+                {
+                    EditorGUI.DrawRect(new Rect(leftWall - 2f, rect.y, 2f, rect.height), WallEdgeColor);
+                    GUI.Label(new Rect(leftWall - 64f, rect.center.y - 8f, 60f, 16f), "стена", RightLabel);
+                }
+            }
+            float rightWall = sx(metrics.rightWallX);
+            if (rightWall < rect.xMax)
+            {
+                float x0 = Mathf.Max(rightWall, rect.x);
+                EditorGUI.DrawRect(new Rect(x0, rect.y, rect.xMax - x0, rect.height), WallColor);
+                if (rightWall > rect.x)
+                {
+                    EditorGUI.DrawRect(new Rect(rightWall, rect.y, 2f, rect.height), WallEdgeColor);
+                    GUI.Label(new Rect(rightWall + 4f, rect.center.y - 8f, 60f, 16f), "стена", TickStyle);
+                }
+            }
+
+            // Камерные границы — только когда включились и стоят внутри стен.
+            if (sim.cameraEngaged[f])
+            {
+                if (sim.leftLimit[f] > metrics.leftWallX + 0.01f) DrawDashedLine(rect, sx(sim.leftLimit[f]), "камера", true);
+                if (sim.rightLimit[f] < metrics.rightWallX - 0.01f) DrawDashedLine(rect, sx(sim.rightLimit[f]), "камера", false);
+            }
+
+            DrawMinimap(rect, move, sim, f, middleX, pxPerUnit);
+        }
+
+        private static void DrawDashedLine(Rect rect, float x, string label, bool labelLeft)
+        {
+            if (x < rect.x || x > rect.xMax) return;
+            for (float y = rect.y; y < rect.yMax; y += 10f)
+                EditorGUI.DrawRect(new Rect(x - 1f, y, 2f, Mathf.Min(6f, rect.yMax - y)), CameraBorderColor);
+            var style = new GUIStyle(labelLeft ? RightLabel : TickStyle) { normal = { textColor = CameraBorderColor } };
+            GUI.Label(labelLeft ? new Rect(x - 64f, rect.center.y + 10f, 60f, 16f) : new Rect(x + 4f, rect.center.y + 10f, 60f, 16f), label, style);
+        }
+
+        /// <summary>Вся арена полоской внизу: стены по краям, бойцы, видимая часть и камерные границы.</summary>
+        private void DrawMinimap(Rect rect, FrameDateMove move, FrameDateSimulation sim, int f, float middleX, float pxPerUnit)
+        {
+            var metrics = move.Metrics;
+            var bar = new Rect(rect.x + 8f, rect.yMax - 34f, rect.width - 16f, 10f);
+            float width = Mathf.Max(1f, metrics.ArenaWidth);
+            System.Func<float, float> mx = x => bar.x + Mathf.Clamp01((x - metrics.leftWallX) / width) * bar.width;
+
+            EditorGUI.DrawRect(bar, new Color(0f, 0f, 0f, 0.45f));
+            EditorGUI.DrawRect(new Rect(bar.x, bar.y, 2f, bar.height), WallEdgeColor);
+            EditorGUI.DrawRect(new Rect(bar.xMax - 2f, bar.y, 2f, bar.height), WallEdgeColor);
+
+            float halfView = (rect.width * 0.5f) / pxPerUnit;
+            float v0 = mx(middleX - halfView);
+            float v1 = mx(middleX + halfView);
+            EditorGUI.DrawRect(new Rect(v0, bar.y, Mathf.Max(1f, v1 - v0), bar.height), new Color(1f, 1f, 1f, 0.10f));
+
+            if (sim.cameraEngaged[f])
+            {
+                EditorGUI.DrawRect(new Rect(mx(sim.leftLimit[f]) - 1f, bar.y - 2f, 2f, bar.height + 4f), CameraBorderColor);
+                EditorGUI.DrawRect(new Rect(mx(sim.rightLimit[f]) - 1f, bar.y - 2f, 2f, bar.height + 4f), CameraBorderColor);
+            }
+
+            EditorGUI.DrawRect(new Rect(mx(sim.attackerX[f]) - 2f, bar.y + 1f, 4f, bar.height - 2f),
+                sim.attackerAtLimit[f] ? Color.white : _attackerMaterial.color);
+            EditorGUI.DrawRect(new Rect(mx(sim.targetX[f]) - 2f, bar.y + 1f, 4f, bar.height - 2f),
+                sim.targetAtLimit[f] ? Color.white : _targetMaterial.color);
+        }
+
+        private static GUIStyle _tickStyle;
+        private static GUIStyle TickStyle => _tickStyle ?? (_tickStyle = new GUIStyle(EditorStyles.miniLabel)
+        {
+            normal = { textColor = new Color(0.70f, 0.71f, 0.75f) }
+        });
+
+        private static GUIStyle _rightLabel;
+        private static GUIStyle RightLabel => _rightLabel ?? (_rightLabel = new GUIStyle(TickStyle) { alignment = TextAnchor.UpperRight });
 
         /// <summary>
         /// Какой интервал дорожки Attack показать на кадре: активный; иначе ближайший следующий;
@@ -163,11 +291,12 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
             return next >= 0 ? next : previous;
         }
 
-private void DrawCapsule(Capsule2D capsule, float z, Material material)
+private void DrawCapsule(Capsule2D capsule, float z, Material material, float scale)
         {
-            var a = new Vector3(capsule.a.x, capsule.a.y, z);
-            var b = new Vector3(capsule.b.x, capsule.b.y, z);
-            var ballScale = Vector3.one * capsule.radius;
+            var a = new Vector3(capsule.a.x * scale, capsule.a.y * scale, z);
+            var b = new Vector3(capsule.b.x * scale, capsule.b.y * scale, z);
+            float radius = capsule.radius * scale;
+            var ballScale = Vector3.one * radius;
 
             _utility.DrawMesh(_sphereMesh, Matrix4x4.TRS(a, Quaternion.identity, ballScale), material, 0);
             _utility.DrawMesh(_sphereMesh, Matrix4x4.TRS(b, Quaternion.identity, ballScale), material, 0);
@@ -177,8 +306,8 @@ private void DrawCapsule(Capsule2D capsule, float z, Material material)
             if (length < 1e-4f) return;
 
             var rotation = Quaternion.FromToRotation(Vector3.up, axis / length);
-            var scale = new Vector3(capsule.radius, length * 0.5f, capsule.radius);
-            _utility.DrawMesh(_cylinderMesh, Matrix4x4.TRS((a + b) * 0.5f, rotation, scale), material, 0);
+            var meshScale = new Vector3(radius, length * 0.5f, radius);
+            _utility.DrawMesh(_cylinderMesh, Matrix4x4.TRS((a + b) * 0.5f, rotation, meshScale), material, 0);
         }
 
         /// <summary>
@@ -223,8 +352,10 @@ private void DrawCapsule(Capsule2D capsule, float z, Material material)
             float xa = sim.attackerX[f];
             float xt = sim.targetX[f];
             float gap = (xt - sim.HurtboxAt(move, Actor.Target, f).radius) - (xa + sim.HurtboxAt(move, Actor.Attacker, f).radius);
-            string info = $"А x {xa:0.00}   Ц x {xt:0.00}   зазор тел {gap:0.00}";
+            string info = $"А x {xa:0.#}   Ц x {xt:0.#}   между центрами {xt - xa:0.#}   зазор тел {gap:0.#}   (Units)";
             if (sim.pushboxBlocked[f]) info += "   · пушбоксы упёрлись";
+            if (sim.attackerAtLimit[f] || sim.targetAtLimit[f]) info += sim.cameraEngaged[f] ? "   · упор в камерную границу" : "   · упор в стену";
+            else if (sim.cameraEngaged[f]) info += "   · камерные границы включены";
             GUI.Label(new Rect(rect.x + 6f, rect.y + 22f, rect.width - 12f, 16f), info, label);
 
             string contactLine = null;
@@ -235,7 +366,7 @@ private void DrawCapsule(Capsule2D capsule, float z, Material material)
                 var track = move.tracks[c.trackIndex];
                 var span = track.spans[c.spanIndex];
                 contactLine = $"КОНТАКТ · «{track.name}» [{span.startFrame},{span.endFrame}) · " +
-                              $"отталкивание {c.pushDistance:0.00} за {c.pushEndFrame - c.frame} кадр.";
+                              $"отталкивание {c.pushDistance:0.#} Units за {c.pushEndFrame - c.frame} кадр.";
                 break;
             }
 

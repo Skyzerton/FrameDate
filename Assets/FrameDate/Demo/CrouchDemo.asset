@@ -1,0 +1,242 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78940226265f4e44bae150dd3e886ef, type: 3}
+  m_Name: CrouchDemo
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
+  moveName: Crouch Demo
+  frameRate: 30
+  durationFrames: 40
+  attackerPosition: {x: -110, y: 0}
+  targetPosition: {x: 110, y: 0}
+  metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
+  attackerBody:
+    radius: 30.000002
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  targetBody:
+    radius: 30.000002
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  tracks:
+  - name: Attack
+    color: {r: 1, g: 0.35, b: 0.3, a: 1}
+    actor: 0
+    role: 1
+    spans:
+    - startFrame: 12
+      endFrame: 16
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 22
+      endFrame: 26
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: "\u0414\u0432\u0438\u0436\u0435\u043D\u0438\u0435"
+    color: {r: 0.95, g: 0.95, b: 0.55, a: 1}
+    actor: 0
+    role: 8
+    spans:
+    - startFrame: 6
+      endFrame: 13
+      distance: 110
+      profile: 2
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 18
+      endFrame: 24
+      distance: 45
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: "\u041D\u0438\u0437\u043A\u0438\u0439 \u0437\u0430\u0445\u043E\u0434"
+    color: {r: 0.55, g: 0.8, b: 1, a: 1}
+    actor: 0
+    role: 9
+    spans:
+    - startFrame: 8
+      endFrame: 17
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.7
+      hurtRadiusScale: 0.9
+  - name: Uninterrupt
+    color: {r: 1, g: 0.75, b: 0.25, a: 1}
+    actor: 0
+    role: 4
+    spans:
+    - startFrame: 0
+      endFrame: 30
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Blocking
+    color: {r: 0.35, g: 0.7, b: 1, a: 1}
+    actor: 0
+    role: 2
+    spans:
+    - startFrame: 30
+      endFrame: 37
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Throwable
+    color: {r: 0.75, g: 0.55, b: 1, a: 1}
+    actor: 0
+    role: 3
+    spans:
+    - startFrame: 30
+      endFrame: 36
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 18
+      endFrame: 19
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Blocking
+    color: {r: 0.3, g: 0.85, b: 0.75, a: 1}
+    actor: 1
+    role: 2
+    spans:
+    - startFrame: 0
+      endFrame: 40
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Throwable
+    color: {r: 0.55, g: 0.85, b: 0.45, a: 1}
+    actor: 1
+    role: 3
+    spans:
+    - startFrame: 0
+      endFrame: 40
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Uninterrupt
+    color: {r: 0.9, g: 0.6, b: 0.45, a: 1}
+    actor: 1
+    role: 4
+    spans:
+    - startFrame: 22
+      endFrame: 23
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: "\u041E\u043A\u043D\u043E \u043A\u043E\u043C\u0431\u043E"
+    color: {r: 0.95, g: 0.85, b: 0.2, a: 1}
+    actor: 0
+    role: 0
+    spans:
+    - startFrame: 14
+      endFrame: 23
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: "\u041F\u0440\u0438\u0441\u0435\u0434"
+    color: {r: 0.45, g: 0.95, b: 0.7, a: 1}
+    actor: 1
+    role: 9
+    spans:
+    - startFrame: 19
+      endFrame: 31
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30.000002
+      pushFrames: 6
+      hurtHeightScale: 0.55
+      hurtRadiusScale: 1

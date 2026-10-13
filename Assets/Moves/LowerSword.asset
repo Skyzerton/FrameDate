@@ -15,6 +15,19 @@ MonoBehaviour:
   moveName: LowerSword
   frameRate: 30
   durationFrames: 40
-  attackerPosition: {x: -1.1, y: 0}
-  targetPosition: {x: 1.1, y: 0}
+  attackerPosition: {x: -110, y: 0}
+  targetPosition: {x: 110, y: 0}
+  metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
+  attackerBody:
+    radius: 30.000002
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  targetBody:
+    radius: 30.000002
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
   tracks: []

@@ -1,3 +1,4 @@
 /* Курсоры таймлайна FrameDate. Keyword-курсоры работают только в Editor UI. */
 .fd-cursor-resize { cursor: resize-horizontal; }
 .fd-cursor-move   { cursor: move-arrow; }
+.fd-cursor-link   { cursor: link; }

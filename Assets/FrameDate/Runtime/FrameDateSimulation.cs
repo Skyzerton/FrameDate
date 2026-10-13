@@ -53,6 +53,14 @@ namespace FrameDate
         public readonly float[] targetX;
         /// <summary>На кадре пушбоксы упёрлись и сдвинули цель.</summary>
         public readonly bool[] pushboxBlocked;
+        /// <summary>Левая и правая граница хода центров на кадре: стены, сжатые камерными границами.</summary>
+        public readonly float[] leftLimit;
+        public readonly float[] rightLimit;
+        /// <summary>На кадре дистанция дошла до порога и включились камерные границы.</summary>
+        public readonly bool[] cameraEngaged;
+        /// <summary>Актор на кадре упёрся в стену или камерную границу.</summary>
+        public readonly bool[] attackerAtLimit;
+        public readonly bool[] targetAtLimit;
         public readonly List<FrameContact> contacts = new List<FrameContact>();
 
         private readonly float _attackerY;
@@ -64,44 +72,109 @@ namespace FrameDate
             attackerX = new float[frameCount];
             targetX = new float[frameCount];
             pushboxBlocked = new bool[frameCount];
+            leftLimit = new float[frameCount];
+            rightLimit = new float[frameCount];
+            cameraEngaged = new bool[frameCount];
+            attackerAtLimit = new bool[frameCount];
+            targetAtLimit = new bool[frameCount];
             _attackerY = move.attackerPosition.y;
             _targetY = move.targetPosition.y;
         }
 
-        public static FrameDateSimulation Run(FrameDateMove move)
+public static FrameDateSimulation Run(FrameDateMove move)
         {
             var sim = new FrameDateSimulation(move);
             if (sim.frameCount == 0) return sim;
 
-            float minGap = move.attackerBody.pushHalfWidth + move.targetBody.pushHalfWidth;
-            float pushboxShift = 0f;
+            var metrics = move.Metrics;
+            float minGap = move.PushHalfWidth(Actor.Attacker) + move.PushHalfWidth(Actor.Target);
+            float massA = Mathf.Max(1e-4f, move.attackerBody.mass);
+            float massT = Mathf.Max(1e-4f, move.targetBody.mass);
+            // Как в RepulsionSystem игры: каждый уступает долю, равную массе другого к общей массе.
+            float attackerShare = massT / (massA + massT);
+
+            float shiftA = 0f;
+            float shiftT = 0f;
+            // Камерные границы, как в игре, считаются от положения на прошлом кадре: иначе середина
+            // съезжает за отходящим, и неподвижного противника тащит следом.
+            float prevA = move.attackerPosition.x;
+            float prevT = move.targetPosition.x;
             var contacted = new HashSet<int>();
 
             for (int f = 0; f < sim.frameCount; f++)
             {
                 // Атакующий смотрит вправо (+X), цель — влево (−X): «вперёд» у них разного знака.
-                float xa = move.attackerPosition.x + AuthoredOffset(move, Actor.Attacker, f);
-                float xt = move.targetPosition.x - AuthoredOffset(move, Actor.Target, f);
+                float rawA = move.attackerPosition.x + AuthoredOffset(move, Actor.Attacker, f) + shiftA;
+                float rawT = move.targetPosition.x - AuthoredOffset(move, Actor.Target, f) + shiftT;
 
                 // Отталкивание уводит цель от атакующего, то есть в +X.
                 for (int c = 0; c < sim.contacts.Count; c++)
                 {
                     var contact = sim.contacts[c];
                     int length = contact.pushEndFrame - contact.frame;
-                    xt += contact.pushDistance *
-                          MoveProfiles.Evaluate(PushProfile, (float)(f - contact.frame) / length);
+                    rawT += contact.pushDistance *
+                            MoveProfiles.Evaluate(PushProfile, (float)(f - contact.frame) / length);
                 }
 
-                xt += pushboxShift;
-                if (xt - xa < minGap)
+                float xa = rawA;
+                float xt = rawT;
+
+                // 1. Пушбоксы: перекрытие делится по массам.
+                float overlap = minGap - (xt - xa);
+                if (overlap > 0f)
                 {
-                    pushboxShift += minGap - (xt - xa);
-                    xt = xa + minGap;
+                    xa -= overlap * attackerShare;
+                    xt += overlap * (1f - attackerShare);
                     sim.pushboxBlocked[f] = true;
                 }
 
+                // 2. Стены и камерные границы. Камерные включаются, когда на прошлом кадре центры разошлись
+                //    на порог, и стоят на середине ± доля × порог (в игре 0.55, предел дистанции 1.1 × порог).
+                float left = metrics.leftWallX;
+                float right = metrics.rightWallX;
+                float threshold = metrics.maxDistanceThreshold;
+                if (prevT - prevA >= threshold)
+                {
+                    float middle = (prevA + prevT) * 0.5f;
+                    float half = threshold * metrics.cameraBorderRatio;
+                    left = Mathf.Max(left, middle - half);
+                    right = Mathf.Min(right, middle + half);
+                    sim.cameraEngaged[f] = true;
+                }
+
+                bool pinnedA = false;
+                bool pinnedT = false;
+                if (xa < left) { xa = left; pinnedA = true; }
+                else if (xa > right) { xa = right; pinnedA = true; }
+                if (xt > right) { xt = right; pinnedT = true; }
+                else if (xt < left) { xt = left; pinnedT = true; }
+
+                // 3. Если граница вдавила одного в другого, остаток перекрытия достаётся тому, кто не упёрся.
+                overlap = minGap - (xt - xa);
+                if (overlap > 0f)
+                {
+                    if (pinnedT && !pinnedA) xa -= overlap;
+                    else if (pinnedA && !pinnedT) xt += overlap;
+                    else
+                    {
+                        xa -= overlap * attackerShare;
+                        xt += overlap * (1f - attackerShare);
+                    }
+                    sim.pushboxBlocked[f] = true;
+                }
+
+                // Сдвиги от пушбоксов и границ копятся: вытолкнутый остаётся там, куда его вытолкнули.
+                shiftA += xa - rawA;
+                shiftT += xt - rawT;
+                prevA = xa;
+                prevT = xt;
+
                 sim.attackerX[f] = xa;
                 sim.targetX[f] = xt;
+                sim.leftLimit[f] = left;
+                sim.rightLimit[f] = right;
+                sim.attackerAtLimit[f] = pinnedA;
+                sim.targetAtLimit[f] = pinnedT;
 
                 // Форма тела на этом кадре учитывает дорожки Hurtbox: приседание цели уводит hurtbox вниз,
                 // приседание атакующего опускает центр тела, а с ним и hitbox.
