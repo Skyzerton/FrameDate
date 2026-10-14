@@ -32,6 +32,23 @@ namespace FrameDate
         Hurtbox
     }
 
+    /// <summary>Что делает цель, когда удар её достаёт.</summary>
+    public enum TargetOutcome
+    {
+        Hit,
+        Block,
+        Crit
+    }
+
+    /// <summary>Исход для отдельного удара: как у приёма или свой.</summary>
+    public enum SpanOutcome
+    {
+        ByMove,
+        Hit,
+        Block,
+        Crit
+    }
+
     /// <summary>Как расстояние интервала движения распределяется внутри интервала.</summary>
     public enum MoveProfile
     {
@@ -110,6 +127,25 @@ namespace FrameDate
         [Tooltip("За сколько кадров проходит отталкивание, начиная с кадра контакта.")]
         public int pushFrames = 6;
 
+        [Tooltip("Attack из игры: атакующие детали (AttackingParts). Если заданы и у приёма есть капсулы из игры, hitbox — эти капсулы на каждом кадре, а ручные параметры hitbox не используются.")]
+        public List<string> attackingParts = new List<string>();
+
+        // --- Реакция цели (Attack) ---
+        [Tooltip("Исход этого удара: как у приёма или свой.")]
+        public SpanOutcome outcome = SpanOutcome.ByMove;
+
+        [Tooltip("Реакции цели из каталога: попадание, крит, подъём защиты, удар в блок. Пусто — отталкивание FrameDate.")]
+        public string reactionHit;
+        public string reactionCrit;
+        public string reactionBlockIn;
+        public string reactionBlockHit;
+
+        [Tooltip("Дистанция блока: если на старте удара цель ближе, она поднимает защиту (Block: Distance в игре), Units.")]
+        public float blockDistance;
+
+        [Tooltip("Неблокируемый удар (HitTags: Unblockable): исход «блок» становится попаданием.")]
+        public bool unblockable;
+
         // --- Hurtbox ---
         [Tooltip("Доля исходной высоты тела на этом интервале. 1 — без изменений. Низ капсулы остаётся на месте.")]
         public float hurtHeightScale = 0.6f;
@@ -187,6 +223,29 @@ namespace FrameDate
         [Tooltip("Поза скелета атакующего, импортированная из игры. Только для показа: в расчёт не входит.")]
         public FrameDatePose pose;
 
+        [Tooltip("Каталог реакций цели из игры. Пусто — цель только отталкивается.")]
+        public FrameDateReactionCatalog reactions;
+
+        [Tooltip("Исход по умолчанию для всех ударов приёма; удар может переопределить.")]
+        public TargetOutcome targetOutcome = TargetOutcome.Hit;
+
+        /// <summary>Итоговый исход удара: свой или приёма; неблокируемый удар в блок становится попаданием.</summary>
+        public TargetOutcome OutcomeFor(FrameSpan span)
+        {
+            TargetOutcome outcome;
+            switch (span.outcome)
+            {
+                case SpanOutcome.Hit: outcome = TargetOutcome.Hit; break;
+                case SpanOutcome.Block: outcome = TargetOutcome.Block; break;
+                case SpanOutcome.Crit: outcome = TargetOutcome.Crit; break;
+                default: outcome = targetOutcome; break;
+            }
+            return outcome == TargetOutcome.Block && span.unblockable ? TargetOutcome.Hit : outcome;
+        }
+
+        [Tooltip("Сдвиг обоих стартов по арене, Units: дистанция между бойцами сохраняется. 0 — как задано; так проверяют приём у стен.")]
+        public float startOffset;
+
         public ActorBody attackerBody = new ActorBody();
         public ActorBody targetBody = new ActorBody();
 
@@ -204,7 +263,17 @@ namespace FrameDate
         /// </summary>
         public static bool IsTechnicalRole(TrackRole role) => role == TrackRole.Movement || role == TrackRole.Hurtbox;
 
-        public Vector2 StartPosition(Actor actor) => actor == Actor.Attacker ? attackerPosition : targetPosition;
+        /// <summary>Старт актора на арене: его позиция плюс общий сдвиг startOffset по X.</summary>
+        public Vector2 StartPosition(Actor actor) =>
+            (actor == Actor.Attacker ? attackerPosition : targetPosition) + new Vector2(startOffset, 0f);
+
+        /// <summary>Наименьший и наибольший сдвиг старта, при которых оба актора внутри стен.</summary>
+        public void StartOffsetRange(out float min, out float max)
+        {
+            var m = Metrics;
+            min = m.leftWallX - Mathf.Min(attackerPosition.x, targetPosition.x);
+            max = m.rightWallX - Mathf.Max(attackerPosition.x, targetPosition.x);
+        }
 
         /// <summary>Назначенный конфиг метрик либо встроенные значения.</summary>
         public FrameDateMetrics Metrics => metrics != null ? metrics : FrameDateMetrics.Fallback;
@@ -238,10 +307,12 @@ namespace FrameDate
 
             var m = Metrics;
             problems.AddRange(m.Validate());
-            if (attackerPosition.x < m.leftWallX || attackerPosition.x > m.rightWallX)
-                problems.Add($"Атакующий стартует за стеной: X {attackerPosition.x} вне арены [{m.leftWallX}, {m.rightWallX}].");
-            if (targetPosition.x < m.leftWallX || targetPosition.x > m.rightWallX)
-                problems.Add($"Цель стартует за стеной: X {targetPosition.x} вне арены [{m.leftWallX}, {m.rightWallX}].");
+            float startA = StartPosition(Actor.Attacker).x;
+            float startT = StartPosition(Actor.Target).x;
+            if (startA < m.leftWallX || startA > m.rightWallX)
+                problems.Add($"Атакующий стартует за стеной: X {startA} вне арены [{m.leftWallX}, {m.rightWallX}] (сдвиг старта {startOffset}).");
+            if (startT < m.leftWallX || startT > m.rightWallX)
+                problems.Add($"Цель стартует за стеной: X {startT} вне арены [{m.leftWallX}, {m.rightWallX}] (сдвиг старта {startOffset}).");
 
             for (int t = 0; t < tracks.Count; t++)
             {

@@ -16,7 +16,7 @@ namespace FrameDate.EditorTools
     {
         public const string ImportedFolder = "Assets/FrameDate/Imported";
         public const string Format = "framedate-move";
-        public const int SupportedVersion = 2;
+        public const int SupportedVersion = 4;
 
         /// <summary>Допуск раскладки продвижения на линейные интервалы Movement, Units.</summary>
         public const float MovementTolerance = 1f;
@@ -48,6 +48,11 @@ namespace FrameDate.EditorTools
             public int[] boneParents;
             public uint[] boneHashes;
             public List<PackageSegment> segments = new List<PackageSegment>();
+            public List<PackageCapsule> capsules = new List<PackageCapsule>();
+            public bool hasIdle;
+            public PackageIdle idle = new PackageIdle();
+            public string reactionSet;
+            public List<PackageReaction> reactions = new List<PackageReaction>();
 
             // Версия 1: один удар без сегментов.
             public string animation;
@@ -70,6 +75,46 @@ namespace FrameDate.EditorTools
             public string transition;
             public List<PackageInterval> intervals = new List<PackageInterval>();
             public List<PackageFrame> frames = new List<PackageFrame>();
+            public List<PackageCapsuleFrame> capsuleFrames = new List<PackageCapsuleFrame>();
+        }
+
+        [Serializable]
+        private class PackageCapsule
+        {
+            public string name;
+            public uint hash;
+            public string part;
+            public float radius;
+            public bool collidable;
+        }
+
+        [Serializable]
+        private class PackageCapsuleFrame
+        {
+            public float[] points;
+        }
+
+        [Serializable]
+        private class PackageReaction
+        {
+            public string name;
+            public string settingsFile;
+            public string animationFile;
+            public List<string> groups = new List<string>();
+            public int frameCount;
+            public List<PackageInterval> intervals = new List<PackageInterval>();
+            public List<PackageFrame> frames = new List<PackageFrame>();
+            public List<PackageCapsuleFrame> capsuleFrames = new List<PackageCapsuleFrame>();
+        }
+
+        [Serializable]
+        private class PackageIdle
+        {
+            public string animation;
+            public string settingsFile;
+            public float motionX;
+            public float[] positions;
+            public float[] points;
         }
 
         [Serializable]
@@ -82,6 +127,15 @@ namespace FrameDate.EditorTools
             public bool hasEnd;
             public int end;
             public List<string> attackingParts = new List<string>();
+            public List<string> hitTags = new List<string>();
+            public bool hasBlock;
+            public int blockDistance;
+            public List<string> blockNames = new List<string>();
+            public string reactionHit;
+            public string reactionCrit;
+            public string reactionBlockIn;
+            public string reactionBlockHit;
+            public bool unblockable;
         }
 
         [Serializable]
@@ -90,30 +144,43 @@ namespace FrameDate.EditorTools
             public float[] positions;
         }
 
+/// <summary>Отложить SaveAssets: при массовом импорте вызывающий сохраняет ассеты сам, пачками.</summary>
+        public static bool DeferSave;
+
         public static Result Import(string jsonPath)
         {
             string assetPath = ToAssetPath(jsonPath);
-            var package = JsonUtility.FromJson<MovePackage>(File.ReadAllText(jsonPath));
+            string folder = Path.GetDirectoryName(assetPath).Replace('\\', '/');
+            return ImportJson(File.ReadAllText(jsonPath), folder, folder, jsonPath);
+        }
+
+        /// <summary>
+        /// Импорт пакета из строки: приём пишется в moveFolder, его поза — в poseFolder (папки должны существовать).
+        /// label — для сообщений об ошибках.
+        /// </summary>
+        public static Result ImportJson(string json, string moveFolder, string poseFolder, string label)
+        {
+            var package = JsonUtility.FromJson<MovePackage>(json);
             if (package == null || package.format != Format)
-                throw new InvalidDataException($"{jsonPath}: это не пакет приёма FrameDate.");
+                throw new InvalidDataException($"{label}: это не пакет приёма FrameDate.");
             if (package.version > SupportedVersion)
-                throw new InvalidDataException($"{jsonPath}: версия пакета {package.version}, импортёр понимает до {SupportedVersion}.");
+                throw new InvalidDataException($"{label}: версия пакета {package.version}, импортёр понимает до {SupportedVersion}.");
             Normalize(package);
-            Check(package, jsonPath);
+            Check(package, label);
 
             var result = new Result();
-            string folder = Path.GetDirectoryName(assetPath).Replace('\\', '/');
             string baseName = SafeName(package.name);
 
-            result.pose = LoadOrCreate<FrameDatePose>(folder + "/" + baseName + "_Pose.asset");
+            result.pose = LoadOrCreate<FrameDatePose>(poseFolder + "/" + baseName + "_Pose.asset");
             FillPose(result.pose, package);
 
-            result.move = LoadOrCreate<FrameDateMove>(folder + "/" + baseName + ".asset");
+            result.move = LoadOrCreate<FrameDateMove>(moveFolder + "/" + baseName + ".asset");
             FillMove(result.move, result.pose, package, result);
+            FillReactions(result, package);
 
             EditorUtility.SetDirty(result.pose);
             EditorUtility.SetDirty(result.move);
-            AssetDatabase.SaveAssets();
+            if (!DeferSave) AssetDatabase.SaveAssets();
             return result;
         }
 
@@ -156,6 +223,14 @@ namespace FrameDate.EditorTools
                 foreach (var frame in segment.frames)
                     if (frame.positions == null || frame.positions.Length != stride)
                         throw new InvalidDataException($"{jsonPath}: у {segment.animation} кадр позы не на {package.boneParents.Length} костей.");
+                if (package.capsules.Count > 0)
+                {
+                    if (segment.capsuleFrames.Count != segment.animationFrames)
+                        throw new InvalidDataException($"{jsonPath}: у {segment.animation} кадров капсул {segment.capsuleFrames.Count} вместо {segment.animationFrames}.");
+                    foreach (var frame in segment.capsuleFrames)
+                        if (frame.points == null || frame.points.Length != package.capsules.Count * 4)
+                            throw new InvalidDataException($"{jsonPath}: у {segment.animation} кадр капсул не на {package.capsules.Count} капсул.");
+                }
                 expected += segment.usedFrames;
             }
             if (expected != package.frameCount)
@@ -186,6 +261,20 @@ namespace FrameDate.EditorTools
             pose.positions = new float[package.frameCount * stride];
             float offset = 0f;
 
+            int capsuleCount = package.capsules.Count;
+            int capsuleStride = capsuleCount * 4;
+            pose.capsules = package.capsules.ConvertAll(c => new FrameDatePose.PoseCapsule
+            {
+                name = c.name, hash = c.hash, part = c.part, radius = c.radius, collidable = c.collidable
+            });
+            pose.capsulePoints = new float[package.frameCount * capsuleStride];
+
+            pose.hasIdle = package.hasIdle && package.idle != null && package.idle.points != null && package.idle.points.Length == capsuleStride;
+            pose.idleAnimation = pose.hasIdle ? package.idle.animation : null;
+            pose.idleMotionX = pose.hasIdle ? package.idle.motionX : 0f;
+            pose.idlePositions = pose.hasIdle && package.idle.positions != null ? (float[])package.idle.positions.Clone() : new float[0];
+            pose.idlePoints = pose.hasIdle ? (float[])package.idle.points.Clone() : new float[0];
+
             for (int k = 0; k < package.segments.Count; k++)
             {
                 var segment = package.segments[k];
@@ -206,6 +295,16 @@ namespace FrameDate.EditorTools
                         pose.positions[target + i] = source[i] + offset;
                         pose.positions[target + i + 1] = source[i + 1];
                         pose.positions[target + i + 2] = source[i + 2];
+                    }
+
+                    // Капсулы сдвигаются по X так же, как кости этого удара.
+                    if (capsuleCount == 0) continue;
+                    var points = segment.capsuleFrames[segment.startFrame + g].points;
+                    int capsuleTarget = (segment.seriesStart + g) * capsuleStride;
+                    for (int i = 0; i < capsuleStride; i += 2)
+                    {
+                        pose.capsulePoints[capsuleTarget + i] = points[i] + offset;
+                        pose.capsulePoints[capsuleTarget + i + 1] = points[i + 1];
                     }
                 }
 
@@ -247,6 +346,9 @@ namespace FrameDate.EditorTools
             }
             if (package.frameRate != 30)
                 result.notes.Add($"Частота {package.frameRate} FPS: кадры игры — тики симуляции, 1 кадр = 1/{package.frameRate} с.");
+            if (package.capsules.Count > 0)
+                result.notes.Add($"Капсулы игры: {package.capsules.Count}, по ним можно попасть — {package.capsules.FindAll(c => c.collidable).Count}. " +
+                                 (pose.hasIdle ? $"Цель — капсулы Idle героя ({pose.idleAnimation})." : "Idle нет — цель капсулой тела FrameDate."));
         }
 
         private static List<FrameTrack> BuildIntervalTracks(MovePackage package, Result result)
@@ -294,9 +396,28 @@ namespace FrameDate.EditorTools
                         if (attack == null)
                             attack = NewTrack("Attack", new Color(1.00f, 0.35f, 0.30f), TrackRole.Attack);
                         // Атаки разных ударов не сливаются даже встык: у каждой свой контакт.
+                        span.attackingParts = new List<string>(interval.attackingParts);
+                        span.reactionHit = interval.reactionHit;
+                        span.reactionCrit = interval.reactionCrit;
+                        span.reactionBlockIn = interval.reactionBlockIn;
+                        span.reactionBlockHit = interval.reactionBlockHit;
+                        span.blockDistance = interval.blockDistance;
+                        span.unblockable = interval.unblockable;
+                        if (!string.IsNullOrEmpty(interval.reactionHit))
+                            result.notes.Add($"Реакции удара [{span.startFrame},{span.endFrame}): попадание {interval.reactionHit}, крит {Or(interval.reactionCrit)}, " +
+                                             (interval.unblockable ? "блок невозможен (Unblockable)." :
+                                                 $"блок {Or(interval.reactionBlockIn)} / {Or(interval.reactionBlockHit)} (дистанция {interval.blockDistance})." ));
                         AddMerged(attack, span, result, false);
-                        if (interval.attackingParts.Count > 0)
-                            result.notes.Add($"Attack [{span.startFrame},{span.endFrame}) ({segment.animation}): hitbox в игре — {string.Join(", ", interval.attackingParts)}; у нас пока капсула по умолчанию.");
+                        if (interval.attackingParts.Count == 0)
+                            result.notes.Add($"Attack [{span.startFrame},{span.endFrame}) ({segment.animation}): у игры нет AttackingParts — hitbox по умолчанию FrameDate.");
+                        else if (package.capsules.Count == 0)
+                            result.notes.Add($"Attack [{span.startFrame},{span.endFrame}) ({segment.animation}): {string.Join(", ", interval.attackingParts)} — в пакете нет капсул, hitbox по умолчанию.");
+                        else
+                        {
+                            var missing = interval.attackingParts.FindAll(n => package.capsules.FindIndex(c => string.Equals(c.name, n, StringComparison.OrdinalIgnoreCase)) < 0);
+                            result.notes.Add($"Attack [{span.startFrame},{span.endFrame}) ({segment.animation}): hitbox — капсулы игры {string.Join(", ", interval.attackingParts)}" +
+                                             (missing.Count > 0 ? $", нет в модели: {string.Join(", ", missing)}" : "") + ".");
+                        }
                         continue;
                     }
 
@@ -369,6 +490,72 @@ namespace FrameDate.EditorTools
             return track;
         }
 
+        private static string Or(string value) => string.IsNullOrEmpty(value) ? "—" : value;
+
+        /// <summary>
+        /// Пополняет каталог реакций набора (Assets/FrameDate/Reactions/<набор>_Reactions.asset) реакциями пакета:
+        /// одноимённые обновляются, новые добавляются. Все реакции каталога — на одном скелете и капсулах.
+        /// </summary>
+        private static void FillReactions(Result result, MovePackage package)
+        {
+            if (package.reactions == null || package.reactions.Count == 0) return;
+            if (!AssetDatabase.IsValidFolder(FrameDateReactionCatalog.Folder)) AssetDatabase.CreateFolder("Assets/FrameDate", "Reactions");
+            string setName = string.IsNullOrEmpty(package.reactionSet) ? "Default" : package.reactionSet;
+            var catalog = LoadOrCreate<FrameDateReactionCatalog>(FrameDateReactionCatalog.Folder + "/" + SafeName(setName) + "_Reactions.asset");
+
+            int bones = package.boneParents.Length;
+            if (catalog.boneCount > 0 && (catalog.boneCount != bones || catalog.capsules.Count != package.capsules.Count))
+                throw new InvalidDataException($"Каталог реакций «{setName}» собран на другом скелете: {catalog.boneCount} костей и {catalog.capsules.Count} капсул, в пакете {bones} и {package.capsules.Count}.");
+
+            catalog.setName = setName;
+            catalog.boneCount = bones;
+            catalog.motionBone = package.motionBone;
+            catalog.forwardSign = package.forwardSign;
+            catalog.boneParents = (int[])package.boneParents.Clone();
+            catalog.capsules = package.capsules.ConvertAll(c => new FrameDatePose.PoseCapsule
+            {
+                name = c.name, hash = c.hash, part = c.part, radius = c.radius, collidable = c.collidable
+            });
+
+            int stride = bones * 3;
+            int capsuleStride = package.capsules.Count * 4;
+            var names = new List<string>();
+            foreach (var source in package.reactions)
+            {
+                var reaction = catalog.Find(source.name);
+                if (reaction == null)
+                {
+                    reaction = new FrameDateReactionCatalog.Reaction();
+                    catalog.reactions.Add(reaction);
+                }
+                reaction.name = source.name;
+                reaction.settingsFile = source.settingsFile;
+                reaction.animationFile = source.animationFile;
+                reaction.groups = new List<string>(source.groups);
+                reaction.frameCount = source.frameCount;
+                reaction.positions = new float[source.frameCount * stride];
+                reaction.capsulePoints = new float[source.frameCount * capsuleStride];
+                for (int f = 0; f < source.frameCount; f++)
+                {
+                    Array.Copy(source.frames[f].positions, 0, reaction.positions, f * stride, stride);
+                    if (capsuleStride > 0) Array.Copy(source.capsuleFrames[f].points, 0, reaction.capsulePoints, f * capsuleStride, capsuleStride);
+                }
+                reaction.intervals = new List<FrameDateReactionCatalog.ReactionInterval>();
+                foreach (var interval in source.intervals)
+                {
+                    if (string.IsNullOrEmpty(interval.name) || IsPresentation(interval.name)) continue;
+                    int start = interval.hasStart ? interval.start : 0;
+                    int end = (interval.hasEnd ? interval.end : source.frameCount - 1) + 1;
+                    reaction.intervals.Add(new FrameDateReactionCatalog.ReactionInterval { name = interval.name, start = start, end = Mathf.Min(end, source.frameCount) });
+                }
+                names.Add($"{source.name} ({source.frameCount} к.)");
+            }
+            catalog.reactions.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
+            EditorUtility.SetDirty(catalog);
+            result.move.reactions = catalog;
+            result.notes.Add($"Каталог реакций «{setName}»: {catalog.reactions.Count} реакций; из этого пакета — {string.Join(", ", names)}.");
+        }
+
         private static bool Fits(float[] values, int a, int b)
         {
             for (int f = a + 1; f < b; f++)
@@ -401,7 +588,16 @@ namespace FrameDate.EditorTools
                 bool seam = span.startFrame == other.endFrame || other.startFrame == span.endFrame;
                 if (!seam)
                     result.notes.Add($"«{track.name}»: [{other.startFrame},{other.endFrame}) и [{span.startFrame},{span.endFrame}) слиты.");
-                span = new FrameSpan(Mathf.Min(span.startFrame, other.startFrame), Mathf.Max(span.endFrame, other.endFrame));
+                var merged = new FrameSpan(Mathf.Min(span.startFrame, other.startFrame), Mathf.Max(span.endFrame, other.endFrame));
+                merged.attackingParts = new List<string>(span.attackingParts);
+                merged.reactionHit = string.IsNullOrEmpty(span.reactionHit) ? other.reactionHit : span.reactionHit;
+                merged.reactionCrit = string.IsNullOrEmpty(span.reactionCrit) ? other.reactionCrit : span.reactionCrit;
+                merged.reactionBlockIn = string.IsNullOrEmpty(span.reactionBlockIn) ? other.reactionBlockIn : span.reactionBlockIn;
+                merged.reactionBlockHit = string.IsNullOrEmpty(span.reactionBlockHit) ? other.reactionBlockHit : span.reactionBlockHit;
+                merged.blockDistance = Mathf.Max(span.blockDistance, other.blockDistance);
+                merged.unblockable = span.unblockable || other.unblockable;
+                foreach (var part in other.attackingParts) if (!merged.attackingParts.Contains(part)) merged.attackingParts.Add(part);
+                span = merged;
                 track.spans.RemoveAt(i);
             }
             track.spans.Add(span);

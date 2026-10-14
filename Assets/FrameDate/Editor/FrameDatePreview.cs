@@ -112,8 +112,10 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
 
             _utility.BeginPreview(rect, GUIStyle.none);
 
-            DrawCapsule(sim.HurtboxAt(move, Actor.Attacker, frame), 0f, _attackerMaterial, scale);
-            DrawCapsule(sim.HurtboxAt(move, Actor.Target, frame), 0f, _targetMaterial, scale);
+            // С капсулами из игры тела рисуются ими, иначе — капсулами тела FrameDate.
+            if (move.pose != null && move.pose.HasCapsules) DrawGameAttacker(move, sim, frame, scale);
+            else DrawCapsule(sim.HurtboxAt(move, Actor.Attacker, frame), 0f, _attackerMaterial, scale);
+            DrawGameTarget(move, sim, frame, scale);
 
             // Hitbox каждой дорожки Attack виден всегда и стоит перед телами.
             // Активный — цветом дорожки, на кадре контакта белый. Вне интервала — приглушённый,
@@ -127,6 +129,8 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
                 bool active;
                 int s = PickShownSpan(track, frame, out active);
                 if (s < 0) continue;
+                // Удары с деталями из игры рисует DrawGameAttacker — капсулами самих деталей.
+                if (FrameDateSimulation.UsesGameHitbox(move, track.spans[s])) continue;
 
                 Color color;
                 if (active)
@@ -227,7 +231,10 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
 
             // Скелет из игры — поверх капсул, под стенами.
             if (ShowSkeleton && move.pose != null && move.pose.IsValid && Event.current.type == EventType.Repaint)
+            {
                 DrawSkeleton(move, sim, f, sx, sy);
+                DrawTargetSkeleton(move, sim, f, sx, sy);
+            }
 
             // Стены: всё, что за ними, затемнено.
             float leftWall = sx(metrics.leftWallX);
@@ -261,6 +268,135 @@ public void Draw(Rect rect, FrameDateMove move, int frame)
             }
 
             DrawMinimap(rect, move, sim, f, middleX, pxPerUnit);
+        }
+
+        private static readonly Color IdlePartColor = new Color(0.62f, 0.64f, 0.70f);
+
+        /// <summary>
+        /// Атакующий капсулами из игры: Collidable — цветом тела; атакующие детали (из AttackingParts ударов приёма)
+        /// видны всегда — в активном интервале цветом дорожки, на кадре контакта белым, иначе приглушённо.
+        /// Летящее оружие видно, потому что его капсулы привязаны к костям оружия.
+        /// </summary>
+        private void DrawGameAttacker(FrameDateMove move, FrameDateSimulation sim, int frame, float scale)
+        {
+            var pose = move.pose;
+            int f = Mathf.Clamp(frame, 0, sim.frameCount - 1);
+            float x = sim.attackerX[f];
+
+            var parts = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            var active = new System.Collections.Generic.Dictionary<string, Color>(System.StringComparer.OrdinalIgnoreCase);
+            for (int t = 0; t < move.tracks.Count; t++)
+            {
+                var track = move.tracks[t];
+                if (track.role != TrackRole.Attack || track.actor != Actor.Attacker) continue;
+                for (int s = 0; s < track.spans.Count; s++)
+                {
+                    var span = track.spans[s];
+                    if (span.attackingParts == null) continue;
+                    int c = sim.FindContact(t, s);
+                    bool contactNow = c >= 0 && sim.contacts[c].frame == f;
+                    foreach (var part in span.attackingParts)
+                    {
+                        parts.Add(part);
+                        if (span.Contains(frame)) active[part] = contactNow ? Color.white : track.color;
+                    }
+                }
+            }
+
+            for (int c = 0; c < pose.capsules.Count; c++)
+            {
+                var info = pose.capsules[c];
+                bool attacking = parts.Contains(info.name);
+                if (!info.collidable && !attacking) continue;
+                var capsule = FrameDateSimulation.AttackerGameCapsule(move, frame, c, x);
+                if (attacking)
+                {
+                    Color color;
+                    if (!active.TryGetValue(info.name, out color)) color = Color.Lerp(IdlePartColor, BackgroundColor, 0.45f);
+                    DrawCapsule(capsule, -0.6f, NextHitMaterial(color), scale);
+                }
+                else
+                {
+                    DrawCapsule(capsule, 0f, _attackerMaterial, scale);
+                }
+            }
+        }
+
+        /// <summary>Цель капсулами Idle героя из игры, повёрнутая к атакующему.</summary>
+/// <summary>Цель: капсулами реакции, если она идёт; иначе капсулами Idle героя из игры или капсулой тела FrameDate.</summary>
+        private void DrawGameTarget(FrameDateMove move, FrameDateSimulation sim, int frame, float scale)
+        {
+            int f = Mathf.Clamp(frame, 0, sim.frameCount - 1);
+            FrameDateReactionCatalog.Reaction reaction;
+            int local;
+            FrameDateSimulation.ReactionPlay play;
+            if (sim.ActiveReaction(move, f, out reaction, out local, out play))
+            {
+                var catalog = move.reactions;
+                for (int c = 0; c < catalog.capsules.Count; c++)
+                    if (catalog.capsules[c].collidable)
+                        DrawCapsule(FrameDateSimulation.TargetReactionCapsule(move, reaction, local, c, sim.targetX[f]), 0f, _targetMaterial, scale);
+                return;
+            }
+
+            var pose = move.pose;
+            if (pose != null && pose.HasIdle)
+            {
+                for (int c = 0; c < pose.capsules.Count; c++)
+                    if (pose.capsules[c].collidable)
+                        DrawCapsule(FrameDateSimulation.TargetGameCapsule(move, c, sim.targetX[f]), 0f, _targetMaterial, scale);
+                return;
+            }
+
+            DrawCapsule(sim.HurtboxAt(move, Actor.Target, frame), 0f, _targetMaterial, scale);
+        }
+
+/// <summary>Скелет цели: поза реакции, если она идёт, иначе Idle героя. Цель смотрит в −X.</summary>
+        private static void DrawTargetSkeleton(FrameDateMove move, FrameDateSimulation sim, int f,
+            System.Func<float, float> sx, System.Func<float, float> sy)
+        {
+            float groundY = FrameDateSimulation.GroundY(move, Actor.Target);
+            float baseX = sim.targetX[f];
+            Vector3[] points;
+            int[] parents;
+
+            FrameDateReactionCatalog.Reaction reaction;
+            int local;
+            FrameDateSimulation.ReactionPlay play;
+            if (sim.ActiveReaction(move, f, out reaction, out local, out play))
+            {
+                var catalog = move.reactions;
+                float motionX = catalog.Position(reaction, local, catalog.motionBone).x;
+                parents = catalog.boneParents;
+                points = new Vector3[catalog.boneCount];
+                for (int i = 0; i < catalog.boneCount; i++)
+                {
+                    var p = catalog.Position(reaction, local, i);
+                    points[i] = new Vector3(sx(baseX - catalog.forwardSign * (p.x - motionX)), sy(groundY + p.y), 0f);
+                }
+            }
+            else
+            {
+                var pose = move.pose;
+                if (pose == null || !pose.HasIdle || pose.idlePositions == null || pose.idlePositions.Length != pose.boneCount * 3) return;
+                parents = pose.boneParents;
+                points = new Vector3[pose.boneCount];
+                for (int i = 0; i < pose.boneCount; i++)
+                {
+                    var p = pose.IdlePosition(i);
+                    points[i] = new Vector3(sx(baseX - pose.forwardSign * (p.x - pose.idleMotionX)), sy(groundY + p.y), 0f);
+                }
+            }
+
+            var old = Handles.color;
+            Handles.color = new Color(1f, 1f, 1f, 0.45f);
+            for (int i = 0; i < points.Length; i++)
+            {
+                int parent = parents[i];
+                if (parent <= 1) continue;
+                Handles.DrawAAPolyLine(2f, points[parent], points[i]);
+            }
+            Handles.color = old;
         }
 
         private static void DrawDashedLine(Rect rect, float x, string label, bool labelLeft)
@@ -398,6 +534,7 @@ private void DrawCapsule(Capsule2D capsule, float z, Material material, float sc
             if (sim.pushboxBlocked[f]) info += "   · пушбоксы упёрлись";
             if (sim.attackerAtLimit[f] || sim.targetAtLimit[f]) info += sim.cameraEngaged[f] ? "   · упор в камерную границу" : "   · упор в стену";
             else if (sim.cameraEngaged[f]) info += "   · камерные границы включены";
+            if (sim.wallRecoil[f]) info += "   · отдача от стены";
             GUI.Label(new Rect(rect.x + 6f, rect.y + 22f, rect.width - 12f, 16f), info, label);
 
             string contactLine = null;
@@ -408,8 +545,20 @@ private void DrawCapsule(Capsule2D capsule, float z, Material material, float sc
                 var track = move.tracks[c.trackIndex];
                 var span = track.spans[c.spanIndex];
                 contactLine = $"КОНТАКТ · «{track.name}» [{span.startFrame},{span.endFrame}) · " +
-                              $"отталкивание {c.pushDistance:0.#} Units за {c.pushEndFrame - c.frame} кадр.";
+                              (string.IsNullOrEmpty(c.reaction)
+                                  ? $"отталкивание {c.pushDistance:0.#} Units за {c.pushEndFrame - c.frame} кадр."
+                                  : $"реакция {c.reaction}");
                 break;
+            }
+
+            FrameDateReactionCatalog.Reaction activeReaction;
+            int reactionFrame;
+            FrameDateSimulation.ReactionPlay activePlay;
+            if (sim.ActiveReaction(move, f, out activeReaction, out reactionFrame, out activePlay))
+            {
+                var reactionStyle = new GUIStyle(EditorStyles.boldLabel) { normal = { textColor = new Color(0.55f, 0.80f, 1f) } };
+                GUI.Label(new Rect(rect.x + 6f, rect.y + 56f, rect.width - 12f, 18f),
+                    $"Цель: {FrameDateReactionCatalog.KindLabel(activeReaction)} · {activeReaction.name} · кадр {reactionFrame + 1} из {activeReaction.frameCount}", reactionStyle);
             }
 
             if (contactLine != null)

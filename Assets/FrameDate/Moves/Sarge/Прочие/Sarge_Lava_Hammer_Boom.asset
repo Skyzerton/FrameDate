@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78940226265f4e44bae150dd3e886ef, type: 3}
+  m_Name: Sarge_Lava_Hammer_Boom
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
+  moveName: Sarge_Lava_Hammer_Boom
+  frameRate: 60
+  durationFrames: 401
+  attackerPosition: {x: -140, y: 0}
+  targetPosition: {x: 140, y: 0}
+  metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
+  pose: {fileID: 11400000, guid: 7c44131bd5514d444ab5bae88242bf6b, type: 2}
+  reactions: {fileID: 11400000, guid: c0f0802565d2e77439d739fc776ddf20, type: 2}
+  targetOutcome: 0
+  startOffset: 0
+  attackerBody:
+    radius: 30
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  targetBody:
+    radius: 30
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  tracks:
+  - name: Attack
+    color: {r: 1, g: 0.35, b: 0.3, a: 1}
+    actor: 0
+    role: 1
+    spans:
+    - startFrame: 2
+      endFrame: 6
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts:
+      - Magic_attacking_edge
+      outcome: 0
+      reactionHit: H_Head_Short_Average
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: Block_High_Short_Fists_Hit
+      blockDistance: 100
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: "\u041F\u0440\u043E\u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435"
+    color: {r: 0.95, g: 0.95, b: 0.55, a: 1}
+    actor: 0
+    role: 8
+    spans: []

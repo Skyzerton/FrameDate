@@ -1,0 +1,743 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78940226265f4e44bae150dd3e886ef, type: 3}
+  m_Name: Widow_Spinning_Slash
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
+  moveName: Widow_Spinning_Slash
+  frameRate: 60
+  durationFrames: 129
+  attackerPosition: {x: -140, y: 0}
+  targetPosition: {x: 140, y: 0}
+  metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
+  pose: {fileID: 11400000, guid: 1a3f0866c2369b740b99e4797fad28f0, type: 2}
+  reactions: {fileID: 11400000, guid: 78b93fe730c56204eb91c10146f417b3, type: 2}
+  targetOutcome: 0
+  startOffset: 0
+  attackerBody:
+    radius: 30
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  targetBody:
+    radius: 30
+    height: 180
+    overridePushWidth: 0
+    pushWidth: 60
+    mass: 1
+  tracks:
+  - name: Attack
+    color: {r: 1, g: 0.35, b: 0.3, a: 1}
+    actor: 0
+    role: 1
+    spans:
+    - startFrame: 38
+      endFrame: 44
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts:
+      - Fan_Top_Attacking_Edge_r
+      - Fan_Bottom_Attacking_Edge_r
+      - Fan_Center_Attacking_Edge_r
+      - Hand_right
+      - Forearm_right
+      outcome: 0
+      reactionHit: H_Chest_Short_Fast_23
+      reactionCrit: H_Chest_Middle_Average_Critical_Fall
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 50
+      endFrame: 56
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts:
+      - Fan_Top_Attacking_Edge_l
+      - Fan_Bottom_Attacking_Edge_l
+      - Fan_Center_Attacking_Edge_l
+      - Hand_left
+      - Forearm_left
+      outcome: 0
+      reactionHit: H_Chest_Middle_Slow
+      reactionCrit: H_Chest_Middle_Average_Critical_Fall
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Uninterrupt
+    color: {r: 1, g: 0.75, b: 0.25, a: 1}
+    actor: 0
+    role: 4
+    spans:
+    - startFrame: 0
+      endFrame: 105
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Blocking
+    color: {r: 0.35, g: 0.7, b: 1, a: 1}
+    actor: 0
+    role: 2
+    spans:
+    - startFrame: 105
+      endFrame: 129
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Throwable
+    color: {r: 0.75, g: 0.55, b: 1, a: 1}
+    actor: 0
+    role: 3
+    spans:
+    - startFrame: 58
+      endFrame: 129
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Transition_To_Another_Attack
+    color: {r: 0.5525, g: 0.85, b: 0.85, a: 1}
+    actor: 0
+    role: 0
+    spans:
+    - startFrame: 4
+      endFrame: 7
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Widow_Spinning_Slash_FX
+    color: {r: 0.85, g: 0.5525, b: 0.7706668, a: 1}
+    actor: 0
+    role: 0
+    spans:
+    - startFrame: 38
+      endFrame: 129
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Epic_Wave
+    color: {r: 0.64670837, g: 0.85, b: 0.5525, a: 1}
+    actor: 0
+    role: 0
+    spans:
+    - startFrame: 42
+      endFrame: 129
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Right_Hand
+    color: {r: 0.85, g: 0.5525, b: 0.63183326, a: 1}
+    actor: 0
+    role: 0
+    spans:
+    - startFrame: 1
+      endFrame: 45
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: Left_Hand
+    color: {r: 0.85, g: 0.62687504, b: 0.5525, a: 1}
+    actor: 0
+    role: 0
+    spans:
+    - startFrame: 48
+      endFrame: 59
+      distance: 50
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+  - name: "\u041F\u0440\u043E\u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435"
+    color: {r: 0.95, g: 0.95, b: 0.55, a: 1}
+    actor: 0
+    role: 8
+    spans:
+    - startFrame: 0
+      endFrame: 2
+      distance: -3.8710938
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 2
+      endFrame: 8
+      distance: -26.851562
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 8
+      endFrame: 16
+      distance: -53.625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 16
+      endFrame: 20
+      distance: -20.875
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 20
+      endFrame: 23
+      distance: -9.0625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 23
+      endFrame: 26
+      distance: -0.5625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 26
+      endFrame: 29
+      distance: 5.5
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 29
+      endFrame: 31
+      distance: 10.9375
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 31
+      endFrame: 32
+      distance: 8.5625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 32
+      endFrame: 33
+      distance: 10.625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 33
+      endFrame: 35
+      distance: 27.1875
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 35
+      endFrame: 38
+      distance: 46.054688
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 38
+      endFrame: 40
+      distance: 24.429688
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 40
+      endFrame: 42
+      distance: 19.015625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 42
+      endFrame: 46
+      distance: 29.03125
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 46
+      endFrame: 49
+      distance: 20.46875
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 49
+      endFrame: 51
+      distance: 9.25
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 51
+      endFrame: 55
+      distance: 9.125
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 55
+      endFrame: 60
+      distance: 4.625
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 60
+      endFrame: 78
+      distance: 1.4375
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 78
+      endFrame: 93
+      distance: -0.3125
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 93
+      endFrame: 102
+      distance: 6.4375
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 102
+      endFrame: 110
+      distance: 6.9375
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1
+    - startFrame: 110
+      endFrame: 122
+      distance: 2.6875
+      profile: 0
+      hitOffset: {x: 20, y: 25}
+      hitLength: 55
+      hitRadius: 12
+      pushDistance: 30
+      pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
+      hurtHeightScale: 0.6
+      hurtRadiusScale: 1

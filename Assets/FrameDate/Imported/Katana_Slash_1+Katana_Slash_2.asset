@@ -15,10 +15,13 @@ MonoBehaviour:
   moveName: Katana_Slash_1+Katana_Slash_2
   frameRate: 60
   durationFrames: 54
-  attackerPosition: {x: -225, y: 0}
-  targetPosition: {x: 225, y: 0}
+  attackerPosition: {x: -140, y: 0}
+  targetPosition: {x: 140, y: 0}
   metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
   pose: {fileID: 11400000, guid: 241759e5a56efd247b497dc7fa9f9ba0, type: 2}
+  reactions: {fileID: 11400000, guid: 9357e592bc1b6ee4291c8deab8e78059, type: 2}
+  targetOutcome: 2
+  startOffset: 0
   attackerBody:
     radius: 30
     height: 180
@@ -46,6 +49,15 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts:
+      - Katana_Attacking_Edge_l
+      outcome: 0
+      reactionHit: H_Head_Middle_Average
+      reactionCrit: H_Head_Middle_Average_Critical_Fall
+      reactionBlockIn: Block_High_Katana_InOut
+      reactionBlockHit: Block_High_Katana_Hit
+      blockDistance: 200
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 21
@@ -57,6 +69,16 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts:
+      - Katana_Attacking_Edge_l
+      - Katana_Handle_Attacking_Edge_l
+      outcome: 0
+      reactionHit: H_Chest_Heavy_Slow
+      reactionCrit: H_Chest_Middle_Average_Critical_Fall
+      reactionBlockIn: Block_Middle_Katana_InOut
+      reactionBlockHit: Block_Middle_Heavy_Katana_Hit
+      blockDistance: 290
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Uninterrupt
@@ -73,6 +95,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Throwable
@@ -89,6 +119,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Blocking
@@ -105,6 +143,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: "\u0423\u0434\u0430\u0440 1: Katana_Slash_1"
@@ -121,6 +167,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: "\u0423\u0434\u0430\u0440 2: Katana_Slash_2"
@@ -137,6 +191,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Transitional
@@ -153,6 +215,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Transition_To_Another_Attack
@@ -169,6 +239,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Kibo_dash_start
@@ -185,6 +263,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 20
@@ -196,6 +282,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: Kibo_Dash_Invincible
@@ -212,6 +306,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 21
@@ -223,6 +325,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
   - name: "\u041F\u0440\u043E\u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435"
@@ -239,6 +349,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 2
@@ -250,6 +368,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 3
@@ -261,6 +387,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 4
@@ -272,6 +406,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 8
@@ -283,6 +425,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 11
@@ -294,6 +444,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 13
@@ -305,6 +463,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 14
@@ -316,6 +482,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 15
@@ -327,6 +501,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 19
@@ -338,6 +520,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 23
@@ -349,6 +539,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 24
@@ -360,6 +558,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 25
@@ -371,6 +577,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 26
@@ -382,6 +596,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 28
@@ -393,6 +615,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 34
@@ -404,6 +634,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 38
@@ -415,6 +653,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 42
@@ -426,6 +672,14 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
     - startFrame: 48
@@ -437,5 +691,13 @@ MonoBehaviour:
       hitRadius: 12
       pushDistance: 30
       pushFrames: 6
+      attackingParts: []
+      outcome: 0
+      reactionHit: 
+      reactionCrit: 
+      reactionBlockIn: 
+      reactionBlockHit: 
+      blockDistance: 0
+      unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1

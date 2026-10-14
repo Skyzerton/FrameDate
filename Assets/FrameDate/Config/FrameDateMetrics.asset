@@ -15,7 +15,7 @@ MonoBehaviour:
   unitsPerMeter: 100
   leftWallX: -710
   rightWallX: 675.7
-  startDistance: 450
+  startDistance: 280
   idleBodyWidth: 60
   standingMass: 1
   maxDistanceThreshold: 500

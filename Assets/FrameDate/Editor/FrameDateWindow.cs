@@ -159,6 +159,10 @@ private Label _frameReadout;
             import.tooltip = "Пакет *.fdmove.json из экспортёра игры (SFA → FrameDate → Экспорт приёма в FrameDate).";
             bar.Add(import);
 
+            var sfa = new ToolbarButton(Sfa.SfaImportWindow.Open) { text = "Импорт из SFA..." };
+            sfa.tooltip = "Прямо из папки проекта игры: FrameDate сам читает настройки, анимации и модели, игра не нужна.";
+            bar.Add(sfa);
+
             bar.Add(new ToolbarSpacer { style = { flexGrow = 1f } });
 
             _frameReadout = new Label(" ");
@@ -261,6 +265,7 @@ private void RebuildInspector()
             _inspector.Add(duration);
 
             if (_move.pose != null) AddSourceSection(_move.pose);
+            AddReactionsSection();
 
             _inspector.Add(Header("Метрики игры"));
             var metricsField = new ObjectField("Конфиг") { objectType = typeof(FrameDateMetrics), allowSceneObjects = false, value = _move.metrics };
@@ -288,6 +293,28 @@ private void RebuildInspector()
             { text = $"Старт из метрик: ±{metrics.startDistance * 0.5f:0.#}" };
             startButton.tooltip = "Ставит акторов на стартовую дистанцию раунда из конфига, симметрично относительно X = 0.";
             _inspector.Add(startButton);
+
+            // Сдвиг обоих стартов по арене: так приём проверяют у стен; дистанция между бойцами сохраняется.
+            float minOffset, maxOffset;
+            _move.StartOffsetRange(out minOffset, out maxOffset);
+            var offsetSlider = new Slider("Сдвиг на арене", Mathf.Min(minOffset, maxOffset), Mathf.Max(minOffset, maxOffset))
+            {
+                value = _move.startOffset,
+                showInputField = true
+            };
+            offsetSlider.tooltip = "Двигает обоих бойцов по арене, Units. 0 — как задано в «Старт». " +
+                                   "Края — бойцы стоят центром в стене, как motion-кость в игре.";
+            offsetSlider.RegisterValueChangedCallback(evt => Edit("FrameDate: сдвиг старта", () => _move.startOffset = evt.newValue));
+            _inspector.Add(offsetSlider);
+
+            var offsetButtons = new VisualElement();
+            offsetButtons.style.flexDirection = FlexDirection.Row;
+            offsetButtons.Add(new Button(() => SetStartOffset(minOffset)) { text = "Угол атакующего", tooltip = "Атакующий спиной к левой стене." });
+            offsetButtons.Add(new Button(() => SetStartOffset(0f)) { text = "Центр" });
+            offsetButtons.Add(new Button(() => SetStartOffset(maxOffset)) { text = "Угол цели", tooltip = "Цель спиной к правой стене." });
+            _inspector.Add(offsetButtons);
+            _inspector.Add(Hint($"На арене: атакующий X {_move.StartPosition(Actor.Attacker).x:0.#}, цель X {_move.StartPosition(Actor.Target).x:0.#}; " +
+                                $"стены {metrics.leftWallX:0.#} … {metrics.rightWallX:0.#}."));
 
             _inspector.Add(Header("Акторы"));
             AddActorFields("Атакующий", Actor.Attacker);
@@ -495,21 +522,37 @@ private void RebuildInspector()
                 return;
             }
 
-            _inspector.Add(Header("Hitbox"));
-            var offset = new Vector2Field("Смещение") { value = span.hitOffset };
-            offset.tooltip = "Начало оси hitbox от центра тела атакующего. X — вперёд.";
-            offset.RegisterValueChangedCallback(evt => Edit("FrameDate: hitbox", () => span.hitOffset = evt.newValue));
-            _inspector.Add(offset);
-            AddFloat("Длина", span.hitLength, "FrameDate: hitbox", v => span.hitLength = v, "Длина оси вперёд. 0 — шар.");
-            AddFloat("Радиус", span.hitRadius, "FrameDate: hitbox", v => span.hitRadius = v);
+            if (FrameDateSimulation.UsesGameHitbox(_move, span))
+            {
+                _inspector.Add(Header("Hitbox: из игры"));
+                _inspector.Add(Hint("Детали: " + string.Join(", ", span.attackingParts) + ".\n" +
+                                    "Капсулы игры на каждом кадре. Контакт — как в игре: в 2D, по области, которую деталь заметает " +
+                                    "за кадр, против капсул цели. Ручные параметры hitbox не используются."));
+            }
+            else
+            {
+                _inspector.Add(Header("Hitbox"));
+                var offset = new Vector2Field("Смещение") { value = span.hitOffset };
+                offset.tooltip = "Начало оси hitbox от центра тела атакующего. X — вперёд.";
+                offset.RegisterValueChangedCallback(evt => Edit("FrameDate: hitbox", () => span.hitOffset = evt.newValue));
+                _inspector.Add(offset);
+                AddFloat("Длина", span.hitLength, "FrameDate: hitbox", v => span.hitLength = v, "Длина оси вперёд. 0 — шар.");
+                AddFloat("Радиус", span.hitRadius, "FrameDate: hitbox", v => span.hitRadius = v);
+            }
 
-            _inspector.Add(Header("Отталкивание"));
-            AddFloat("Расстояние", span.pushDistance, "FrameDate: отталкивание", v => span.pushDistance = v,
-                "На сколько цель отъезжает от атакующего при контакте.");
-            var frames = new IntegerField("Кадров") { value = span.pushFrames };
-            frames.tooltip = "За сколько кадров проходит отталкивание, начиная с кадра контакта.";
-            frames.RegisterValueChangedCallback(evt => Edit("FrameDate: отталкивание", () => span.pushFrames = evt.newValue));
-            _inspector.Add(frames);
+            AddReactionFields(span);
+
+            FrameDateSimulation.ReactionKind reactionKind;
+            if (FrameDateSimulation.ResolveReaction(_move, span, true, out reactionKind) == null)
+            {
+                _inspector.Add(Header("Отталкивание"));
+                AddFloat("Расстояние", span.pushDistance, "FrameDate: отталкивание", v => span.pushDistance = v,
+                    "На сколько цель отъезжает от атакующего при контакте.");
+                var frames = new IntegerField("Кадров") { value = span.pushFrames };
+                frames.tooltip = "За сколько кадров проходит отталкивание, начиная с кадра контакта.";
+                frames.RegisterValueChangedCallback(evt => Edit("FrameDate: отталкивание", () => span.pushFrames = evt.newValue));
+                _inspector.Add(frames);
+            }
 
             _contactReadout = Hint(string.Empty);
             _contactReadout.style.color = new Color(1f, 0.85f, 0.45f);
@@ -611,6 +654,75 @@ private void RebuildInspector()
                 Debug.LogException(e);
                 EditorUtility.DisplayDialog("Импорт приёма", "Не удалось импортировать: " + e.Message, "OK");
             }
+        }
+
+        private static readonly List<string> OutcomeChoices = new List<string> { "Попадание", "Блок", "Крит" };
+        private static readonly List<string> SpanOutcomeChoices = new List<string> { "Как у приёма", "Попадание", "Блок", "Крит" };
+
+        /// <summary>Каталог реакций и исход по умолчанию для ударов приёма.</summary>
+        private void AddReactionsSection()
+        {
+            _inspector.Add(Header("Реакции цели"));
+
+            var catalogField = new ObjectField("Каталог") { objectType = typeof(FrameDateReactionCatalog), allowSceneObjects = false, value = _move.reactions };
+            catalogField.tooltip = "Реакции цели из игры. Пусто — цель только отталкивается.";
+            catalogField.RegisterValueChangedCallback(evt =>
+            {
+                Edit("FrameDate: каталог реакций", () => _move.reactions = evt.newValue as FrameDateReactionCatalog);
+                _inspector.schedule.Execute(RebuildInspector);
+            });
+            _inspector.Add(catalogField);
+
+            var outcome = new DropdownField("Исход для цели", OutcomeChoices, (int)_move.targetOutcome);
+            outcome.tooltip = "Что делает цель на ударах приёма; отдельный удар может переопределить.";
+            outcome.RegisterValueChangedCallback(evt =>
+            {
+                Edit("FrameDate: исход для цели", () => _move.targetOutcome = (TargetOutcome)OutcomeChoices.IndexOf(evt.newValue));
+                _inspector.schedule.Execute(RebuildInspector);
+            });
+            _inspector.Add(outcome);
+
+            _inspector.Add(Hint(_move.reactions == null
+                ? "Каталога нет — цель только отталкивается."
+                : $"Набор «{_move.reactions.setName}»: {_move.reactions.reactions.Count} реакций. Попадание — реакция удара, крит — её " +
+                  "критический вариант, блок — подъём защиты на старте удара в пределах дистанции блока и удар в блок на контакте. " +
+                  "Реакция сдвигает цель своей анимацией; новый удар обрывает текущую реакцию."));
+        }
+
+        /// <summary>Исход удара и реакции, которые он вызывает.</summary>
+        private void AddReactionFields(FrameSpan span)
+        {
+            _inspector.Add(Header("Реакция цели"));
+
+            var outcome = new DropdownField("Исход", SpanOutcomeChoices, (int)span.outcome);
+            outcome.RegisterValueChangedCallback(evt =>
+            {
+                Edit("FrameDate: исход удара", () => span.outcome = (SpanOutcome)SpanOutcomeChoices.IndexOf(evt.newValue));
+                _inspector.schedule.Execute(RebuildInspector);
+            });
+            _inspector.Add(outcome);
+
+            var effective = _move.OutcomeFor(span);
+            FrameDateSimulation.ReactionKind kind;
+            string onContact = FrameDateSimulation.ResolveReaction(_move, span, true, out kind);
+            string guard = FrameDateSimulation.ResolveReaction(_move, span, false, out kind);
+            var lines = new List<string>
+            {
+                $"Итог: {OutcomeChoices[(int)effective]}" + (span.unblockable ? " · неблокируемый" : "") +
+                (onContact != null ? $" → {onContact}" : " → реакции в каталоге нет, отталкивание FrameDate")
+            };
+            if (guard != null) lines.Add($"Подъём защиты: {guard}, если на старте удара цель ближе {span.blockDistance:0} Units.");
+            if (!string.IsNullOrEmpty(span.reactionHit) || !string.IsNullOrEmpty(span.reactionBlockHit))
+                lines.Add($"Из игры: попадание {Dash(span.reactionHit)}, крит {Dash(span.reactionCrit)}, блок {Dash(span.reactionBlockIn)} / {Dash(span.reactionBlockHit)}.");
+            _inspector.Add(Hint(string.Join("\n", lines)));
+        }
+
+        private static string Dash(string value) => string.IsNullOrEmpty(value) ? "—" : value;
+
+        private void SetStartOffset(float value)
+        {
+            Edit("FrameDate: сдвиг старта", () => _move.startOffset = value);
+            _inspector.schedule.Execute(RebuildInspector);
         }
 
         private static Label Header(string text)

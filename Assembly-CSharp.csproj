@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\FrameDate\Runtime\FrameDatePose.cs" />
+    <Compile Include="Assets\FrameDate\Runtime\FrameDateReactionCatalog.cs" />
     <Compile Include="Assets\FrameDate\Runtime\FrameDateMetrics.cs" />
     <Compile Include="Assets\FrameDate\Runtime\FrameDateMove.cs" />
     <Compile Include="Assets\FrameDate\Runtime\FrameDateSimulation.cs" />

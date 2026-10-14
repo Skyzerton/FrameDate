@@ -441,6 +441,11 @@
 "Assets/FrameDate/Editor/FrameDatePreview.cs"
 "Assets/FrameDate/Editor/FrameDateTimelineView.cs"
 "Assets/FrameDate/Editor/FrameDateWindow.cs"
+"Assets/FrameDate/Editor/Sfa/SfaBatchImport.cs"
+"Assets/FrameDate/Editor/Sfa/SfaFormats.cs"
+"Assets/FrameDate/Editor/Sfa/SfaImportWindow.cs"
+"Assets/FrameDate/Editor/Sfa/SfaMoveExporter.cs"
+"Assets/FrameDate/Editor/Sfa/SfaReferenceCheck.cs"
 -langversion:9.0
 /deterministic
 /optimize+

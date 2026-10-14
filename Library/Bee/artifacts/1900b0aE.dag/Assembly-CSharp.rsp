@@ -422,6 +422,7 @@
 "Assets/FrameDate/Runtime/FrameDateMetrics.cs"
 "Assets/FrameDate/Runtime/FrameDateMove.cs"
 "Assets/FrameDate/Runtime/FrameDatePose.cs"
+"Assets/FrameDate/Runtime/FrameDateReactionCatalog.cs"
 "Assets/FrameDate/Runtime/FrameDateSimulation.cs"
 -langversion:9.0
 /deterministic

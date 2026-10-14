@@ -28,6 +28,8 @@ namespace FrameDate
         public int spanIndex;
         public int frame;
         public int pushEndFrame;
+        /// <summary>Реакция цели из каталога, запущенная контактом; пусто — отталкивание FrameDate.</summary>
+        public string reaction;
         public float pushDistance;
     }
 
@@ -61,7 +63,31 @@ namespace FrameDate
         /// <summary>Актор на кадре упёрся в стену или камерную границу.</summary>
         public readonly bool[] attackerAtLimit;
         public readonly bool[] targetAtLimit;
+        /// <summary>На кадре граница вытолкнула одного из пары и, раз пушбоксы расталкивались, сдвинула и другого.</summary>
+        public readonly bool[] wallRecoil;
         public readonly List<FrameContact> contacts = new List<FrameContact>();
+
+        public enum ReactionKind
+        {
+            Hit,
+            Crit,
+            BlockIn,
+            BlockHit
+        }
+
+        /// <summary>Реакция цели: анимация из каталога, кадр начала и обрыва (новая реакция обрывает прежнюю).</summary>
+        public struct ReactionPlay
+        {
+            public string name;
+            public ReactionKind kind;
+            public int startFrame;
+            /// <summary>Кадр обрыва новой реакцией; int.MaxValue — не обрывалась.</summary>
+            public int endFrame;
+            public int trackIndex;
+            public int spanIndex;
+        }
+
+        public readonly List<ReactionPlay> reactions = new List<ReactionPlay>();
 
         private readonly float _attackerY;
         private readonly float _targetY;
@@ -77,6 +103,7 @@ namespace FrameDate
             cameraEngaged = new bool[frameCount];
             attackerAtLimit = new bool[frameCount];
             targetAtLimit = new bool[frameCount];
+            wallRecoil = new bool[frameCount];
             _attackerY = move.attackerPosition.y;
             _targetY = move.targetPosition.y;
         }
@@ -97,15 +124,17 @@ public static FrameDateSimulation Run(FrameDateMove move)
             float shiftT = 0f;
             // Камерные границы, как в игре, считаются от положения на прошлом кадре: иначе середина
             // съезжает за отходящим, и неподвижного противника тащит следом.
-            float prevA = move.attackerPosition.x;
-            float prevT = move.targetPosition.x;
+            float startA = move.StartPosition(Actor.Attacker).x;
+            float startT = move.StartPosition(Actor.Target).x;
+            float prevA = startA;
+            float prevT = startT;
             var contacted = new HashSet<int>();
 
             for (int f = 0; f < sim.frameCount; f++)
             {
                 // Атакующий смотрит вправо (+X), цель — влево (−X): «вперёд» у них разного знака.
-                float rawA = move.attackerPosition.x + AuthoredOffset(move, Actor.Attacker, f) + shiftA;
-                float rawT = move.targetPosition.x - AuthoredOffset(move, Actor.Target, f) + shiftT;
+                float rawA = startA + AuthoredOffset(move, Actor.Attacker, f) + shiftA;
+                float rawT = startT - AuthoredOffset(move, Actor.Target, f) + shiftT;
 
                 // Отталкивание уводит цель от атакующего, то есть в +X.
                 for (int c = 0; c < sim.contacts.Count; c++)
@@ -115,6 +144,9 @@ public static FrameDateSimulation Run(FrameDateMove move)
                     rawT += contact.pushDistance *
                             MoveProfiles.Evaluate(PushProfile, (float)(f - contact.frame) / length);
                 }
+
+                // Реакции цели сдвигают её собственной анимацией (отлёт), вместо отталкивания FrameDate.
+                rawT += sim.ReactionOffset(move, f);
 
                 float xa = rawA;
                 float xt = rawT;
@@ -142,26 +174,19 @@ public static FrameDateSimulation Run(FrameDateMove move)
                     sim.cameraEngaged[f] = true;
                 }
 
-                bool pinnedA = false;
-                bool pinnedT = false;
-                if (xa < left) { xa = left; pinnedA = true; }
-                else if (xa > right) { xa = right; pinnedA = true; }
-                if (xt > right) { xt = right; pinnedT = true; }
-                else if (xt < left) { xt = left; pinnedT = true; }
-
-                // 3. Если граница вдавила одного в другого, остаток перекрытия достаётся тому, кто не упёрся.
-                overlap = minGap - (xt - xa);
-                if (overlap > 0f)
-                {
-                    if (pinnedT && !pinnedA) xa -= overlap;
-                    else if (pinnedA && !pinnedT) xt += overlap;
-                    else
-                    {
-                        xa -= overlap * attackerShare;
-                        xt += overlap * (1f - attackerShare);
-                    }
-                    sim.pushboxBlocked[f] = true;
-                }
+                // 3. Как UpdateBordersRepulsion в игре: граница выталкивает заступившего на величину заступа, а если на этом
+                //    кадре пушбоксы пары расталкивались — на ту же величину сдвигается и противник. Так стена «отдаёт»
+                //    атакующему, когда он загоняет цель в угол, и бойцы не проходят ни сквозь стену, ни друг сквозь друга.
+                bool pairShifted = sim.pushboxBlocked[f];
+                float wallA = xa < left ? left - xa : (xa > right ? right - xa : 0f);
+                xa += wallA;
+                if (wallA != 0f && pairShifted) xt += wallA;
+                float wallT = xt > right ? right - xt : (xt < left ? left - xt : 0f);
+                xt += wallT;
+                if (wallT != 0f && pairShifted) xa += wallT;
+                bool pinnedA = wallA != 0f;
+                bool pinnedT = wallT != 0f;
+                sim.wallRecoil[f] = pairShifted && (pinnedA || pinnedT);
 
                 // Сдвиги от пушбоксов и границ копятся: вытолкнутый остаётся там, куда его вытолкнули.
                 shiftA += xa - rawA;
@@ -178,7 +203,23 @@ public static FrameDateSimulation Run(FrameDateMove move)
 
                 // Форма тела на этом кадре учитывает дорожки Hurtbox: приседание цели уводит hurtbox вниз,
                 // приседание атакующего опускает центр тела, а с ним и hitbox.
-                var hurtbox = ShapedHurtbox(move, Actor.Target, xt, f);
+                // Подъём защиты: на старте удара с исходом «блок», если цель ближе дистанции блока (Block: Distance в игре).
+                for (int t = 0; t < move.tracks.Count; t++)
+                {
+                    var track = move.tracks[t];
+                    if (track.role != TrackRole.Attack || track.actor != Actor.Attacker) continue;
+                    for (int s = 0; s < track.spans.Count; s++)
+                    {
+                        var span = track.spans[s];
+                        if (span.startFrame != f) continue;
+                        ReactionKind kind;
+                        string guard = ResolveReaction(move, span, false, out kind);
+                        if (guard == null || xt - xa > span.blockDistance) continue;
+                        sim.StartReaction(guard, kind, f, t, s);
+                    }
+                }
+
+                var hurtboxes = sim.TargetHurtboxesAt(move, f, xt);
                 var attackerCenter = ShapedCenter(move, Actor.Attacker, xa, f);
 
                 for (int t = 0; t < move.tracks.Count; t++)
@@ -193,7 +234,10 @@ public static FrameDateSimulation Run(FrameDateMove move)
 
                         int key = t * 65536 + s;
                         if (contacted.Contains(key)) continue;
-                        if (!Overlaps(Hitbox(span, attackerCenter), hurtbox)) continue;
+                        if (!sim.SpanHits(move, span, f, attackerCenter, hurtboxes)) continue;
+
+                        ReactionKind reactionKind;
+                        string reaction = ResolveReaction(move, span, true, out reactionKind);
 
                         contacted.Add(key);
                         sim.contacts.Add(new FrameContact
@@ -202,8 +246,11 @@ public static FrameDateSimulation Run(FrameDateMove move)
                             spanIndex = s,
                             frame = f,
                             pushEndFrame = f + Mathf.Max(1, span.pushFrames),
-                            pushDistance = Mathf.Max(0f, span.pushDistance)
+                            // С реакцией из каталога цель сдвигает её анимация, а не отталкивание FrameDate.
+                            pushDistance = reaction != null ? 0f : Mathf.Max(0f, span.pushDistance),
+                            reaction = reaction
                         });
+                        if (reaction != null) sim.StartReaction(reaction, reactionKind, f, t, s);
                     }
                 }
             }
@@ -237,6 +284,230 @@ public static FrameDateSimulation Run(FrameDateMove move)
 
         public Vector2 TargetCenter(int frame) =>
             frameCount == 0 ? Vector2.zero : new Vector2(targetX[Clamp(frame)], _targetY);
+
+        /// <summary>
+        /// Реакция удара на его итоговый исход: имя анимации из каталога и вид.
+        /// До контакта (onContact = false) — только подъём защиты для исхода «блок». На контакте: попадание; крит
+        /// (если у удара нет крит-реакции — обычная); блок — удар в блок (нет — подъём защиты).
+        /// null — для этого исхода в каталоге реакции нет.
+        /// </summary>
+        public static string ResolveReaction(FrameDateMove move, FrameSpan span, bool onContact, out ReactionKind kind)
+        {
+            kind = ReactionKind.Hit;
+            if (move.reactions == null) return null;
+            var outcome = move.OutcomeFor(span);
+            string name = null;
+            if (!onContact)
+            {
+                if (outcome != TargetOutcome.Block) return null;
+                kind = ReactionKind.BlockIn;
+                name = span.reactionBlockIn;
+            }
+            else if (outcome == TargetOutcome.Crit && !string.IsNullOrEmpty(span.reactionCrit))
+            {
+                kind = ReactionKind.Crit;
+                name = span.reactionCrit;
+            }
+            else if (outcome == TargetOutcome.Block)
+            {
+                kind = ReactionKind.BlockHit;
+                name = !string.IsNullOrEmpty(span.reactionBlockHit) ? span.reactionBlockHit : span.reactionBlockIn;
+            }
+            else
+            {
+                name = span.reactionHit;
+            }
+            return move.reactions.IsValid(move.reactions.Find(name)) ? name : null;
+        }
+
+        private void StartReaction(string name, ReactionKind kind, int frame, int track, int span)
+        {
+            for (int i = 0; i < reactions.Count; i++)
+            {
+                var play = reactions[i];
+                if (play.endFrame > frame)
+                {
+                    play.endFrame = frame;
+                    reactions[i] = play;
+                }
+            }
+            reactions.Add(new ReactionPlay { name = name, kind = kind, startFrame = frame, endFrame = int.MaxValue, trackIndex = track, spanIndex = span });
+        }
+
+        /// <summary>Реакция, которую цель играет на кадре: последняя начатая, пока не оборвана и не доиграна.</summary>
+        public bool ActiveReaction(FrameDateMove move, int frame, out FrameDateReactionCatalog.Reaction reaction, out int local, out ReactionPlay play)
+        {
+            reaction = null;
+            local = 0;
+            play = default(ReactionPlay);
+            if (move.reactions == null) return false;
+            for (int i = reactions.Count - 1; i >= 0; i--)
+            {
+                var candidate = reactions[i];
+                if (candidate.startFrame > frame || frame >= candidate.endFrame) continue;
+                var found = move.reactions.Find(candidate.name);
+                if (!move.reactions.IsValid(found) || frame - candidate.startFrame >= found.frameCount) return false;
+                reaction = found;
+                local = frame - candidate.startFrame;
+                play = candidate;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Накопленный сдвиг цели её реакциями к кадру: оборванная реакция замирает на кадре обрыва.</summary>
+        private float ReactionOffset(FrameDateMove move, int frame)
+        {
+            float offset = 0f;
+            if (move.reactions == null) return 0f;
+            foreach (var play in reactions)
+            {
+                if (play.startFrame > frame) continue;
+                var reaction = move.reactions.Find(play.name);
+                if (!move.reactions.IsValid(reaction)) continue;
+                int local = Mathf.Min(frame, play.endFrame) - play.startFrame;
+                // Цель смотрит в −X: «вперёд» реакции — к атакующему, отлёт назад уводит в +X.
+                offset -= move.reactions.MotionForward(reaction, Mathf.Clamp(local, 0, reaction.frameCount - 1));
+            }
+            return offset;
+        }
+
+        /// <summary>Капсулы цели на кадре: реакции, если она идёт, иначе Idle героя или капсула тела FrameDate.</summary>
+        public List<Capsule2D> TargetHurtboxesAt(FrameDateMove move, int frame, float targetX)
+        {
+            FrameDateReactionCatalog.Reaction reaction;
+            int local;
+            ReactionPlay play;
+            if (!ActiveReaction(move, frame, out reaction, out local, out play)) return TargetHurtboxes(move, targetX, frame);
+            var list = new List<Capsule2D>();
+            var catalog = move.reactions;
+            for (int c = 0; c < catalog.capsules.Count; c++)
+                if (catalog.capsules[c].collidable) list.Add(TargetReactionCapsule(move, reaction, local, c, targetX));
+            return list;
+        }
+
+        public static Capsule2D TargetReactionCapsule(FrameDateMove move, FrameDateReactionCatalog.Reaction reaction, int local, int capsule, float targetX)
+        {
+            var catalog = move.reactions;
+            Vector2 a, b;
+            catalog.CapsuleModel(reaction, local, capsule, out a, out b);
+            float motionX = catalog.Position(reaction, local, catalog.motionBone).x;
+            float ground = GroundY(move, Actor.Target);
+            return new Capsule2D(
+                new Vector2(targetX - catalog.forwardSign * (a.x - motionX), ground + a.y),
+                new Vector2(targetX - catalog.forwardSign * (b.x - motionX), ground + b.y),
+                catalog.capsules[capsule].radius);
+        }
+
+        /// <summary>
+        /// Капсулы цели, по которым можно попасть: Collidable-капсулы Idle героя из игры (повёрнутые к атакующему),
+        /// если они есть у приёма, иначе капсула тела FrameDate.
+        /// </summary>
+        public static List<Capsule2D> TargetHurtboxes(FrameDateMove move, float targetX, int frame)
+        {
+            var list = new List<Capsule2D>();
+            var pose = move.pose;
+            if (pose != null && pose.HasIdle)
+            {
+                for (int c = 0; c < pose.capsules.Count; c++)
+                    if (pose.capsules[c].collidable) list.Add(TargetGameCapsule(move, c, targetX));
+            }
+            else
+            {
+                list.Add(ShapedHurtbox(move, Actor.Target, targetX, frame));
+            }
+            return list;
+        }
+
+        /// <summary>Удар берёт hitbox из капсул игры: у приёма есть капсулы, у интервала — атакующие детали.</summary>
+        public static bool UsesGameHitbox(FrameDateMove move, FrameSpan span) =>
+            move.pose != null && move.pose.HasCapsules && span.attackingParts != null && span.attackingParts.Count > 0;
+
+        /// <summary>Пол актора: низ капсулы тела на старте. Поза игры стоит на полу в Y = 0.</summary>
+        public static float GroundY(FrameDateMove move, Actor actor) =>
+            move.StartPosition(actor).y - move.Body(actor).height * 0.5f;
+
+        /// <summary>Капсула игры атакующего на кадре в мире FrameDate: относительно motion-кости, привязана к X атакующего.</summary>
+        public static Capsule2D AttackerGameCapsule(FrameDateMove move, int frame, int capsule, float attackerX)
+        {
+            var pose = move.pose;
+            Vector2 a, b;
+            pose.CapsuleModel(frame, capsule, out a, out b);
+            float motionX = pose.Position(frame, pose.motionBone).x;
+            float ground = GroundY(move, Actor.Attacker);
+            return new Capsule2D(
+                new Vector2(attackerX + pose.forwardSign * (a.x - motionX), ground + a.y),
+                new Vector2(attackerX + pose.forwardSign * (b.x - motionX), ground + b.y),
+                pose.capsules[capsule].radius);
+        }
+
+        /// <summary>Капсула Idle героя для цели: цель смотрит на атакующего, то есть в −X.</summary>
+        public static Capsule2D TargetGameCapsule(FrameDateMove move, int capsule, float targetX)
+        {
+            var pose = move.pose;
+            Vector2 a, b;
+            pose.IdleCapsuleModel(capsule, out a, out b);
+            float ground = GroundY(move, Actor.Target);
+            return new Capsule2D(
+                new Vector2(targetX - pose.forwardSign * (a.x - pose.idleMotionX), ground + a.y),
+                new Vector2(targetX - pose.forwardSign * (b.x - pose.idleMotionX), ground + b.y),
+                pose.capsules[capsule].radius);
+        }
+
+        /// <summary>
+        /// Попадание интервала Attack на кадре f. Детали из игры — как AttackCollisionSystem: в 2D, по области,
+        /// которую капсула детали заметает между прошлым и текущим кадром. Иначе — ручной hitbox FrameDate.
+        /// </summary>
+        private bool SpanHits(FrameDateMove move, FrameSpan span, int f, Vector2 attackerCenter, List<Capsule2D> hurtboxes)
+        {
+            if (!UsesGameHitbox(move, span))
+            {
+                var hitbox = Hitbox(span, attackerCenter);
+                foreach (var hurtbox in hurtboxes)
+                    if (Overlaps(hitbox, hurtbox)) return true;
+                return false;
+            }
+
+            var pose = move.pose;
+            int previousFrame = Mathf.Max(0, f - 1);
+            foreach (var part in span.attackingParts)
+            {
+                int c = pose.FindCapsule(part);
+                if (c < 0) continue;
+                var current = AttackerGameCapsule(move, f, c, attackerX[f]);
+                var previous = AttackerGameCapsule(move, previousFrame, c, attackerX[previousFrame]);
+                foreach (var hurtbox in hurtboxes)
+                    if (SweptOverlaps(previous, current, hurtbox)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Пересечение цели с областью, заметённой капсулой за кадр: четырёхугольник current.a, current.b,
+        /// previous.b, previous.a, расширенный на радиус, — как GetIntersectOfCapsulesPoint2D в игре.
+        /// </summary>
+        public static bool SweptOverlaps(Capsule2D previous, Capsule2D current, Capsule2D target)
+        {
+            float reach = current.radius + target.radius;
+            if (SegmentDistance(current.a, current.b, target.a, target.b) <= reach) return true;
+            if (SegmentDistance(previous.a, previous.b, target.a, target.b) <= reach) return true;
+            if (SegmentDistance(current.a, previous.a, target.a, target.b) <= reach) return true;
+            if (SegmentDistance(current.b, previous.b, target.a, target.b) <= reach) return true;
+            return InsideQuad(target.a, current.a, current.b, previous.b, previous.a);
+        }
+
+        private static bool InsideQuad(Vector2 p, Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3)
+        {
+            var v = new[] { v0, v1, v2, v3 };
+            bool inside = false;
+            for (int i = 0, j = 3; i < 4; j = i++)
+            {
+                if ((v[i].y > p.y) != (v[j].y > p.y) &&
+                    p.x < (v[j].x - v[i].x) * (p.y - v[i].y) / (v[j].y - v[i].y) + v[i].x)
+                    inside = !inside;
+            }
+            return inside;
+        }
 
         /// <summary>Индекс контакта этого интервала или −1, если контакта нет.</summary>
         public int FindContact(int trackIndex, int spanIndex)

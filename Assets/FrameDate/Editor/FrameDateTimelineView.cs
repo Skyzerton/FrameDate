@@ -298,9 +298,32 @@ private void RebuildLabels()
 
                     case RowKind.Derived:
                     {
-                        var label = GutterLabel("Отталкивание · расчёт", row, 24f, 3f, 11);
+                        var label = GutterLabel("Реакция цели · расчёт", row, 24f, 3f, 11);
                         label.style.unityFontStyleAndWeight = FontStyle.Italic;
                         label.style.color = DerivedColor;
+
+                        // Имена реакций цели внутри их интервалов.
+                        var reactionSim = FrameDateSimulation.Run(_move);
+                        foreach (var play in reactionSim.reactions)
+                        {
+                            int end;
+                            if (!ReactionEnd(play, out end)) continue;
+                            float x0 = FrameToX(play.startFrame);
+                            float x1 = FrameToX(end);
+                            if (x1 - x0 < 36f) continue;
+                            var name = new Label(play.name);
+                            name.style.position = Position.Absolute;
+                            name.style.left = x0 + 3f;
+                            name.style.top = row.y + 4f;
+                            name.style.width = x1 - x0 - 6f;
+                            name.style.height = row.height - 6f;
+                            name.style.fontSize = 9;
+                            name.style.overflow = Overflow.Hidden;
+                            name.style.color = new Color(0.08f, 0.08f, 0.10f);
+                            name.pickingMode = PickingMode.Ignore;
+                            Add(name);
+                            _trackLabels.Add(name);
+                        }
                         break;
                     }
                 }
@@ -342,6 +365,27 @@ private void RebuildLabels()
         }
 
         private static readonly Color DerivedColor = new Color(0.95f, 0.62f, 0.40f);
+
+        private static Color ReactionColor(FrameDateSimulation.ReactionKind kind)
+        {
+            switch (kind)
+            {
+                case FrameDateSimulation.ReactionKind.Crit: return new Color(1.00f, 0.38f, 0.38f);
+                case FrameDateSimulation.ReactionKind.BlockIn: return new Color(0.55f, 0.80f, 1.00f);
+                case FrameDateSimulation.ReactionKind.BlockHit: return new Color(0.35f, 0.55f, 1.00f);
+                default: return DerivedColor;
+            }
+        }
+
+        /// <summary>Конец показа реакции на таймлайне: конец анимации, обрыв новой реакцией или конец приёма.</summary>
+        private bool ReactionEnd(FrameDateSimulation.ReactionPlay play, out int end)
+        {
+            end = 0;
+            var reaction = _move.reactions != null ? _move.reactions.Find(play.name) : null;
+            if (reaction == null) return false;
+            end = Mathf.Min(Mathf.Min(play.endFrame, play.startFrame + reaction.frameCount), (int)Duration);
+            return end > play.startFrame;
+        }
 
         private int ChooseRulerStep()
         {
@@ -480,6 +524,8 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
                     FillRect(painter, new Rect(cell.x, cell.yMax - 4f, cell.width, 4f), Color.white);
                 }
 
+                // С реакцией из каталога цель сдвигает её анимация — её рисует блок реакций ниже.
+                if (!string.IsNullOrEmpty(contact.reaction)) continue;
                 float px0 = FrameToX(contact.frame);
                 float px1 = FrameToX(Mathf.Min(contact.pushEndFrame, (int)Duration));
                 if (px1 <= px0) continue;
@@ -489,6 +535,21 @@ private void OnGenerateVisualContent(MeshGenerationContext context)
                 pushFill.a = pushActive ? 0.85f : 0.40f;
                 FillRect(painter, push, pushFill);
                 StrokeRect(painter, push, DerivedColor, 1f);
+            }
+
+            // Реакции цели: интервал от начала до конца анимации или до обрыва новой реакцией, цвет по виду.
+            foreach (var play in sim.reactions)
+            {
+                int end;
+                if (!ReactionEnd(play, out end)) continue;
+                float rx0 = FrameToX(play.startFrame);
+                float rx1 = FrameToX(end);
+                if (rx1 <= rx0) continue;
+                var reactionRect = new Rect(rx0, derivedRow.y + 2f, rx1 - rx0, derivedRow.height - 4f);
+                var fill = ReactionColor(play.kind);
+                fill.a = _currentFrame >= play.startFrame && _currentFrame < end ? 0.95f : 0.55f;
+                FillRect(painter, reactionRect, fill);
+                StrokeRect(painter, reactionRect, ReactionColor(play.kind), 1f);
             }
 
             float playheadX = FrameToX(_currentFrame);
