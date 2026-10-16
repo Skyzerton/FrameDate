@@ -61,9 +61,12 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.2.14f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FrameDate\Editor\Sfa\SfaKickRules.cs" />
     <Compile Include="Assets\FrameDate\Editor\Sfa\SfaBatchImport.cs" />
     <Compile Include="Assets\FrameDate\Editor\Sfa\SfaMoveExporter.cs" />
     <Compile Include="Assets\FrameDate\Editor\FrameDateWindow.cs" />
+    <Compile Include="Assets\FrameDate\Editor\Sfa\SfaSharedPlan.cs" />
+    <Compile Include="Assets\FrameDate\Editor\Sfa\SfaHeroProfiles.cs" />
     <Compile Include="Assets\FrameDate\Editor\Sfa\SfaImportWindow.cs" />
     <Compile Include="Assets\FrameDate\Editor\Sfa\SfaReferenceCheck.cs" />
     <Compile Include="Assets\FrameDate\Editor\Sfa\SfaFormats.cs" />

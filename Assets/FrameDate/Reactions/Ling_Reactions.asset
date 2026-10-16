@@ -38,7 +38,7 @@ MonoBehaviour:
     part: Commons/m_skeleton
     radius: 6.5
     collidable: 1
-  - name: Forearm_left
+  - name: capsule_1173633548
     hash: 1173633548
     part: Commons/m_skeleton
     radius: 6
@@ -48,7 +48,7 @@ MonoBehaviour:
     part: Commons/m_skeleton
     radius: 6
     collidable: 0
-  - name: Hand_left
+  - name: capsule_2734462077
     hash: 2734462077
     part: Commons/m_skeleton
     radius: 6

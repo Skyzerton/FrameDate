@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Bulwark
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Bulwark
+  stem: bulwark
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_bulwark/_base/arm_bulwark
+  helmet: arena_bulwark/_base/helm_bulwark
+  weapon: arena_bulwark/_Weapons/_base
+  idleAnimation: stance_Bulwark_C_default_start_idle
+  blockTriggers: Assets/Arena/GameContent/GameSettings/TriggersLogic/Moves/Triggers/triggers_arena_bulwark.yaml
+  reactions: {fileID: 11400000, guid: b12f17b0a9c59934bb2e1e63d04c2f9a, type: 2}
+  notes: []
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: d00e6a14cabf4054d9aeb5badc82b77d, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: d602148c96d5d28489cbf7a4db06cc66, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 4e999093d6de7bf4f99795d7eb3bbd4e, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: e673225300acf2f4daf0a4a6be7142c9, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: 9b81a603306f6b640a4f4f6943b957cd, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 3fa20163c0903b4409d94173737b9ae5, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: dcf8a11cfb7fbcd4cafddf7d4f7268ab, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 52a46eaaed7e5c444a55259071411ebc, type: 2}
+    shared: 

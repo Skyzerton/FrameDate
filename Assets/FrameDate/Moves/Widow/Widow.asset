@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Widow
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Widow
+  stem: widow
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_widow/_base/arm_widow
+  helmet: arena_widow/_base/helm_widow
+  weapon: arena_widow/_Weapons/_base
+  idleAnimation: stance_Widow_C_default_start_idle
+  blockTriggers: 
+  reactions: {fileID: 11400000, guid: 78b93fe730c56204eb91c10146f417b3, type: 2}
+  notes:
+  - "\u043F\u0440\u0430\u0432\u0438\u043B \u0431\u043B\u043E\u043A\u0430 \u043D\u0435
+    \u043D\u0430\u0439\u0434\u0435\u043D\u043E \u2014 \u0440\u0435\u0430\u043A\u0446\u0438\u0438
+    \u0431\u043B\u043E\u043A\u0430 \u043F\u0443\u0441\u0442\u044B, \u043F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435
+    \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442"
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: e91e37303ca6c8d4d943edebcf05cabf, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: ea2f353b5d4514a47bbdc2b486f5d19b, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: ca5028260eb53f446a10e94ca614cb4b, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: abd433d11f752b14a8fa3fa4aa1083f3, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: e0687b3f958bf5a44b4112a0f143ded3, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 9b0c12913b2aea942bfbc25647319de8, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: f47ea43aa7021cd46bd5cbcdee69690a, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 59f8252c8fe106d41aee9d1c6498ed5f, type: 2}
+    shared: 

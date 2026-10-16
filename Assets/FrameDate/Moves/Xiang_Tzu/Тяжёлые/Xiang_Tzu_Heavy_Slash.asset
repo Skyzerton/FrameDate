@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xiang_Tzu_Heavy_Slash
   m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
   moveName: Xiang_Tzu_Heavy_Slash
-  frameRate: 60
+  frameRate: 30
   durationFrames: 57
   attackerPosition: {x: -140, y: 0}
   targetPosition: {x: 140, y: 0}

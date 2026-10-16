@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Kibo
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Kibo
+  stem: kibo
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_kibo/_base/arm_kibo
+  helmet: arena_kibo/_base/helm_kibo
+  weapon: arena_kibo/_Weapons/_base
+  idleAnimation: stance_Kibo_C_default_start_idle
+  blockTriggers: Assets/Arena/GameContent/GameSettings/TriggersLogic/Moves/Triggers/triggers_arena_katana.yaml
+  reactions: {fileID: 11400000, guid: 4c1ce5aa12f9b0943bb8d8a3a7294ea2, type: 2}
+  notes: []
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: b61dd9c5e98033d46a7348c1dc1659ef, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: a95b9ffb74200e64cacc19a5a884cdd3, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 31c2d61f4cf078240bd0dcca9d9908f2, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: cf84da75dd5c2b648bd645d2b781dcb2, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: 8666ddae578ef8b47bb978d7dc374a04, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: c74dbeb190b9d3646b635d9d28a3d43f, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: fb743c213ff416d4c83a4b15951b2014, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 641fcf64d6d38d047a53fc9127268505, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: f12f7fdf6c4653e4a87c26d29788f01d, type: 2}
+    shared: 

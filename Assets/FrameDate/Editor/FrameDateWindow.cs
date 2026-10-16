@@ -38,6 +38,9 @@ namespace FrameDate.EditorTools
         private IntegerField _spanEndField;
         private Label _contactReadout;
         private ObjectField _moveField;
+        private ToolbarButton _heroButton;
+        private ToolbarButton _moveButton;
+        private FrameDateHero _hero;
         private const string ShowSkeletonPref = "FrameDate.ShowSkeleton";
 private Label _frameReadout;
 
@@ -151,6 +154,17 @@ private Label _frameReadout;
             _moveField = moveField;
             moveField.RegisterValueChangedCallback(evt => BindMove(evt.newValue as FrameDateMove));
             bar.Add(moveField);
+
+            // Выбор из списка: герой → его приёмы по категориям. Список берётся из профиля героя (ассет в папке героя).
+            var prev = new ToolbarButton(() => StepMove(-1)) { text = "◀", tooltip = "Предыдущий приём героя" };
+            var next = new ToolbarButton(() => StepMove(1)) { text = "▶", tooltip = "Следующий приём героя" };
+            _heroButton = new ToolbarButton(() => ShowHeroMenu(_heroButton.worldBound)) { tooltip = "Профиль героя: все его приёмы по категориям." };
+            _moveButton = new ToolbarButton(() => ShowMoveMenu(_moveButton.worldBound)) { tooltip = "Приёмы выбранного героя по категориям." };
+            bar.Add(prev);
+            bar.Add(next);
+            bar.Add(_heroButton);
+            bar.Add(_moveButton);
+            UpdateHeroUi();
 
             var create = new ToolbarButton(CreateMoveInteractive) { text = "Создать приём..." };
             bar.Add(create);
@@ -870,13 +884,83 @@ private void BindMove(FrameDateMove move)
         {
             _move = move;
             EnsureMetrics(move);
+            // Приём из папки героя — этот герой становится текущим, его список приёмов доступен в меню.
+            var owner = Sfa.SfaHeroProfiles.HeroOf(move);
+            if (owner != null) _hero = owner;
             if (_timeline != null)
             {
                 _timeline.Move = move;
                 _timeline.style.height = _timeline.PreferredHeight;
             }
             _frame = 0;
+            UpdateHeroUi();
             RefreshAll();
+        }
+
+        private void UpdateHeroUi()
+        {
+            if (_heroButton == null || _moveButton == null) return;
+            _heroButton.text = _hero != null ? "Герой: " + _hero.displayName + " ▾" : "Герой ▾";
+            int count = _hero != null ? _hero.moves.Count : 0;
+            _moveButton.text = _hero != null ? $"Приёмы ({count}) ▾" : "Приёмы ▾";
+            _moveButton.SetEnabled(_hero != null && count > 0);
+        }
+
+        private void ShowHeroMenu(Rect anchor)
+        {
+            var menu = new GenericMenu();
+            var heroes = Sfa.SfaHeroProfiles.All();
+            if (heroes.Count == 0) menu.AddDisabledItem(new GUIContent("Профилей героев нет — выполните перенос из SFA"));
+            foreach (var hero in heroes)
+            {
+                var captured = hero;
+                menu.AddItem(new GUIContent($"{hero.displayName}  ({hero.moves.Count})"), hero == _hero, () => SelectHero(captured));
+            }
+            menu.DropDown(anchor);
+        }
+
+        private void SelectHero(FrameDateHero hero)
+        {
+            _hero = hero;
+            UpdateHeroUi();
+            // Если открыт приём другого героя — открываем первый приём выбранного.
+            if (hero != null && Sfa.SfaHeroProfiles.HeroOf(_move) != hero)
+            {
+                var ordered = hero.Ordered();
+                if (ordered.Count > 0) { _moveField?.SetValueWithoutNotify(ordered[0].move); BindMove(ordered[0].move); }
+            }
+        }
+
+        private void ShowMoveMenu(Rect anchor)
+        {
+            if (_hero == null) return;
+            var menu = new GenericMenu();
+            foreach (var category in _hero.Categories())
+            {
+                foreach (var entry in _hero.MovesIn(category))
+                {
+                    var captured = entry.move;
+                    string label = entry.move.name + (string.IsNullOrEmpty(entry.shared) ? "" : "  · общий");
+                    menu.AddItem(new GUIContent(category + "/" + label), captured == _move, () =>
+                    {
+                        _moveField?.SetValueWithoutNotify(captured);
+                        BindMove(captured);
+                    });
+                }
+            }
+            menu.DropDown(anchor);
+        }
+
+        /// <summary>Листает приёмы текущего героя в порядке списка (по категориям).</summary>
+        private void StepMove(int delta)
+        {
+            if (_hero == null) return;
+            var ordered = _hero.Ordered();
+            if (ordered.Count == 0) return;
+            int index = _hero.IndexOf(_move);
+            index = index < 0 ? (delta > 0 ? 0 : ordered.Count - 1) : (index + delta + ordered.Count) % ordered.Count;
+            _moveField?.SetValueWithoutNotify(ordered[index].move);
+            BindMove(ordered[index].move);
         }
 
         /// <summary>

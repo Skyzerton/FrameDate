@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Xiang_Tzu
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Xiang_Tzu
+  stem: xiang_tzu
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_xiang_tzu/_base/arm_xiang_tzu
+  helmet: arena_xiang_tzu/_base/helm_xiang_tzu
+  weapon: arena_xiang_tzu/_Weapons/_base
+  idleAnimation: stance_Xiang_Tzu_C_default_start_idle
+  blockTriggers: 
+  reactions: {fileID: 11400000, guid: 703693486a1abe243af2d302a8d233d9, type: 2}
+  notes:
+  - "\u043F\u0440\u0430\u0432\u0438\u043B \u0431\u043B\u043E\u043A\u0430 \u043D\u0435
+    \u043D\u0430\u0439\u0434\u0435\u043D\u043E \u2014 \u0440\u0435\u0430\u043A\u0446\u0438\u0438
+    \u0431\u043B\u043E\u043A\u0430 \u043F\u0443\u0441\u0442\u044B, \u043F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435
+    \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442"
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: e069c51ce4d353244827926ca711ad8c, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 89da3ff69382a9f46b0c92aa9630cd98, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: c8a2fff116dc5d74b9b98f0f9ade0d6f, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: bab1894f73e132d4c92bbcb1070c62d5, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: d3774a08bc2b47b4285da91d21e2cb12, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: 5017378adfe0a71478a28214db417b93, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 5a89738e5a03d7d49b127ce3318a594f, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 466ed4b384accde48ac362ebe3a08517, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: e7badeda764625c42906ebb16827ff1c, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: ba70c7a9ef6cb454db351e624affa28f, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 89e9394aead0e9b44be16d1b9a2fef14, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 726e6158ce951ce4e8c07dc6f6849d7c, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 0aa68b641414a3744963f63e1bf12235, type: 2}
+    shared: 
+  - category: "\u041F\u0440\u043E\u0447\u0438\u0435"
+    move: {fileID: 11400000, guid: 1dc8ca3b3644a5d42b9ccdb0980991b2, type: 2}
+    shared: 

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f383efee12e59a44ea4cb0cec90fd369, type: 3}
+  m_Name: K_Agl_Front_Kick_Pose
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDatePose
+  sourceAnimation: 
+  sourceAnimationFile: 
+  sourceSettingsFile: 
+  exportedAt: 
+  sourceParts: []
+  segments: []
+  capsules: []
+  capsulePoints: []
+  hasIdle: 0
+  idleAnimation: 
+  idleMotionX: 0
+  idlePositions: []
+  idlePoints: []
+  frameRate: 60
+  frameCount: 0
+  boneCount: 0
+  motionBone: 2
+  forwardSign: -1
+  boneParents: 
+  positions: []

@@ -66,6 +66,7 @@
     <Compile Include="Assets\FrameDate\Runtime\FrameDateMetrics.cs" />
     <Compile Include="Assets\FrameDate\Runtime\FrameDateMove.cs" />
     <Compile Include="Assets\FrameDate\Runtime\FrameDateSimulation.cs" />
+    <Compile Include="Assets\FrameDate\Runtime\FrameDateHero.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

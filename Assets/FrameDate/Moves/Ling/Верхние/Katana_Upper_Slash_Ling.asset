@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Katana_Upper_Slash_Ling
   m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
   moveName: Katana_Upper_Slash_Ling
-  frameRate: 60
+  frameRate: 30
   durationFrames: 47
-  attackerPosition: {x: -140, y: 0}
-  targetPosition: {x: 140, y: 0}
+  attackerPosition: {x: -150, y: 0}
+  targetPosition: {x: 150, y: 0}
   metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
   pose: {fileID: 11400000, guid: 33a88a4bbbeeb6346a1d7c9308161011, type: 2}
   reactions: {fileID: 11400000, guid: 9357e592bc1b6ee4291c8deab8e78059, type: 2}

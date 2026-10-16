@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Lynx
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Lynx
+  stem: lynx
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_lynx/_base/arm_lynx
+  helmet: arena_lynx/_base/helm_lynx
+  weapon: arena_lynx/_Weapons/_base
+  idleAnimation: stance_Lynx_C_default_start_idle
+  blockTriggers: Assets/Arena/GameContent/GameSettings/TriggersLogic/Moves/Triggers/triggers_arena_lynx.yaml
+  reactions: {fileID: 11400000, guid: fa7bd1e12d36ccc459adf647815e6658, type: 2}
+  notes: []
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: a95b9b5f407a17341b0cbd6937cfb693, type: 2}
+    shared: 
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 1e60b0608e5fe97449411fc1f8ab801a, type: 2}
+    shared: 
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: e121364f77341074198d7e544cf48de1, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: c0cfdfbbc1588f249b8e03343c7e5a72, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 23dd0126cd24b13479ca04495bc6b075, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 2c6c3a6bffc07154eb06396eeae4996f, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: f72d22be6f5bb45438036b917dad45c7, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 592ed9fbeb945cd40940de9c1105a8e8, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: de7596939359fbb499d60dd4f0fbcbaa, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: 055ed19f84b56064eaf32b7e453b0868, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: 7956d0210a60185489834964f879f7c5, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: e9393149dfecd6645927c4106ad05eff, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 337d667db7a39dc4aa8480b0d74850a6, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: e4aeb7b68c2c9d54c98addfd0bf5d3ce, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 93fa5920db3dd8042a8995d3d0ac278b, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 2798187ff35cb9b4182bd526ff256698, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 09a45185b56070a428e0a3a89f391eba, type: 2}
+    shared: 
+  - category: "\u041F\u0440\u043E\u0447\u0438\u0435"
+    move: {fileID: 11400000, guid: 7f7d203558c81f24baeb8fbf0a883182, type: 2}
+    shared: 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Katana_Low_Slash_Ling
   m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
   moveName: Katana_Low_Slash_Ling
-  frameRate: 60
+  frameRate: 30
   durationFrames: 50
   attackerPosition: {x: -140, y: 0}
   targetPosition: {x: 140, y: 0}

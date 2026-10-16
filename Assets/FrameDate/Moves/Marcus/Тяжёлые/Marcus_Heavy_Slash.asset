@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Marcus_Heavy_Slash
   m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
   moveName: Marcus_Heavy_Slash
-  frameRate: 60
+  frameRate: 30
   durationFrames: 81
   attackerPosition: {x: -140, y: 0}
-  targetPosition: {x: 140, y: 0}
+  targetPosition: {x: 207.8, y: 0}
   metrics: {fileID: 11400000, guid: 3bb2b1283bf9eff45b6aeb403ab05e80, type: 2}
   pose: {fileID: 11400000, guid: 28dfd6d2f2e357d40939469a084244d7, type: 2}
   reactions: {fileID: 11400000, guid: 314c9dbe0e2209144bfa15627f6b531a, type: 2}
-  targetOutcome: 0
+  targetOutcome: 1
   startOffset: 0
   attackerBody:
     radius: 30
@@ -40,8 +40,8 @@ MonoBehaviour:
     actor: 0
     role: 1
     spans:
-    - startFrame: 27
-      endFrame: 34
+    - startFrame: 28
+      endFrame: 35
       distance: 50
       profile: 0
       hitOffset: {x: 20, y: 25}
@@ -566,47 +566,9 @@ MonoBehaviour:
       unblockable: 0
       hurtHeightScale: 0.6
       hurtRadiusScale: 1
-    - startFrame: 59
-      endFrame: 65
-      distance: 0.609375
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 65
-      endFrame: 74
-      distance: 4.40625
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 74
-      endFrame: 80
-      distance: -1.25
+    - startFrame: 60
+      endFrame: 69
+      distance: -100
       profile: 0
       hitOffset: {x: 20, y: 25}
       hitLength: 55

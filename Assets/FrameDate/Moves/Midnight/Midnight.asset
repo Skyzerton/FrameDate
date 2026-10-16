@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Midnight
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Midnight
+  stem: midnight
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_midnight/_base/arm_midnight
+  helmet: arena_midnight/_base/helm_midnight
+  weapon: arena_midnight/_Weapons/_base
+  idleAnimation: stance_Midnight_C_default_idle
+  blockTriggers: 
+  reactions: {fileID: 11400000, guid: ead5fe6da755c624ca92810670fcbe10, type: 2}
+  notes:
+  - "\u043F\u0440\u0430\u0432\u0438\u043B \u0431\u043B\u043E\u043A\u0430 \u043D\u0435
+    \u043D\u0430\u0439\u0434\u0435\u043D\u043E \u2014 \u0440\u0435\u0430\u043A\u0446\u0438\u0438
+    \u0431\u043B\u043E\u043A\u0430 \u043F\u0443\u0441\u0442\u044B, \u043F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435
+    \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442"
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 3cda08dd252f7c242970af5dde36185f, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 30297972a99207e4ebbb84bf047cec95, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: ddcce2df957a7fb44b3a7804da320baa, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: b68515d1899e5434db7afb9b8667beea, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: f97591c16f890e1428d96ac7028a0e73, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 896a6645c68a01748b198e3fc5cdfe7b, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 54271b5c30f245e4e97d07ff36d52750, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 5a0229fb5ae34424d9a65c0051c4b0f3, type: 2}
+    shared: 

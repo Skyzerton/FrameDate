@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Ling
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Ling
+  stem: ling
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_ling/_base/arm_ling
+  helmet: arena_ling/_base/helm_ling
+  weapon: arena_ling/_Weapons/_base
+  idleAnimation: Stance_Ling_C_Default_Start_Idle
+  blockTriggers: Assets/Arena/GameContent/GameSettings/TriggersLogic/Moves/Triggers/triggers_arena_katana.yaml
+  reactions: {fileID: 11400000, guid: 9357e592bc1b6ee4291c8deab8e78059, type: 2}
+  notes: []
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 5a74b45c9bb70fe4faa265b8bde002d4, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: a20553393804541429e158b0eea43ded, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: d61ece7dc0e946949994d492c694e4e3, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: 5638112f4e843c94c8a271a612429c5b, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: 038655af5cdd09c4b931cee8d77a1980, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: 53c75bcaae239d34dae6f84c133728aa, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: 92e3a73f2a38e9840ab47ab7179bab88, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: ccaa30b5090bd244e8e9848d9a349cbe, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: 6bcf7e1b1f3c3204292819a1311f37b6, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 374dfe756e520d242b445545974579db, type: 2}
+    shared: 
+  - category: "\u0422\u0435\u043D\u0435\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 14ac370a02fba264bb5d39f7bded2f00, type: 2}
+    shared: 

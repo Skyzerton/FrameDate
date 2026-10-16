@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: Monkey_King
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: Monkey_King
+  stem: monkey_king
+  kickStyle: 0
+  skeleton: Commons/m_skeleton
+  armor: arena_monkey_king/_base/arm_monkey_king
+  helmet: arena_monkey_king/_base/helm_monkey_king
+  weapon: arena_monkey_king/_Weapons/_base
+  idleAnimation: stance_Monkey_King_C_default_start_idle
+  blockTriggers: 
+  reactions: {fileID: 11400000, guid: 13b231a42b49019489b7a9f9182a5b28, type: 2}
+  notes:
+  - "\u043F\u0440\u0430\u0432\u0438\u043B \u0431\u043B\u043E\u043A\u0430 \u043D\u0435
+    \u043D\u0430\u0439\u0434\u0435\u043D\u043E \u2014 \u0440\u0435\u0430\u043A\u0446\u0438\u0438
+    \u0431\u043B\u043E\u043A\u0430 \u043F\u0443\u0441\u0442\u044B, \u043F\u043E\u043F\u0430\u0434\u0430\u043D\u0438\u0435
+    \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442"
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: fd308bc5a0004804b980e0759970e57a, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 8e691e3d65313614e990e83ed8cd7fb7, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: 81144e34f7e763b439c5462ef619373b, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: a6277981f25b6334da1d6d0313e45e75, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: fb9ff47c517619e48b4667f88ef6c47d, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: d216ebe41e8078341933b7dfce657362, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: ac67ad15d01a8614c83c226711ee1e6a, type: 2}
+    shared: 
+  - category: "\u041E\u0441\u043E\u0431\u044B\u0435"
+    move: {fileID: 11400000, guid: 175d598b32d3a7243ad0262be8957f85, type: 2}
+    shared: 
+  - category: "\u041E\u0441\u043E\u0431\u044B\u0435"
+    move: {fileID: 11400000, guid: 71c575903c6f1c343bfcce3901080995, type: 2}
+    shared: 
+  - category: "\u041E\u0441\u043E\u0431\u044B\u0435"
+    move: {fileID: 11400000, guid: e742af2a7a6e50b4ea2019a3479fb9fd, type: 2}
+    shared: 
+  - category: "\u041E\u0441\u043E\u0431\u044B\u0435"
+    move: {fileID: 11400000, guid: 14cc2615fd46d4b419e715d201098687, type: 2}
+    shared: 
+  - category: "\u041E\u0441\u043E\u0431\u044B\u0435"
+    move: {fileID: 11400000, guid: 1fc8acee14ac6114c892f93952920028, type: 2}
+    shared: 
+  - category: "\u041E\u0441\u043E\u0431\u044B\u0435"
+    move: {fileID: 11400000, guid: b453b5dfc6feae3459ff205b9457690d, type: 2}
+    shared: 

@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e333a19fee8144f91aa89a1c53527f, type: 3}
+  m_Name: June
+  m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateHero
+  displayName: June
+  stem: june
+  kickStyle: 2
+  skeleton: Commons/m_skeleton
+  armor: arena_june/_base/arm_june
+  helmet: arena_june/_base/helm_june
+  weapon: arena_june/_Weapons/_base
+  idleAnimation: stance_June_C_default_start_idle
+  blockTriggers: Assets/Arena/GameContent/GameSettings/TriggersLogic/Moves/Triggers/triggers_arena_june.yaml
+  reactions: {fileID: 11400000, guid: 1bf4111710ddfac4d804e21216c2bb66, type: 2}
+  notes: []
+  moves:
+  - category: "\u0411\u0430\u0437\u043E\u0432\u044B\u0435"
+    move: {fileID: 11400000, guid: 03e22084d66610a4182f4af99716a8f9, type: 2}
+    shared: 
+  - category: "\u0412\u0435\u0440\u0445\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: c0f0b0b74da59e743a7bce4970148f71, type: 2}
+    shared: 
+  - category: "\u041D\u0438\u0436\u043D\u0438\u0435"
+    move: {fileID: 11400000, guid: aa4530c0026ef304fb213633409cfe52, type: 2}
+    shared: 
+  - category: "\u0422\u044F\u0436\u0451\u043B\u044B\u0435"
+    move: {fileID: 11400000, guid: 5fa0784f525237344806fb5b7e26de2f, type: 2}
+    shared: 
+  - category: "\u0412\u0440\u0430\u0449\u0435\u043D\u0438\u044F"
+    move: {fileID: 11400000, guid: 06acacb7719b2e24382cb451821acb13, type: 2}
+    shared: 
+  - category: "\u0421\u0443\u043F\u0435\u0440"
+    move: {fileID: 11400000, guid: d3cc670301e0bc6449d6f91d6bdac611, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 83be96c97b3907540bfec2b3731dccff, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 41281ebd8bcf1f74db1b93421ada5a4e, type: 2}
+    shared: settings_kicks
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: f9e4fb7325f945440a3dba4b1ec1b121, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 3dcb1f7e70fac2545af9d7695ab73e81, type: 2}
+    shared: settings_kicks
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 363adb8bb4687ce4ea06a804ebf1a358, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 28d579efec2fae14884bc3ab488bcb23, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: a763bd02e97b2434d81fbfd43edb125c, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: c9e01d9f466db33459ddceec35d3cb7a, type: 2}
+    shared: 
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 5da62728c7b38204ba5d4e4023a175aa, type: 2}
+    shared: settings_kicks
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 4a829624e0f1e9840a7e7d00ca41d0a4, type: 2}
+    shared: settings_kicks
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 3a7e97fda72dae74887b3f7648c2946d, type: 2}
+    shared: settings_kicks
+  - category: "\u0423\u0434\u0430\u0440\u044B \u043D\u043E\u0433\u0430\u043C\u0438"
+    move: {fileID: 11400000, guid: 5f6b6af273209384cbe9fde361a042b9, type: 2}
+    shared: settings_kicks
+  - category: "\u0411\u0440\u043E\u0441\u043A\u0438"
+    move: {fileID: 11400000, guid: e067d462393ab1f49a1904bf81daad88, type: 2}
+    shared: 
+  - category: "\u0411\u0440\u043E\u0441\u043A\u0438"
+    move: {fileID: 11400000, guid: fde3b2884e6e3cd40be3dcbc6295f2b3, type: 2}
+    shared: 

@@ -155,6 +155,8 @@ namespace FrameDate.EditorTools.Sfa
         public List<string> series = new List<string>();
         /// <summary>pending · done · failed</summary>
         public string status = "pending";
+        /// <summary>Файл настроек, откуда взят приём (относительно проекта игры). Пусто — файл самого героя.</summary>
+        public string source;
         public string message;
         public int frames;
         public int contacts;
@@ -168,6 +170,8 @@ namespace FrameDate.EditorTools.Sfa
         public List<BatchItem> items = new List<BatchItem>();
         public List<string> skipped = new List<string>();
         public List<string> heroNotes = new List<string>();
+        /// <summary>План общих приёмов (копии для героев), а не их собственных.</summary>
+        public bool shared;
     }
 
     /// <summary>
@@ -192,6 +196,13 @@ namespace FrameDate.EditorTools.Sfa
         private static bool _hooked;
 
         public static bool IsRunning => SessionState.GetBool(RunningKey, false);
+
+        /// <summary>Сделать план текущим и сохранить (для планов, построенных вне этого класса).</summary>
+        public static void Register(BatchPlan plan)
+        {
+            SavePlan(plan);
+            _plan = plan;
+        }
 
         public static BatchPlan Plan => _plan ?? LoadPlan();
 
@@ -393,6 +404,8 @@ namespace FrameDate.EditorTools.Sfa
             FrameDateMoveImporter.DeferSave = false;
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            // Профили героев: список приёмов по категориям для выбора в окне.
+            SfaHeroProfiles.RebuildAll(plan.root);
             WriteIndex(plan);
             Debug.Log("FrameDate batch завершён: " + Progress());
         }
@@ -417,7 +430,7 @@ namespace FrameDate.EditorTools.Sfa
             var request = new ExportRequest
             {
                 SfaRoot = plan.root,
-                SettingsFile = profile.SettingsFile,
+                SettingsFile = string.IsNullOrEmpty(item.source) ? profile.SettingsFile : item.source,
                 Animations = new List<string>(item.series),
                 TransitionOverrides = new List<int>(),
                 SkeletonPart = profile.Skeleton,
@@ -471,7 +484,7 @@ namespace FrameDate.EditorTools.Sfa
         public static void WriteIndex(BatchPlan plan)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("# Перенесённые приёмы героев SFA");
+            sb.AppendLine(plan.shared ? "# Общие приёмы, розданные героям (копии на модели героя)" : "# Перенесённые приёмы героев SFA");
             sb.AppendLine();
             sb.AppendLine($"Итог: {Progress()}. Раскладка: `Assets/FrameDate/Moves/<Герой>/<Категория>/`, позы — `<Герой>/_Poses/`, каталоги реакций — `Assets/FrameDate/Reactions/<Герой>_Reactions.asset`.");
             sb.AppendLine("Приём = серия ударов (цепочка по Transitions). Цель — тот же герой в Idle (зеркальный бой). Контакты считаются со стартовой дистанцией из конфига метрик.");
@@ -506,7 +519,7 @@ namespace FrameDate.EditorTools.Sfa
                 foreach (var skip in plan.skipped) sb.AppendLine("- " + skip);
             }
             Directory.CreateDirectory("docs");
-            File.WriteAllText("docs/IMPORTED_MOVES.md", sb.ToString());
+            File.WriteAllText(plan.shared ? "docs/IMPORTED_MOVES_SHARED.md" : "docs/IMPORTED_MOVES.md", sb.ToString());
         }
     }
 }

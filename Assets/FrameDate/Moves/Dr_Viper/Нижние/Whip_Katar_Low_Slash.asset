@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Whip_Katar_Low_Slash
   m_EditorClassIdentifier: Assembly-CSharp::FrameDate.FrameDateMove
   moveName: Whip_Katar_Low_Slash
-  frameRate: 60
+  frameRate: 30
   durationFrames: 83
   attackerPosition: {x: -140, y: 0}
   targetPosition: {x: 140, y: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
     role: 1
     spans:
     - startFrame: 20
-      endFrame: 27
+      endFrame: 42
       distance: 50
       profile: 0
       hitOffset: {x: 20, y: 25}
@@ -74,7 +74,7 @@ MonoBehaviour:
     role: 4
     spans:
     - startFrame: 0
-      endFrame: 55
+      endFrame: 59
       distance: 50
       profile: 0
       hitOffset: {x: 20, y: 25}
@@ -193,256 +193,9 @@ MonoBehaviour:
     actor: 0
     role: 8
     spans:
-    - startFrame: 0
-      endFrame: 3
-      distance: -2.4609375
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 3
-      endFrame: 4
-      distance: 2.3242188
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 4
-      endFrame: 8
-      distance: 20.382812
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 8
-      endFrame: 11
-      distance: 27.609375
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 11
-      endFrame: 13
-      distance: 8.78125
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 13
-      endFrame: 16
-      distance: 7.3125
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 16
-      endFrame: 19
-      distance: -1.5
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 19
-      endFrame: 22
-      distance: -7.65625
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 22
-      endFrame: 25
-      distance: -13.9375
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 25
-      endFrame: 28
-      distance: -21.125
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 28
-      endFrame: 36
-      distance: -20.347656
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 36
-      endFrame: 40
-      distance: -0.16015625
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 40
-      endFrame: 49
-      distance: 4.8183594
-      profile: 0
-      hitOffset: {x: 20, y: 25}
-      hitLength: 55
-      hitRadius: 12
-      pushDistance: 30
-      pushFrames: 6
-      attackingParts: []
-      outcome: 0
-      reactionHit: 
-      reactionCrit: 
-      reactionBlockIn: 
-      reactionBlockHit: 
-      blockDistance: 0
-      unblockable: 0
-      hurtHeightScale: 0.6
-      hurtRadiusScale: 1
-    - startFrame: 49
-      endFrame: 61
-      distance: -5.1035156
+    - startFrame: 18
+      endFrame: 37
+      distance: 120
       profile: 0
       hitOffset: {x: 20, y: 25}
       hitLength: 55
